@@ -16,10 +16,12 @@ QMAKE_CXXFLAGS_WARN_ON += -Werror -Wformat=2 -Wuninitialized -Winit-self -Wmissi
 
 DEFINES += QTCSV_LIBRARY
 
-SOURCES += qcsvdata.cpp
+SOURCES += qcsvdata.cpp \
+    qcsvwriter.cpp
 
 HEADERS += qcsvdata.h \
-    qtcsv_global.h
+    qtcsv_global.h \
+    qcsvwriter.h
 
 unix {
     target.path = /usr/lib
