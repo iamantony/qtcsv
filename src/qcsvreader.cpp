@@ -28,7 +28,7 @@ QList<QStringList> QCSVReader::ReadToList(const QString &filePath,
 	QFile csvFile;
 	csvFile.setFileName(filePath);
 
-	bool fileOpened = csvFile.open(QIODevice::ReadOnly);
+	bool fileOpened = csvFile.open(QIODevice::ReadOnly | QIODevice::Text);
 	if ( false == fileOpened )
 	{
 		qDebug() << __func__ << "Error - can't open file:" << filePath;
