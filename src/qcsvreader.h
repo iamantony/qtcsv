@@ -11,10 +11,13 @@ class QTCSVSHARED_EXPORT QCSVReader
 {
 	// == METHODS ==
 public:
-	static QList<QStringList> ReadToList(const QString &t_filePath,
-								   const QString &t_separator = ",");
-	static QCSVData ReadToData(const QString &t_filePath,
-						 const QString &t_separator = ",");
+	// Read .csv file to QList<QStringList>
+	static QList<QStringList> ReadToList(const QString &filePath,
+								   const QString &separator = ",");
+
+	// Read .csv file to QCSVData
+	static QCSVData ReadToData(const QString &filePath,
+						 const QString &separator = ",");
 };
 
 #endif // QCSVREADER_H
