@@ -14,68 +14,68 @@
 // - t_separator - separator symbol
 // @output:
 // - true - data was written to the file
-// - false - failed to write to the file
-bool QCSVWriter::Write(const QString &t_filePath,
-					   const QCSVData &t_data,
-					   const QString &t_separator)
+// - false - failed to write to the files
+bool QCSVWriter::Write(const QString &filePath,
+					   const QCSVData &data,
+					   const QString &separator)
 {
-	if ( (true == t_filePath.isEmpty()) ||
-		 (true == t_data.IsEmpty()) ||
-		 (true == t_separator.isEmpty()) )
+	if ( true == filePath.isEmpty() ||
+		 true == data.IsEmpty() ||
+		 true == separator.isEmpty() )
 	{
-		qDebug() << "Write(): Error - invalid arguments";
+		qDebug() << __func__ << "Error - invalid arguments";
 		return false;
 	}
 
-	QFileInfo fileInfo(t_filePath);
+	QFileInfo fileInfo(filePath);
 	if ( (false == fileInfo.isAbsolute()) ||
 		 ("csv" != fileInfo.completeSuffix()) )
 	{
-		qDebug() << "Write(): Error - wrong file path/name";
+		qDebug() << __func__ << "Error - wrong file path/name:" << filePath;
 		return false;
 	}
 
 	QFile csvFile;
-	csvFile.setFileName(t_filePath);
+	csvFile.setFileName(filePath);
 
 	bool fileOpened = csvFile.open(QIODevice::WriteOnly);
 	if ( false == fileOpened )
 	{
-		qDebug() << "Write(): Error - can't open file!";
+		qDebug() << __func__ << "Error - can't open file:" << filePath;
 		return false;
 	}
 
-	QTextStream streamToFile;
-	streamToFile.setDevice(&csvFile);
+	QTextStream stream;
+	stream.setDevice(&csvFile);
 
-	QStringList headlines = t_data.GetHeadlines();
+	QStringList headlines = data.GetHeadlines();
 	if ( false == headlines.isEmpty() )
 	{
 		for ( int i = 0; i < headlines.size(); ++i )
 		{
-			streamToFile << headlines.at(i) << t_separator;
+			stream << headlines.at(i) << separator;
 		}
 
-		streamToFile << endl;
+		stream << endl;
 	}
 
-	int rowsNum = t_data.GetRowsNum();
+	int rowsNum = data.GetRowsNum();
 	QStringList rowValues;
 	for (int i = 0; i < rowsNum; ++i)
 	{
-		bool rowOk = t_data.GetRowValues(i, &rowValues);
+		bool rowOk = data.GetRowValues(i, &rowValues);
 		if ( false == rowOk )
 		{
-			qDebug() << "Write(): Warning: invalid row number: " << i;
+			qDebug() << __func__ << "Warning: invalid row number:" << i;
 			rowValues.clear();
 		}
 
 		for ( int j = 0; j < rowValues.size(); ++j )
 		{
-			streamToFile << rowValues.at(j) << t_separator;
+			stream << rowValues.at(j) << separator;
 		}
 
-		streamToFile << endl;
+		stream << endl;
 		rowValues.clear();
 	}
 

@@ -11,9 +11,9 @@ class QTCSVSHARED_EXPORT QCSVWriter
 	// == METHODS ==
 public:
 	// Write data to .csv file
-	static bool Write(const QString &t_filePath,
-					  const QCSVData &t_data,
-					  const QString &t_separator = ",");
+	static bool Write(const QString &filePath,
+					  const QCSVData &data,
+					  const QString &separator = ",");
 };
 
 #endif // QCSVWRITER_H

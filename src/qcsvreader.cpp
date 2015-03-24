@@ -21,7 +21,7 @@ QList<QStringList> QCSVReader::ReadToList(const QString &filePath,
 	QFileInfo fileInfo(filePath);
 	if ( false == fileInfo.isAbsolute() || "csv" != fileInfo.completeSuffix() )
 	{
-		qDebug() << __func__ << "Error - wrong file path/name";
+		qDebug() << __func__ << "Error - wrong file path/name:" << filePath;
 		return QList<QStringList>();
 	}
 
@@ -31,7 +31,7 @@ QList<QStringList> QCSVReader::ReadToList(const QString &filePath,
 	bool fileOpened = csvFile.open(QIODevice::ReadOnly);
 	if ( false == fileOpened )
 	{
-		qDebug() << __func__ << "Error - can't open file" << filePath;
+		qDebug() << __func__ << "Error - can't open file:" << filePath;
 		return QList<QStringList>();
 	}
 
