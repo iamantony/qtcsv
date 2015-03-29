@@ -3,13 +3,29 @@
 #include <QTextStream>
 #include <QDebug>
 
-#include "qcsvreader.h"
+#include "reader.h"
+
+using namespace QtCSV;
 
 // Read .csv file to QList<QStringList>
 // @input:
-// - t_filePath - string with absolute path to .csv file
-// - t_separator - separator symbol
-QList<QStringList> QCSVReader::ReadToList(const QString &filePath,
+// - filePath - string with absolute path to .csv file
+// - separator - type of elements separator
+// @output:
+// - QList<QStringList> - list of elementsfrom csv-file as strings
+QList<QStringList> Reader::readToList(const QString &filePath,
+								const Separator &separator)
+{
+	return readToList(filePath, GetSeparator(separator));
+}
+
+// Read .csv file to QList<QStringList>
+// @input:
+// - filePath - string with absolute path to .csv file
+// - separator - separator symbol
+// @output:
+// - QList<QStringList> - list of elementsfrom csv-file as strings
+QList<QStringList> Reader::readToList(const QString &filePath,
 										  const QString &separator)
 {
 	if ( true == filePath.isEmpty() || true == separator.isEmpty() )
@@ -51,8 +67,8 @@ QList<QStringList> QCSVReader::ReadToList(const QString &filePath,
 }
 
 // TODO
-QCSVData QCSVReader::ReadToData(const QString &/*filePath*/,
+Data Reader::readToData(const QString &/*filePath*/,
 								const QString &/*separator*/)
 {
-	return QCSVData();
+	return Data();
 }
