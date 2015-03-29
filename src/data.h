@@ -29,7 +29,7 @@ namespace QtCSV
 		// Check if there are any data
 		bool isEmpty() const;
 		// Set headlines for the csv data
-		void setHeadlines(const QStringList &titles);
+		void setHeadlines(const QStringList &headlines);
 
 	private:
 		// Titles of the columns of csv file

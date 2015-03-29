@@ -6,10 +6,10 @@ using namespace QtCSV;
 
 // Set headlines for the csv data
 // @input:
-// - titles - list of titles for table in csv file
-void Data::setHeadlines(const QStringList &titles)
+// - headlines - list of headlines for table in csv file
+void Data::setHeadlines(const QStringList &headlines)
 {
-	m_headlines = titles;
+	m_headlines = headlines;
 }
 
 // Get list of headlines
