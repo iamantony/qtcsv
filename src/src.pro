@@ -14,7 +14,8 @@ DEFINES += QTCSV_LIBRARY
 SOURCES += \
     reader.cpp \
     writer.cpp \
-    variantdata.cpp
+    variantdata.cpp \
+    stringdata.cpp
 
 HEADERS += \
     qtcsv_global.h \
@@ -22,7 +23,8 @@ HEADERS += \
     reader.h \
 	writer.h \
     abstractdata.h \
-    variantdata.h
+    variantdata.h \
+    stringdata.h
 
 unix {
     target.path = /usr/lib

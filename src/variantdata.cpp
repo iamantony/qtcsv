@@ -106,7 +106,7 @@ QStringList VariantData::getRowValues(const int &row) const
 // - bool - True if there are some data (headlines or values), else False
 bool VariantData::isEmpty() const
 {
-	if ( (true == m_headlines.isEmpty()) && (true == m_values.isEmpty()) )
+	if ( true == m_headlines.isEmpty() && true == m_values.isEmpty() )
 	{
 		return true;
 	}
