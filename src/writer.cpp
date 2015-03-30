@@ -1,6 +1,4 @@
-//#include <QFileInfo>
 #include <QFile>
-#include <QTextStream>
 #include <QDebug>
 
 #include "abstractdata.h"
@@ -20,13 +18,13 @@ using namespace QtCSV;
 // @output:
 // - bool - True if data was written to the file, otherwise False
 bool Writer::write(const QString &filePath, const AbstractData &data,
-				   const Separator &separator)
+				   const Separator &separator, const WriteMode &mode)
 {
-	return write(filePath, data, GetSeparator(separator));
+	return write(filePath, data, GetSeparator(separator), mode);
 }
 
 bool Writer::write(const QString &filePath, const AbstractData &data,
-				   const QString &separator)
+				   const QString &separator, const WriteMode &mode)
 {
 	if ( true == filePath.isEmpty() ||
 		 true == data.isEmpty() ||
@@ -45,7 +43,7 @@ bool Writer::write(const QString &filePath, const AbstractData &data,
 	QFile csvFile;
 	csvFile.setFileName(filePath);
 
-	bool fileOpened = csvFile.open(QIODevice::WriteOnly | QIODevice::Text);
+	bool fileOpened = csvFile.open(GetMode(mode) | QIODevice::Text);
 	if ( false == fileOpened )
 	{
 		qDebug() << __func__ << "Error - can't open file:" << filePath;
@@ -73,13 +71,13 @@ bool Writer::write(const QString &filePath, const AbstractData &data,
 }
 
 bool Writer::write(const QString &filePath, const VariantData &data,
-				   const Separator &separator)
+				   const Separator &separator, const WriteMode &mode)
 {
-	return write(filePath, data, GetSeparator(separator));
+	return write(filePath, data, GetSeparator(separator), mode);
 }
 
 bool Writer::write(const QString &filePath, const VariantData &data,
-				   const QString &separator)
+				   const QString &separator, const WriteMode &mode)
 {
 	if ( true == filePath.isEmpty() ||
 		 true == data.isEmpty() ||
@@ -98,7 +96,7 @@ bool Writer::write(const QString &filePath, const VariantData &data,
 	QFile csvFile;
 	csvFile.setFileName(filePath);
 
-	bool fileOpened = csvFile.open(QIODevice::WriteOnly | QIODevice::Text);
+	bool fileOpened = csvFile.open(GetMode(mode) | QIODevice::Text);
 	if ( false == fileOpened )
 	{
 		qDebug() << __func__ << "Error - can't open file:" << filePath;
@@ -134,4 +132,23 @@ bool Writer::write(const QString &filePath, const VariantData &data,
 	csvFile.close();
 
 	return true;
+}
+
+// Get QIODevice mode
+// @input:
+// - mode - write mode
+// @output:
+// - QIODevice::OpenMode - corresponding QIODevice::OpenMode
+QIODevice::OpenMode Writer::GetMode(const Writer::WriteMode &mode)
+{
+	switch (mode)
+	{
+		case APPEND:
+			return QIODevice::Append;
+		case REWRITE:
+		default:
+			return QIODevice::WriteOnly;
+	}
+
+	return QIODevice::WriteOnly;
 }
