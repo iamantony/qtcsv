@@ -24,6 +24,8 @@ namespace QtCSV
 		bool addRow(const QList<QVariant> &values);
 		// Add new row with values as strings
 		virtual void addRowValues(const QStringList &values);
+		// Clear all data
+		virtual void clear();
 		// Get list of headlines
 		QStringList getHeadlines() const;
 		// Get number of rows

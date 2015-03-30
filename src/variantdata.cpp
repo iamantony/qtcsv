@@ -63,6 +63,13 @@ void VariantData::addRowValues(const QStringList &values)
 	m_values.append(rowValues);
 }
 
+// Clear all data
+void VariantData::clear()
+{
+	m_headlines.clear();
+	m_values.clear();
+}
+
 // Get list of headlines
 // @output:
 // - QStringList - list of headlines (could be empty)

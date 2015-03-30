@@ -17,6 +17,12 @@ void StringData::addRowValues(const QStringList &values)
 	m_values << values;
 }
 
+// Clear all data
+void StringData::clear()
+{
+	m_values.clear();
+}
+
 // Get number of rows
 // @output:
 // - int - current number of rows

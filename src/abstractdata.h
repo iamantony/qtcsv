@@ -17,6 +17,8 @@ namespace QtCSV
 		virtual void addEmptyRow() = 0;
 		// Add new row with values as strings
 		virtual void addRowValues(const QStringList &values) = 0;
+		// Clear all data
+		virtual void clear() = 0;
 		// Get number of rows
 		virtual int getNumberOfRows() const = 0;
 		// Get values (as strings) of specified row
