@@ -3,6 +3,8 @@
 #include <QTextStream>
 #include <QDebug>
 
+#include "abstractdata.h"
+#include "variantdata.h"
 #include "writer.h"
 
 using namespace QtCSV;
@@ -15,25 +17,14 @@ using namespace QtCSV;
 // - data - not empty data that should be written to .csv file
 // - separator - type of elements separator
 // @output:
-// - true - data was written to the file
-// - false - failed to write to the files
-bool Writer::write(const QString &filePath, const Data &data,
+// - bool - True if data was written to the file, otherwise False
+bool Writer::write(const QString &filePath, const AbstractData &data,
 				   const Separator &separator)
 {
 	return write(filePath, data, GetSeparator(separator));
 }
 
-// Write data to .csv file
-// @input:
-// - filePath - string with path to csv file. If it is relative path,
-// file will be created in project path. If file already exist, it will
-// be overwritten.
-// - data - not empty data that should be written to .csv file
-// - separator - separator symbol
-// @output:
-// - true - data was written to the file
-// - false - failed to write to the files
-bool Writer::write(const QString &filePath, const Data &data,
+bool Writer::write(const QString &filePath, const AbstractData &data,
 				   const QString &separator)
 {
 	if ( true == filePath.isEmpty() ||
@@ -44,8 +35,60 @@ bool Writer::write(const QString &filePath, const Data &data,
 		return false;
 	}
 
-	QFileInfo fileInfo(filePath);
-	if ( false == fileInfo.isAbsolute() || "csv" != fileInfo.completeSuffix() )
+	if ( false == checkFile(filePath) )
+	{
+		qDebug() << __func__ << "Error - wrong file path/name:" << filePath;
+		return false;
+	}
+
+	QFile csvFile;
+	csvFile.setFileName(filePath);
+
+	bool fileOpened = csvFile.open(QIODevice::WriteOnly | QIODevice::Text);
+	if ( false == fileOpened )
+	{
+		qDebug() << __func__ << "Error - can't open file:" << filePath;
+		return false;
+	}
+
+	QTextStream stream;
+	stream.setDevice(&csvFile);
+
+	int rowsNum = data.getNumberOfRows();
+	for (int i = 0; i < rowsNum; ++i)
+	{
+		QStringList rowValues= data.getRowValues(i);
+		for ( QString &val : rowValues )
+		{
+			stream << val << separator;
+		}
+
+		stream << endl;
+	}
+
+	csvFile.close();
+
+	return true;
+}
+
+bool Writer::write(const QString &filePath, const VariantData &data,
+				   const Separator &separator)
+{
+	return write(filePath, data, GetSeparator(separator));
+}
+
+bool Writer::write(const QString &filePath, const VariantData &data,
+				   const QString &separator)
+{
+	if ( true == filePath.isEmpty() ||
+		 true == data.isEmpty() ||
+		 true == separator.isEmpty() )
+	{
+		qDebug() << __func__ << "Error - invalid arguments";
+		return false;
+	}
+
+	if ( false == checkFile(filePath) )
 	{
 		qDebug() << __func__ << "Error - wrong file path/name:" << filePath;
 		return false;
@@ -75,27 +118,35 @@ bool Writer::write(const QString &filePath, const Data &data,
 		stream << endl;
 	}
 
-	int rowsNum = data.getRowNum();
-	QStringList rowValues;
+	int rowsNum = data.getNumberOfRows();
 	for (int i = 0; i < rowsNum; ++i)
 	{
-		bool rowOk = data.getRowValues(i, &rowValues);
-		if ( false == rowOk )
+		QStringList rowValues = data.getRowValues(i);
+		for ( QString &val : rowValues )
 		{
-			qDebug() << __func__ << "Warning: invalid row number:" << i;
-			rowValues.clear();
-		}
-
-		for ( int j = 0; j < rowValues.size(); ++j )
-		{
-			stream << rowValues.at(j) << separator;
+			stream << val << separator;
 		}
 
 		stream << endl;
-		rowValues.clear();
 	}
 
 	csvFile.close();
 
 	return true;
+}
+
+// Check if path to file is valid
+// @input:
+// - filePath - string with absolute path to csv-file
+// @output:
+// - bool - True if file is OK, else False
+bool Writer::checkFile(const QString &filePath)
+{
+	QFileInfo fileInfo(filePath);
+	if ( fileInfo.isAbsolute() && "csv" == fileInfo.completeSuffix() )
+	{
+		return true;
+	}
+
+	return false;
 }

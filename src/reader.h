@@ -5,7 +5,7 @@
 #include <QStringList>
 
 #include "separator.h"
-#include "data.h"
+#include "abstractdata.h"
 #include "qtcsv_global.h"
 
 namespace QtCSV
@@ -22,8 +22,9 @@ namespace QtCSV
 									   const QString &separator = ",");
 
 		// Read .csv file to QCSVData
-		static Data readToData(const QString &filePath,
-							 const QString &separator = ",");
+		static bool readToData(const QString &filePath,
+							   AbstractData &data,
+							   const QString &separator = ",");
 	};
 }
 

@@ -67,8 +67,8 @@ QList<QStringList> Reader::readToList(const QString &filePath,
 }
 
 // TODO
-Data Reader::readToData(const QString &/*filePath*/,
+bool Reader::readToData(const QString &/*filePath*/, AbstractData &/*data*/,
 								const QString &/*separator*/)
 {
-	return Data();
+	return false;
 }

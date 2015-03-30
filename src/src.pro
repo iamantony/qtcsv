@@ -1,32 +1,28 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2015-03-22T14:07:29
-#
-#-------------------------------------------------
-
-QT       -= gui
+QT -= gui
 
 TARGET = qtcsv
 TEMPLATE = lib
 
 QMAKE_CXXFLAGS += -std=c++0x
 CONFIG += warn_on
-QMAKE_CXXFLAGS_WARN_ON += -Werror -Wformat=2 -Wuninitialized -Winit-self -Wmissing-include-dirs -Wswitch-enum \
-		-Wundef -Wpointer-arith -Wdisabled-optimization -Wcast-align -Wcast-qual
+QMAKE_CXXFLAGS_WARN_ON += -Werror -Wformat=2 -Wuninitialized -Winit-self \
+		-Wmissing-include-dirs -Wswitch-enum -Wundef -Wpointer-arith \
+		-Wdisabled-optimization -Wcast-align -Wcast-qual
 
 DEFINES += QTCSV_LIBRARY
 
 SOURCES += \
-    data.cpp \
     reader.cpp \
-    writer.cpp
+    writer.cpp \
+    variantdata.cpp
 
 HEADERS += \
     qtcsv_global.h \
 	separator.h \
-	data.h \
     reader.h \
-	writer.h
+	writer.h \
+    abstractdata.h \
+    variantdata.h
 
 unix {
     target.path = /usr/lib
