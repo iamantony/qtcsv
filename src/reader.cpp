@@ -1,8 +1,8 @@
-#include <QFileInfo>
 #include <QFile>
 #include <QTextStream>
 #include <QDebug>
 
+#include "filechecker.h"
 #include "reader.h"
 
 using namespace QtCSV;
@@ -34,8 +34,7 @@ QList<QStringList> Reader::readToList(const QString &filePath,
 		return QList<QStringList>();
 	}
 
-	QFileInfo fileInfo(filePath);
-	if ( false == fileInfo.isAbsolute() || "csv" != fileInfo.completeSuffix() )
+	if ( false == CheckFile(filePath) )
 	{
 		qDebug() << __func__ << "Error - wrong file path/name:" << filePath;
 		return QList<QStringList>();
@@ -66,9 +65,48 @@ QList<QStringList> Reader::readToList(const QString &filePath,
 	return data;
 }
 
-// TODO
-bool Reader::readToData(const QString &/*filePath*/, AbstractData &/*data*/,
-								const QString &/*separator*/)
+// Read .csv file to AbstractDatas
+bool Reader::readToData(const QString &filePath, AbstractData &data,
+						const Separator &separator)
 {
-	return false;
+	return readToData(filePath, data, GetSeparator(separator));
+}
+
+bool Reader::readToData(const QString &filePath, AbstractData &data,
+						const QString &separator)
+{
+	if ( true == filePath.isEmpty() || true == separator.isEmpty() )
+	{
+		qDebug() << __func__ << "Error - invalid arguments";
+		return false;
+	}
+
+	if ( false == CheckFile(filePath) )
+	{
+		qDebug() << __func__ << "Error - wrong file path/name:" << filePath;
+		return false;
+	}
+
+	QFile csvFile;
+	csvFile.setFileName(filePath);
+
+	bool fileOpened = csvFile.open(QIODevice::ReadOnly | QIODevice::Text);
+	if ( false == fileOpened )
+	{
+		qDebug() << __func__ << "Error - can't open file:" << filePath;
+		return false;
+	}
+
+	QTextStream stream;
+	stream.setDevice(&csvFile);
+
+	while ( false == stream.atEnd() )
+	{
+		QString line = stream.readLine();
+		data.addRowValues( line.split(separator) );
+	}
+
+	csvFile.close();
+
+	return true;
 }

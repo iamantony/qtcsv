@@ -1,10 +1,11 @@
-#include <QFileInfo>
+//#include <QFileInfo>
 #include <QFile>
 #include <QTextStream>
 #include <QDebug>
 
 #include "abstractdata.h"
 #include "variantdata.h"
+#include "filechecker.h"
 #include "writer.h"
 
 using namespace QtCSV;
@@ -35,7 +36,7 @@ bool Writer::write(const QString &filePath, const AbstractData &data,
 		return false;
 	}
 
-	if ( false == checkFile(filePath) )
+	if ( false == CheckFile(filePath) )
 	{
 		qDebug() << __func__ << "Error - wrong file path/name:" << filePath;
 		return false;
@@ -88,7 +89,7 @@ bool Writer::write(const QString &filePath, const VariantData &data,
 		return false;
 	}
 
-	if ( false == checkFile(filePath) )
+	if ( false == CheckFile(filePath) )
 	{
 		qDebug() << __func__ << "Error - wrong file path/name:" << filePath;
 		return false;
@@ -133,20 +134,4 @@ bool Writer::write(const QString &filePath, const VariantData &data,
 	csvFile.close();
 
 	return true;
-}
-
-// Check if path to file is valid
-// @input:
-// - filePath - string with absolute path to csv-file
-// @output:
-// - bool - True if file is OK, else False
-bool Writer::checkFile(const QString &filePath)
-{
-	QFileInfo fileInfo(filePath);
-	if ( fileInfo.isAbsolute() && "csv" == fileInfo.completeSuffix() )
-	{
-		return true;
-	}
-
-	return false;
 }

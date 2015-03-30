@@ -24,7 +24,8 @@ HEADERS += \
 	writer.h \
     abstractdata.h \
     variantdata.h \
-    stringdata.h
+    stringdata.h \
+    filechecker.h
 
 unix {
     target.path = /usr/lib

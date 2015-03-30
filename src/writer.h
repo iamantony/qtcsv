@@ -30,10 +30,6 @@ namespace QtCSV
 		static bool write(const QString &filePath,
 						  const VariantData &data,
 						  const QString &separator = ",");
-
-	private:
-		// Check if path to file is valid
-		static bool checkFile(const QString &filePath);
 	};
 }
 

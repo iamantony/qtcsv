@@ -17,11 +17,14 @@ namespace QtCSV
 		static QList<QStringList> readToList(const QString &filePath,
 								const Separator &separator = Separator::COMMA);
 
-		// Read .csv file to QList<QStringList>
 		static QList<QStringList> readToList(const QString &filePath,
 									   const QString &separator = ",");
 
-		// Read .csv file to QCSVData
+		// Read .csv file to AbstractData
+		static bool readToData(const QString &filePath,
+							   AbstractData &data,
+							   const Separator &separator = Separator::COMMA);
+
 		static bool readToData(const QString &filePath,
 							   AbstractData &data,
 							   const QString &separator = ",");
