@@ -14,9 +14,9 @@ namespace QtCSV
 	class QTCSVSHARED_EXPORT Writer
 	{
 	public:
-		enum WriteMode
+		enum class WriteMode
 		{
-			REWRITE = 0,
+			REWRITE,
 			APPEND
 		};
 
@@ -24,12 +24,9 @@ namespace QtCSV
 		static bool write(const QString &filePath,
 						  const AbstractData &data,
 						  const QString &separator = ",",
-						  const WriteMode &mode = REWRITE);
-
-		static bool write(const QString &filePath,
-						  const VariantData &data,
-						  const QString &separator = ",",
-						  const WriteMode &mode = REWRITE);
+						  const QStringList &header = QStringList(),
+						  const QStringList &footer = QStringList(),
+						  const WriteMode &mode = WriteMode::REWRITE);
 
 	private:
 		// Get QIODevice mode
