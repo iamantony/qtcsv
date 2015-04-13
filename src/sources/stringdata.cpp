@@ -5,7 +5,7 @@ using namespace QtCSV;
 // Add empty row
 void StringData::addEmptyRow()
 {
-	m_values << QStringList();
+    m_values << QStringList();
 }
 
 // Add new row with values as strings
@@ -14,13 +14,13 @@ void StringData::addEmptyRow()
 // as empty line
 void StringData::addRowValues(const QStringList &values)
 {
-	m_values << values;
+    m_values << values;
 }
 
 // Clear all data
 void StringData::clear()
 {
-	m_values.clear();
+    m_values.clear();
 }
 
 // Get number of rows
@@ -28,7 +28,7 @@ void StringData::clear()
 // - int - current number of rows
 int StringData::getNumberOfRows() const
 {
-	return m_values.size();
+    return m_values.size();
 }
 
 // Get values (as strings) of specified row
@@ -39,12 +39,12 @@ int StringData::getNumberOfRows() const
 // return empty QStringList.
 QStringList StringData::getRowValues(const int &row) const
 {
-	if ( row < 0 || getNumberOfRows() <= row )
-	{
-		return QStringList();
-	}
+    if ( row < 0 || getNumberOfRows() <= row )
+    {
+        return QStringList();
+    }
 
-	return m_values.at(row);
+    return m_values.at(row);
 }
 
 // Check if there are any data
@@ -52,5 +52,5 @@ QStringList StringData::getRowValues(const int &row) const
 // - bool - True if there are some data, else False
 bool StringData::isEmpty() const
 {
-	return m_values.isEmpty();
+    return m_values.isEmpty();
 }

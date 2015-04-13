@@ -9,30 +9,30 @@
 
 namespace QtCSV
 {
-	class AbstractData;
-	class VariantData;
+    class AbstractData;
+    class VariantData;
 
-	class QTCSVSHARED_EXPORT Writer
-	{
-	public:
-		enum class WriteMode
-		{
-			REWRITE,
-			APPEND
-		};
+    class QTCSVSHARED_EXPORT Writer
+    {
+    public:
+        enum class WriteMode
+        {
+            REWRITE,
+            APPEND
+        };
 
-		// Write data to .csv file
-		static bool write(const QString &filePath,
-						  const AbstractData &data,
-						  const QString &separator = ",",
-						  const QStringList &header = QStringList(),
-						  const QStringList &footer = QStringList(),
-						  const WriteMode &mode = WriteMode::REWRITE);
+        // Write data to .csv file
+        static bool write(const QString &filePath,
+                          const AbstractData &data,
+                          const QString &separator = ",",
+                          const QStringList &header = QStringList(),
+                          const QStringList &footer = QStringList(),
+                          const WriteMode &mode = WriteMode::REWRITE);
 
-	private:
-		// Get QIODevice mode
-		static QIODevice::OpenMode GetMode(const WriteMode &mode);
-	};
+    private:
+        // Get QIODevice mode
+        static QIODevice::OpenMode GetMode(const WriteMode &mode);
+    };
 }
 
 #endif // QCSVWRITER_H

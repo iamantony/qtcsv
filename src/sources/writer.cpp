@@ -21,70 +21,70 @@ using namespace QtCSV;
 // @output:
 // - bool - True if data was written to the file, otherwise False
 bool Writer::write(const QString &filePath, const AbstractData &data,
-				   const QString &separator, const QStringList &header,
-				   const QStringList &footer, const WriteMode &mode)
+                   const QString &separator, const QStringList &header,
+                   const QStringList &footer, const WriteMode &mode)
 {
-	if ( true == filePath.isEmpty() ||
-		 true == data.isEmpty() )
-	{
-		qDebug() << __func__ << "Error - invalid arguments";
-		return false;
-	}
+    if ( true == filePath.isEmpty() ||
+         true == data.isEmpty() )
+    {
+        qDebug() << __func__ << "Error - invalid arguments";
+        return false;
+    }
 
-	if ( false == CheckFile(filePath) )
-	{
-		qDebug() << __func__ << "Error - wrong file path/name:" << filePath;
-		return false;
-	}
+    if ( false == CheckFile(filePath) )
+    {
+        qDebug() << __func__ << "Error - wrong file path/name:" << filePath;
+        return false;
+    }
 
-	QFile csvFile;
-	csvFile.setFileName(filePath);
+    QFile csvFile;
+    csvFile.setFileName(filePath);
 
-	bool fileOpened = csvFile.open(GetMode(mode) | QIODevice::Text);
-	if ( false == fileOpened )
-	{
-		qDebug() << __func__ << "Error - can't open file:" << filePath;
-		return false;
-	}
+    bool fileOpened = csvFile.open(GetMode(mode) | QIODevice::Text);
+    if ( false == fileOpened )
+    {
+        qDebug() << __func__ << "Error - can't open file:" << filePath;
+        return false;
+    }
 
-	QTextStream stream;
-	stream.setDevice(&csvFile);
+    QTextStream stream;
+    stream.setDevice(&csvFile);
 
-	if ( false == header.isEmpty() )
-	{
-		for ( const QString &str : header )
-		{
-			stream << str << separator;
-		}
+    if ( false == header.isEmpty() )
+    {
+        for ( const QString &str : header )
+        {
+            stream << str << separator;
+        }
 
-		stream << endl;
-	}
+        stream << endl;
+    }
 
-	int rowsNum = data.getNumberOfRows();
-	for (int i = 0; i < rowsNum; ++i)
-	{
-		QStringList rowValues = data.getRowValues(i);
-		for ( QString &val : rowValues )
-		{
-			stream << val << separator;
-		}
+    int rowsNum = data.getNumberOfRows();
+    for (int i = 0; i < rowsNum; ++i)
+    {
+        QStringList rowValues = data.getRowValues(i);
+        for ( QString &val : rowValues )
+        {
+            stream << val << separator;
+        }
 
-		stream << endl;
-	}
+        stream << endl;
+    }
 
-	if ( false == footer.isEmpty() )
-	{
-		for ( const QString &str : footer )
-		{
-			stream << str << separator;
-		}
+    if ( false == footer.isEmpty() )
+    {
+        for ( const QString &str : footer )
+        {
+            stream << str << separator;
+        }
 
-		stream << endl;
-	}
+        stream << endl;
+    }
 
-	csvFile.close();
+    csvFile.close();
 
-	return true;
+    return true;
 }
 
 // Get QIODevice mode
@@ -94,14 +94,14 @@ bool Writer::write(const QString &filePath, const AbstractData &data,
 // - QIODevice::OpenMode - corresponding QIODevice::OpenMode
 QIODevice::OpenMode Writer::GetMode(const Writer::WriteMode &mode)
 {
-	switch (mode)
-	{
-		case WriteMode::APPEND:
-			return QIODevice::Append;
-		case WriteMode::REWRITE:
-		default:
-			return QIODevice::WriteOnly;
-	}
+    switch (mode)
+    {
+        case WriteMode::APPEND:
+            return QIODevice::Append;
+        case WriteMode::REWRITE:
+        default:
+            return QIODevice::WriteOnly;
+    }
 
-	return QIODevice::WriteOnly;
+    return QIODevice::WriteOnly;
 }

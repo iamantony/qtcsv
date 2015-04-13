@@ -5,7 +5,7 @@ using namespace QtCSV;
 // Add empty row
 void VariantData::addEmptyRow()
 {
-	m_values.append(QList<QVariant>());
+    m_values.append(QList<QVariant>());
 }
 
 // Add new row with one value
@@ -17,13 +17,13 @@ void VariantData::addEmptyRow()
 // - bool - True if new row with value was added, else False
 bool VariantData::addRow(const QVariant& value)
 {
-	if ( value.canConvert<QString>() )
-	{
-		m_values.append( QList<QVariant>({value}) );
-		return true;
-	}
+    if ( value.canConvert<QString>() )
+    {
+        m_values.append( QList<QVariant>({value}) );
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 // Add new row with list of values
@@ -35,17 +35,17 @@ bool VariantData::addRow(const QVariant& value)
 // - bool - True if new row with values was added, else False
 bool VariantData::addRow(const QList<QVariant> &values)
 {
-	for ( int i = 0; i < values.size(); ++i )
-	{
-		if ( false == values.at(i).canConvert<QString>() )
-		{
-			return false;
-		}
-	}
+    for ( int i = 0; i < values.size(); ++i )
+    {
+        if ( false == values.at(i).canConvert<QString>() )
+        {
+            return false;
+        }
+    }
 
-	m_values.append(values);
+    m_values.append(values);
 
-	return true;
+    return true;
 }
 
 // Add new row with values as strings
@@ -54,19 +54,19 @@ bool VariantData::addRow(const QList<QVariant> &values)
 // as empty line
 void VariantData::addRowValues(const QStringList &values)
 {
-	QList<QVariant> rowValues;
-	for ( const QString &val : values )
-	{
-		rowValues.append(QVariant(val));
-	}
+    QList<QVariant> rowValues;
+    for ( const QString &val : values )
+    {
+        rowValues.append(QVariant(val));
+    }
 
-	m_values.append(rowValues);
+    m_values.append(rowValues);
 }
 
 // Clear all data
 void VariantData::clear()
 {
-	m_values.clear();
+    m_values.clear();
 }
 
 // Get number of rows
@@ -74,7 +74,7 @@ void VariantData::clear()
 // - int - current number of rows
 int VariantData::getNumberOfRows() const
 {
-	return m_values.size();
+    return m_values.size();
 }
 
 // Get values (as strings) of specified row
@@ -85,18 +85,18 @@ int VariantData::getNumberOfRows() const
 // return empty QStringList.
 QStringList VariantData::getRowValues(const int &row) const
 {
-	if ( row < 0 || getNumberOfRows() <= row )
-	{
-		return QStringList();
-	}
+    if ( row < 0 || getNumberOfRows() <= row )
+    {
+        return QStringList();
+    }
 
-	QStringList values;
-	for ( int i = 0; i < m_values.at(row).size(); ++i )
-	{
-		values.append( m_values.at(row).at(i).toString() );
-	}
+    QStringList values;
+    for ( int i = 0; i < m_values.at(row).size(); ++i )
+    {
+        values.append( m_values.at(row).at(i).toString() );
+    }
 
-	return values;
+    return values;
 }
 
 // Check if there are any data
@@ -105,5 +105,5 @@ QStringList VariantData::getRowValues(const int &row) const
 bool VariantData::isEmpty() const
 {
 
-	return m_values.isEmpty();
+    return m_values.isEmpty();
 }
