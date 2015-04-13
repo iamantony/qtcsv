@@ -10,18 +10,6 @@ using namespace QtCSV;
 // Read .csv file to QList<QStringList>
 // @input:
 // - filePath - string with absolute path to .csv file
-// - separator - type of elements separator
-// @output:
-// - QList<QStringList> - list of elementsfrom csv-file as strings
-QList<QStringList> Reader::readToList(const QString &filePath,
-								const Separator &separator)
-{
-	return readToList(filePath, GetSeparator(separator));
-}
-
-// Read .csv file to QList<QStringList>
-// @input:
-// - filePath - string with absolute path to .csv file
 // - separator - separator symbol
 // @output:
 // - QList<QStringList> - list of elementsfrom csv-file as strings
@@ -66,12 +54,6 @@ QList<QStringList> Reader::readToList(const QString &filePath,
 }
 
 // Read .csv file to AbstractDatas
-bool Reader::readToData(const QString &filePath, AbstractData &data,
-						const Separator &separator)
-{
-	return readToData(filePath, data, GetSeparator(separator));
-}
-
 bool Reader::readToData(const QString &filePath, AbstractData &data,
 						const QString &separator)
 {

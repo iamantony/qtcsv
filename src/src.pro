@@ -6,8 +6,8 @@ TEMPLATE = lib
 QMAKE_CXXFLAGS += -std=c++0x
 CONFIG += warn_on
 QMAKE_CXXFLAGS_WARN_ON += -Werror -Wformat=2 -Wuninitialized -Winit-self \
-		-Wmissing-include-dirs -Wswitch-enum -Wundef -Wpointer-arith \
-		-Wdisabled-optimization -Wcast-align -Wcast-qual
+        -Wmissing-include-dirs -Wswitch-enum -Wundef -Wpointer-arith \
+        -Wdisabled-optimization -Wcast-align -Wcast-qual
 
 DEFINES += QTCSV_LIBRARY
 
@@ -19,9 +19,8 @@ SOURCES += \
 
 HEADERS += \
     qtcsv_global.h \
-	separator.h \
     reader.h \
-	writer.h \
+    writer.h \
     abstractdata.h \
     variantdata.h \
     stringdata.h \

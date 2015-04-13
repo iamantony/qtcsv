@@ -18,12 +18,6 @@ using namespace QtCSV;
 // @output:
 // - bool - True if data was written to the file, otherwise False
 bool Writer::write(const QString &filePath, const AbstractData &data,
-				   const Separator &separator, const WriteMode &mode)
-{
-	return write(filePath, data, GetSeparator(separator), mode);
-}
-
-bool Writer::write(const QString &filePath, const AbstractData &data,
 				   const QString &separator, const WriteMode &mode)
 {
 	if ( true == filePath.isEmpty() ||
@@ -68,12 +62,6 @@ bool Writer::write(const QString &filePath, const AbstractData &data,
 	csvFile.close();
 
 	return true;
-}
-
-bool Writer::write(const QString &filePath, const VariantData &data,
-				   const Separator &separator, const WriteMode &mode)
-{
-	return write(filePath, data, GetSeparator(separator), mode);
 }
 
 bool Writer::write(const QString &filePath, const VariantData &data,

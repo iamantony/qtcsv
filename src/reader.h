@@ -4,7 +4,6 @@
 #include <QList>
 #include <QStringList>
 
-#include "separator.h"
 #include "abstractdata.h"
 #include "qtcsv_global.h"
 
@@ -15,16 +14,9 @@ namespace QtCSV
 	public:
 		// Read .csv file to QList<QStringList>
 		static QList<QStringList> readToList(const QString &filePath,
-								const Separator &separator = Separator::COMMA);
-
-		static QList<QStringList> readToList(const QString &filePath,
 									   const QString &separator = ",");
 
 		// Read .csv file to AbstractData
-		static bool readToData(const QString &filePath,
-							   AbstractData &data,
-							   const Separator &separator = Separator::COMMA);
-
 		static bool readToData(const QString &filePath,
 							   AbstractData &data,
 							   const QString &separator = ",");

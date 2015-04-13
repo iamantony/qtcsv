@@ -4,7 +4,6 @@
 #include <QString>
 #include <QTextStream>
 
-#include "separator.h"
 #include "qtcsv_global.h"
 
 namespace QtCSV
@@ -24,17 +23,7 @@ namespace QtCSV
 		// Write data to .csv file
 		static bool write(const QString &filePath,
 						  const AbstractData &data,
-						  const Separator &separator = Separator::COMMA,
-						  const WriteMode &mode = REWRITE);
-
-		static bool write(const QString &filePath,
-						  const AbstractData &data,
 						  const QString &separator = ",",
-						  const WriteMode &mode = REWRITE);
-
-		static bool write(const QString &filePath,
-						  const VariantData &data,
-						  const Separator &separator = Separator::COMMA,
 						  const WriteMode &mode = REWRITE);
 
 		static bool write(const QString &filePath,
