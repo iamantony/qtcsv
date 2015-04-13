@@ -66,16 +66,7 @@ void VariantData::addRowValues(const QStringList &values)
 // Clear all data
 void VariantData::clear()
 {
-	m_headlines.clear();
 	m_values.clear();
-}
-
-// Get list of headlines
-// @output:
-// - QStringList - list of headlines (could be empty)
-QStringList VariantData::getHeadlines() const
-{
-	return m_headlines;
 }
 
 // Get number of rows
@@ -113,18 +104,6 @@ QStringList VariantData::getRowValues(const int &row) const
 // - bool - True if there are some data (headlines or values), else False
 bool VariantData::isEmpty() const
 {
-	if ( true == m_headlines.isEmpty() && true == m_values.isEmpty() )
-	{
-		return true;
-	}
 
-	return false;
-}
-
-// Set headlines for the data
-// @input:
-// - headlines - list of headlines
-void VariantData::setHeadlines(const QStringList &headlines)
-{
-	m_headlines = headlines;
+	return m_values.isEmpty();
 }

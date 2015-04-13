@@ -26,20 +26,14 @@ namespace QtCSV
 		virtual void addRowValues(const QStringList &values);
 		// Clear all data
 		virtual void clear();
-		// Get list of headlines
-		QStringList getHeadlines() const;
 		// Get number of rows
 		virtual int getNumberOfRows() const;
 		// Get values (as strings) of specified row
 		virtual QStringList getRowValues(const int &row) const;
 		// Check if there are any data
 		virtual bool isEmpty() const;
-		// Set headlines for the data
-		void setHeadlines(const QStringList &headlines);
 
 	private:
-		// Titles of the columns of csv file
-		QStringList m_headlines;
 		// Data that could be written to csv file
 		QList<QList<QVariant>> m_values;
 	};
