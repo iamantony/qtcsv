@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QTextStream>
+#include <QStringList>
 
 #include "qtcsv_global.h"
 
