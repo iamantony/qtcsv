@@ -11,11 +11,11 @@ using namespace QtCSV;
 // Read .csv file to QList<QStringList>
 // @input:
 // - filePath - string with absolute path to .csv file
-// - separator - separator symbol
+// - separator - string or character separating columns
 // @output:
 // - QList<QStringList> - list of elementsfrom csv-file as strings
 QList<QStringList> Reader::readToList(const QString &filePath,
-										  const QString &separator)
+									  const QString &separator)
 {
 	if ( true == filePath.isEmpty() || true == separator.isEmpty() )
 	{
@@ -55,6 +55,12 @@ QList<QStringList> Reader::readToList(const QString &filePath,
 }
 
 // Read .csv file to AbstractDatas
+// @input:
+// - filePath - string with absolute path to .csv file
+// - data - AbstractData object where all file content will be saved
+// - separator - string or character separating columns
+// @output:
+// - bool - True if file was successfully read, otherwise False
 bool Reader::readToData(const QString &filePath, AbstractData &data,
 						const QString &separator)
 {
