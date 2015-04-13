@@ -1,10 +1,11 @@
+#include "include/writer.h"
+
 #include <QFile>
 #include <QDebug>
 
-#include "abstractdata.h"
-#include "variantdata.h"
+#include "include/abstractdata.h"
+#include "include/variantdata.h"
 #include "filechecker.h"
-#include "writer.h"
 
 using namespace QtCSV;
 

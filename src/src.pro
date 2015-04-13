@@ -10,21 +10,22 @@ QMAKE_CXXFLAGS_WARN_ON += -Werror -Wformat=2 -Wuninitialized -Winit-self \
         -Wdisabled-optimization -Wcast-align -Wcast-qual
 
 DEFINES += QTCSV_LIBRARY
+INCLUDEPATH += ./include
 
 SOURCES += \
-    reader.cpp \
-    writer.cpp \
-    variantdata.cpp \
-    stringdata.cpp
+    sources/writer.cpp \
+    sources/variantdata.cpp \
+    sources/stringdata.cpp \
+    sources/reader.cpp
 
 HEADERS += \
-    qtcsv_global.h \
-    reader.h \
-    writer.h \
-    abstractdata.h \
-    variantdata.h \
-    stringdata.h \
-    filechecker.h
+    include/qtcsv_global.h \
+    include/writer.h \
+    include/variantdata.h \
+    include/stringdata.h \
+    include/reader.h \
+    include/abstractdata.h \
+    sources/filechecker.h
 
 unix {
     target.path = /usr/lib

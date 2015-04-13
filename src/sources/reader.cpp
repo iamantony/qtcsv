@@ -1,9 +1,10 @@
+#include "include/reader.h"
+
 #include <QFile>
 #include <QTextStream>
 #include <QDebug>
 
 #include "filechecker.h"
-#include "reader.h"
 
 using namespace QtCSV;
 
