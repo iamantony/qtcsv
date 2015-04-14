@@ -9,10 +9,12 @@ script:
   - qmake -qt=qt4 -v
   - qmake -qt=qt4
   - make
+# - make -k check
   - make clean
   - qmake -qt=qt5 -v
   - qmake -qt=qt5
   - make
+# - make -k check
 
 notifications:
   email: false
