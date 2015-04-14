@@ -9,8 +9,9 @@ QT       += testlib
 QT       -= gui
 
 TARGET = tst_tests
-CONFIG   += console testcase c++11
+CONFIG   += console testcase
 CONFIG   -= app_bundle
+QMAKE_CXXFLAGS += -std=c++0x
 
 TEMPLATE = app
 
