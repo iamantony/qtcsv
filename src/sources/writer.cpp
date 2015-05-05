@@ -1,6 +1,7 @@
 #include "include/writer.h"
 
 #include <QFile>
+#include <QTextStream>
 #include <QDebug>
 
 #include "include/abstractdata.h"
@@ -13,16 +14,19 @@ using namespace QtCSV;
 // - filePath - string with absolute path to csv file
 // - data - not empty data that should be written to .csv file
 // - separator - string or character separating columns
+// - mode - write mode of the file: rewrite file or append data to the end
 // - header - strings that will be written at the beginning of the file in
 // one line. separator will be used as delimiter character.
 // - footer - strings that will be written at the end of the file in
 // one line. separator will be used as delimiter character.
-// - mode - write mode of the file: rewrite file or append data to the end
 // @output:
 // - bool - True if data was written to the file, otherwise False
-bool Writer::write(const QString &filePath, const AbstractData &data,
-                   const QString &separator, const QStringList &header,
-                   const QStringList &footer, const WriteMode &mode)
+bool Writer::write(const QString &filePath,
+                   const AbstractData &data,
+                   const QString &separator,
+                   const WriteMode &mode,
+                   const QStringList &header,
+                   const QStringList &footer)
 {
     if ( true == filePath.isEmpty() ||
          true == data.isEmpty() )
@@ -52,34 +56,19 @@ bool Writer::write(const QString &filePath, const AbstractData &data,
 
     if ( false == header.isEmpty() )
     {
-        for ( const QString &str : header )
-        {
-            stream << str << separator;
-        }
-
-        stream << endl;
+        stream << header.join(separator) << endl;
     }
 
     int rowsNum = data.getNumberOfRows();
     for (int i = 0; i < rowsNum; ++i)
     {
         QStringList rowValues = data.getRowValues(i);
-        for ( QString &val : rowValues )
-        {
-            stream << val << separator;
-        }
-
-        stream << endl;
+        stream << rowValues.join(separator) << endl;
     }
 
     if ( false == footer.isEmpty() )
     {
-        for ( const QString &str : footer )
-        {
-            stream << str << separator;
-        }
-
-        stream << endl;
+        stream << footer.join(separator) << endl;
     }
 
     csvFile.close();
@@ -92,7 +81,7 @@ bool Writer::write(const QString &filePath, const AbstractData &data,
 // - mode - write mode
 // @output:
 // - QIODevice::OpenMode - corresponding QIODevice::OpenMode
-QIODevice::OpenMode Writer::GetMode(const Writer::WriteMode &mode)
+QIODevice::OpenMode Writer::GetMode(const WriteMode &mode)
 {
     switch (mode)
     {

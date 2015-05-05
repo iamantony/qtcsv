@@ -7,6 +7,9 @@
 
 namespace QtCSV
 {
+    // Pure abstract class that provide interface for concrete classes,
+    // that can hold data (information) and be used with Reader or Writer
+    // classes
     class QTCSVSHARED_EXPORT AbstractData
     {
     public:

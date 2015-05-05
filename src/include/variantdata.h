@@ -17,25 +17,25 @@ namespace QtCSV
         virtual ~VariantData() {}
 
         // Add empty row
-        virtual void addEmptyRow();
+        virtual void addEmptyRow() override;
         // Add new row with one value
         bool addRow(const QVariant& value);
         // Add new row with list of values
         bool addRow(const QList<QVariant> &values);
         // Add new row with values as strings
-        virtual void addRowValues(const QStringList &values);
+        virtual void addRowValues(const QStringList &values) override;
         // Clear all data
-        virtual void clear();
+        virtual void clear() override;
         // Get number of rows
-        virtual int getNumberOfRows() const;
+        virtual int getNumberOfRows() const override;
         // Get values (as strings) of specified row
-        virtual QStringList getRowValues(const int &row) const;
+        virtual QStringList getRowValues(const int &row) const override;
         // Check if there are any data
-        virtual bool isEmpty() const;
+        virtual bool isEmpty() const override;
 
     private:
-        // Data that could be written to csv file
-        QList<QList<QVariant>> m_values;
+        // Container for class data
+        QList< QList<QVariant> > m_values;
     };
 }
 

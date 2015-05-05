@@ -4,11 +4,12 @@
 #include <QList>
 #include <QStringList>
 
-#include "abstractdata.h"
 #include "qtcsv_global.h"
 
 namespace QtCSV
 {
+    class AbstractData;
+
     class QTCSVSHARED_EXPORT Reader
     {
     public:

@@ -4,6 +4,7 @@
 #include <QTextStream>
 #include <QDebug>
 
+#include "abstractdata.h"
 #include "filechecker.h"
 
 using namespace QtCSV;
@@ -61,7 +62,8 @@ QList<QStringList> Reader::readToList(const QString &filePath,
 // - separator - string or character separating columns
 // @output:
 // - bool - True if file was successfully read, otherwise False
-bool Reader::readToData(const QString &filePath, AbstractData &data,
+bool Reader::readToData(const QString &filePath,
+                        AbstractData &data,
                         const QString &separator)
 {
     if ( true == filePath.isEmpty() || true == separator.isEmpty() )

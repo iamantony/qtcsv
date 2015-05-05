@@ -2,7 +2,6 @@
 #define QCSVWRITER_H
 
 #include <QString>
-#include <QTextStream>
 #include <QStringList>
 
 #include "qtcsv_global.h"
@@ -10,14 +9,13 @@
 namespace QtCSV
 {
     class AbstractData;
-    class VariantData;
 
     class QTCSVSHARED_EXPORT Writer
     {
     public:
         enum class WriteMode
         {
-            REWRITE,
+            REWRITE = 0,
             APPEND
         };
 
@@ -25,9 +23,9 @@ namespace QtCSV
         static bool write(const QString &filePath,
                           const AbstractData &data,
                           const QString &separator = ",",
+                          const WriteMode &mode = WriteMode::REWRITE,
                           const QStringList &header = QStringList(),
-                          const QStringList &footer = QStringList(),
-                          const WriteMode &mode = WriteMode::REWRITE);
+                          const QStringList &footer = QStringList());
 
     private:
         // Get QIODevice mode
