@@ -1,6 +1,7 @@
 #include <QtTest>
 
 #include "teststringdata.h"
+#include "testvariantdata.h"
 
 int main(int argc, char** argv)
 {
@@ -11,6 +12,7 @@ int main(int argc, char** argv)
     };
 
     ASSERT_TEST(new TestStringData());
+    ASSERT_TEST(new TestVariantData());
 
     return status;
 }

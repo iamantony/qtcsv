@@ -1,14 +1,15 @@
-#ifndef TESTSTRINGDATA_H
-#define TESTSTRINGDATA_H
+#ifndef TESTVARIANTDATA_H
+#define TESTVARIANTDATA_H
 
+#include <QObject>
 #include <QtTest>
 
-class TestStringData : public QObject
+class TestVariantData : public QObject
 {
     Q_OBJECT
 
 public:
-    TestStringData();
+    TestVariantData();
 
 private Q_SLOTS:
     void testCreation();
@@ -19,4 +20,4 @@ private Q_SLOTS:
     void testClearNotEmptyData();
 };
 
-#endif // TESTSTRINGDATA_H
+#endif // TESTVARIANTDATA_H

@@ -20,8 +20,10 @@ LIBS += -L../src/ -lqtcsv
 
 SOURCES += \
     tst_testmain.cpp \
-    teststringdata.cpp
+    teststringdata.cpp \
+    testvariantdata.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 HEADERS += \
-    teststringdata.h
+    teststringdata.h \
+    testvariantdata.h
