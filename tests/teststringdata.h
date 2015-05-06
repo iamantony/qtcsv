@@ -14,6 +14,10 @@ public:
 private Q_SLOTS:
     void testCreation();
     void testAddEmptyRow();
+    void testAddOneRow();
+    void testAddRows();
+    void testClearEmptyData();
+    void testClearNotEmptyData();
 };
 
 #endif // TESTSTRINGDATA_H
