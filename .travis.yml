@@ -38,6 +38,8 @@ before_script:
 script:
   - qmake -r
   - make
+  - cp ./src/libqtcsv.so.1 ./tests
+  - make check
 
 notifications:
   email: false
