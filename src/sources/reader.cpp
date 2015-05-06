@@ -9,12 +9,13 @@
 
 using namespace QtCSV;
 
-// Read .csv file to QList<QStringList>
+// Read csv-file and save it's data as strings to QList<QStringList>
 // @input:
-// - filePath - string with absolute path to .csv file
-// - separator - string or character separating columns
+// - filePath - string with absolute path to csv-file
+// - separator - string or character that separate values in a row
 // @output:
-// - QList<QStringList> - list of elementsfrom csv-file as strings
+// - QList<QStringList> - list of values (as strings) from csv-file. If case of
+// error will return empty QList<QStringList>.
 QList<QStringList> Reader::readToList(const QString &filePath,
                                       const QString &separator)
 {
@@ -30,19 +31,14 @@ QList<QStringList> Reader::readToList(const QString &filePath,
         return QList<QStringList>();
     }
 
-    QFile csvFile;
-    csvFile.setFileName(filePath);
-
-    bool fileOpened = csvFile.open(QIODevice::ReadOnly | QIODevice::Text);
-    if ( false == fileOpened )
+    QFile csvFile(filePath);
+    if ( false == csvFile.open(QIODevice::ReadOnly | QIODevice::Text) )
     {
         qDebug() << __func__ << "Error - can't open file:" << filePath;
         return QList<QStringList>();
     }
 
-    QTextStream stream;
-    stream.setDevice(&csvFile);
-
+    QTextStream stream(&csvFile);
     QList<QStringList> data;
     while ( false == stream.atEnd() )
     {
@@ -55,11 +51,12 @@ QList<QStringList> Reader::readToList(const QString &filePath,
     return data;
 }
 
-// Read .csv file to AbstractDatas
+// Read csv-file and save it's data to AbstractData-based container
+// class
 // @input:
-// - filePath - string with absolute path to .csv file
+// - filePath - string with absolute path to csv-file
 // - data - AbstractData object where all file content will be saved
-// - separator - string or character separating columns
+// - separator - string or character that separate values in a row
 // @output:
 // - bool - True if file was successfully read, otherwise False
 bool Reader::readToData(const QString &filePath,
@@ -78,19 +75,14 @@ bool Reader::readToData(const QString &filePath,
         return false;
     }
 
-    QFile csvFile;
-    csvFile.setFileName(filePath);
-
-    bool fileOpened = csvFile.open(QIODevice::ReadOnly | QIODevice::Text);
-    if ( false == fileOpened )
+    QFile csvFile(filePath);
+    if ( false == csvFile.open(QIODevice::ReadOnly | QIODevice::Text) )
     {
         qDebug() << __func__ << "Error - can't open file:" << filePath;
         return false;
     }
 
-    QTextStream stream;
-    stream.setDevice(&csvFile);
-
+    QTextStream stream(&csvFile);
     while ( false == stream.atEnd() )
     {
         QString line = stream.readLine();

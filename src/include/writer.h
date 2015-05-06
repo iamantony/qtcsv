@@ -10,6 +10,14 @@ namespace QtCSV
 {
     class AbstractData;
 
+    // Writer is a special file-writer class that works with csv-files.
+    // As a source of information it requires AbstractData-based container
+    // class object.
+    // It support different write methods:
+    // - WriteMode::REWRITE - if file exist, it content will be rewritten
+    // - WriteMode::APPEND - if file exist, new information will be appended
+    // to the end of file.
+    // Also it can add header and footer to a file.
     class QTCSVSHARED_EXPORT Writer
     {
     public:
@@ -19,7 +27,7 @@ namespace QtCSV
             APPEND
         };
 
-        // Write data to .csv file
+        // Write data to csv-file
         static bool write(const QString &filePath,
                           const AbstractData &data,
                           const QString &separator = ",",

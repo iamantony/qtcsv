@@ -2,7 +2,7 @@
 
 using namespace QtCSV;
 
-// Add empty row
+// Add new empty row
 void VariantData::addEmptyRow()
 {
     m_values.append(QList<QVariant>());
@@ -10,11 +10,11 @@ void VariantData::addEmptyRow()
 
 // Add new row with one value
 // @input:
-// - value - value that should be written to the new row. If it is empty,
-// it will be interpreted as empty line
-// NOTE: value must be converted to a QString
+// - value - value that is supposed to be written to the new row.
+// If value is empty, empty row will be added.
+// NOTE: value must be convertable to a QString
 // @output:
-// - bool - True if new row with value was added, else False
+// - bool - True if new row was successfully added, else False
 bool VariantData::addRow(const QVariant& value)
 {
     if ( value.canConvert<QString>() )
@@ -28,16 +28,15 @@ bool VariantData::addRow(const QVariant& value)
 
 // Add new row with list of values
 // @input:
-// - values - list of values. If list is empty, it will be interpreted
-// as empty line
-// NOTE: values must be converted to a QString
+// - values - list of values. If list is empty, empty row will be added.
+// NOTE: values must be convertable to a QString
 // @output:
-// - bool - True if new row with values was added, else False
+// - bool - True if new row was successfully added, else False
 bool VariantData::addRow(const QList<QVariant> &values)
 {
-    for ( int i = 0; i < values.size(); ++i )
+    for ( const QVariant &val : values )
     {
-        if ( false == values.at(i).canConvert<QString>() )
+        if ( false == val.canConvert<QString>() )
         {
             return false;
         }
@@ -48,10 +47,9 @@ bool VariantData::addRow(const QList<QVariant> &values)
     return true;
 }
 
-// Add new row with values as strings
+// Add new row with specified values (as strings)
 // @input:
-// - values - list of strings. If list is empty, it will be interpreted
-// as empty line
+// - values - list of strings. If list is empty, empty row will be added.
 void VariantData::addRow(const QStringList &values)
 {
     QList<QVariant> rowValues;
@@ -77,7 +75,7 @@ int VariantData::getNumberOfRows() const
     return m_values.size();
 }
 
-// Get values (as strings) of specified row
+// Get values (as list of strings) of specified row
 // @input:
 // - row - valid number of row
 // @output:
@@ -99,9 +97,9 @@ QStringList VariantData::getRowValues(const int &row) const
     return values;
 }
 
-// Check if there are any data
+// Check if there are any rows
 // @output:
-// - bool - True if there are some data (headlines or values), else False
+// - bool - True if there are any rows, else False
 bool VariantData::isEmpty() const
 {
 

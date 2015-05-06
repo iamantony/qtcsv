@@ -9,12 +9,13 @@
 
 using namespace QtCSV;
 
-// Write data to .csv file
+// Write data to csv-file
 // @input:
-// - filePath - string with absolute path to csv file
-// - data - not empty data that should be written to .csv file
-// - separator - string or character separating columns
-// - mode - write mode of the file: rewrite file or append data to the end
+// - filePath - string with absolute path to csv-file
+// - data - not empty AbstractData object that contains information that should
+// be written to csv-file
+// - separator - string or character that separate values in a row
+// - mode - write mode of the file
 // - header - strings that will be written at the beginning of the file in
 // one line. separator will be used as delimiter character.
 // - footer - strings that will be written at the end of the file in
@@ -42,21 +43,21 @@ bool Writer::write(const QString &filePath,
     }
 
     // Prepare data that would be written to file
-    QStringList textLines;
+    QStringList content;
     if ( false == header.isEmpty() )
     {
-        textLines << header.join(separator);
+        content << header.join(separator);
     }
 
     const int rowsNum = data.getNumberOfRows();
     for (int i = 0; i < rowsNum; ++i)
     {
-        textLines << data.getRowValues(i).join(separator);
+        content << data.getRowValues(i).join(separator);
     }
 
     if ( false == footer.isEmpty() )
     {
-        textLines << footer.join(separator);
+        content << footer.join(separator);
     }
 
     // Write prepaired data to file
@@ -67,9 +68,8 @@ bool Writer::write(const QString &filePath,
         return false;
     }
 
-    QTextStream stream;
-    stream.setDevice(&csvFile);
-    stream << textLines.join("\n") << endl;
+    QTextStream stream(&csvFile);
+    stream << content.join("\n") << endl;
 
     csvFile.close();
 
