@@ -69,8 +69,7 @@ bool Writer::write(const QString &filePath,
 
     QTextStream stream;
     stream.setDevice(&csvFile);
-    stream << textLines.join("\n");
-    stream.flush();
+    stream << textLines.join("\n") << endl;
 
     csvFile.close();
 

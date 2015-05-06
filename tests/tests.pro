@@ -22,10 +22,12 @@ SOURCES += \
     tst_testmain.cpp \
     teststringdata.cpp \
     testvariantdata.cpp \
-    testreader.cpp
+    testreader.cpp \
+    testwriter.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 HEADERS += \
     teststringdata.h \
     testvariantdata.h \
-    testreader.h
+    testreader.h \
+    testwriter.h

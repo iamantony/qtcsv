@@ -3,6 +3,7 @@
 #include "teststringdata.h"
 #include "testvariantdata.h"
 #include "testreader.h"
+#include "testwriter.h"
 
 int main(int argc, char** argv)
 {
@@ -15,6 +16,7 @@ int main(int argc, char** argv)
     ASSERT_TEST(new TestStringData());
     ASSERT_TEST(new TestVariantData());
     ASSERT_TEST(new TestReader());
+    ASSERT_TEST(new TestWriter());
 
     return status;
 }
