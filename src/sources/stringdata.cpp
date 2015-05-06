@@ -12,7 +12,7 @@ void StringData::addEmptyRow()
 // @input:
 // - values - list of strings. If list is empty, it will be interpreted
 // as empty line
-void StringData::addRowValues(const QStringList &values)
+void StringData::addRow(const QStringList &values)
 {
     m_values << values;
 }

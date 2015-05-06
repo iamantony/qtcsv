@@ -94,7 +94,7 @@ bool Reader::readToData(const QString &filePath,
     while ( false == stream.atEnd() )
     {
         QString line = stream.readLine();
-        data.addRowValues( line.split(separator) );
+        data.addRow( line.split(separator) );
     }
 
     csvFile.close();

@@ -52,7 +52,7 @@ bool VariantData::addRow(const QList<QVariant> &values)
 // @input:
 // - values - list of strings. If list is empty, it will be interpreted
 // as empty line
-void VariantData::addRowValues(const QStringList &values)
+void VariantData::addRow(const QStringList &values)
 {
     QList<QVariant> rowValues;
     for ( const QString &val : values )
