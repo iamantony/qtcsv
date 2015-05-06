@@ -41,11 +41,27 @@ bool Writer::write(const QString &filePath,
         return false;
     }
 
-    QFile csvFile;
-    csvFile.setFileName(filePath);
+    // Prepare data that would be written to file
+    QStringList textLines;
+    if ( false == header.isEmpty() )
+    {
+        textLines << header.join(separator);
+    }
 
-    bool fileOpened = csvFile.open(GetMode(mode) | QIODevice::Text);
-    if ( false == fileOpened )
+    const int rowsNum = data.getNumberOfRows();
+    for (int i = 0; i < rowsNum; ++i)
+    {
+        textLines << data.getRowValues(i).join(separator);
+    }
+
+    if ( false == footer.isEmpty() )
+    {
+        textLines << footer.join(separator);
+    }
+
+    // Write prepaired data to file
+    QFile csvFile(filePath);
+    if ( false == csvFile.open(GetMode(mode) | QIODevice::Text) )
     {
         qDebug() << __func__ << "Error - can't open file:" << filePath;
         return false;
@@ -53,23 +69,8 @@ bool Writer::write(const QString &filePath,
 
     QTextStream stream;
     stream.setDevice(&csvFile);
-
-    if ( false == header.isEmpty() )
-    {
-        stream << header.join(separator) << endl;
-    }
-
-    int rowsNum = data.getNumberOfRows();
-    for (int i = 0; i < rowsNum; ++i)
-    {
-        QStringList rowValues = data.getRowValues(i);
-        stream << rowValues.join(separator) << endl;
-    }
-
-    if ( false == footer.isEmpty() )
-    {
-        stream << footer.join(separator) << endl;
-    }
+    stream << textLines.join("\n");
+    stream.flush();
 
     csvFile.close();
 
