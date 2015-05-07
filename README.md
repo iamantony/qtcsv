@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/iamantony/qtcsv.svg?branch=master)](https://travis-ci.org/iamantony/qtcsv)
 
 Small easy-to-use library for reading and writing [csv-files][1] in Qt.  
-Tested with Qt 4.8 and higher.
+Tested under Ubuntu 12.04 with Qt 4.8 and higher.
 
 ## Quick Example
 ```cpp
@@ -184,6 +184,116 @@ make check
 ```
 
 ## Examples
+Lets create example Qt project, that will use qtcsv library. We suppose, that
+you use Ubuntu 12.04 and already have installed Qt Framework (version 4.8 or
+higher) with QtCreator and read [Requirements](#requirements) section of this
+Readme file.
+
+1. Open QtCreator and create new subdirs project (File -> New file or Project 
+-> Other Project -> Subdirs Project) with name MyProject.
+2. Enter settings of our new project and clear flag *Shadow build*.
+3. Add new console subproject to MyProject. Call it MyApp.
+4. Clone repository of qtcsv library into MyProject folder. Via console:
+
+    ```bash
+    cd /path/to/MyProject
+    git clone https://github.com/iamantony/qtcsv.git
+    ```
+So the structure of folder MyProject will be like this:
+    ```
+    /MyProject
+    - /MyApp
+    - /qtcsv
+    - MyProject.pro
+    ```
+
+5. Edit MyProject.pro:
+
+    ```
+    TEMPLATE = subdirs
+    
+    SUBDIRS += \
+        qtcsv \
+        MyApp
+    ```
+
+6. Edit MyApp.pro
+
+    ```
+    QT += core
+    QT -= gui
+    
+    TARGET = MyApp
+    CONFIG += console
+    CONFIG -= app_bundle
+    
+    TEMPLATE = app
+    
+    INCLUDEPATH += ../qtcsv/src/include
+    LIBS += -lqtcsv
+    
+    unix {
+        LIBS += -L../qtcsv/src
+    }
+    
+    equals(QT_MAJOR_VERSION, 4):equals(QT_MINOR_VERSION, 8) {
+        QMAKE_CXXFLAGS += -std=c++0x
+    }
+    
+    greaterThan(QT_MAJOR_VERSION, 4) {
+        CONFIG += c++11
+    }
+    
+    SOURCES += main.cpp
+    ```
+
+7. Edit /MyProject/MyApp/main.cpp
+ 
+    ```
+    #include <QVariant>
+    #include <QList>
+    #include <QStringList>
+    #include <QDir>
+    #include <QDebug>
+    
+    #include "variantdata.h"
+    #include "reader.h"
+    #include "writer.h"
+    
+    int main()
+    {
+        QVariant first(2);
+    
+        QList<QVariant> second;
+        second << QVariant("pi") << 3.14159265359;
+    
+        QStringList fourth;
+        fourth << "one" << "two";
+    
+        QtCSV::VariantData varData;
+        varData.addRow(first);
+        varData.addRow(second);
+        varData.addEmptyRow();
+        varData.addRow(fourth);
+    
+        QString filePath = QDir::currentPath() + "/info.csv";
+        if ( false == QtCSV::Writer::write(filePath, varData) )
+        {
+            qDebug() << "Failed to write to a file";
+            return 1;
+        }
+    
+        QList<QStringList> readData = QtCSV::Reader::readToList(filePath);
+        for ( QStringList &list : readData )
+        {
+            qDebug() << list.join(",");
+        }
+    
+        return 0;
+    }
+    ```
+    
+8. Build and run. In console you'll see content of the created csv-file.
 
 ## Tags
 qt, qt4, qt5, csv, csv-file, read, write
