@@ -209,7 +209,7 @@ So the structure of folder MyProject will be like this:
 
 5. Edit MyProject.pro:
 
-    ```
+    ```qmake
     TEMPLATE = subdirs
     
     SUBDIRS += \
@@ -219,7 +219,7 @@ So the structure of folder MyProject will be like this:
 
 6. Edit MyApp.pro
 
-    ```
+    ```qmake
     QT += core
     QT -= gui
     
@@ -249,7 +249,7 @@ So the structure of folder MyProject will be like this:
 
 7. Edit /MyProject/MyApp/main.cpp
  
-    ```
+    ```cpp
     #include <QVariant>
     #include <QList>
     #include <QStringList>
@@ -296,7 +296,7 @@ So the structure of folder MyProject will be like this:
 8. Build and run. In console you'll see content of the created csv-file.
 
 ## Tags
-qt, qt4, qt5, csv, csv-file, read, write
+c++, qt, qt4, qt5, csv, file
 
 [1]: http://en.wikipedia.org/wiki/Comma-separated_values
 [2]: https://github.com/iamantony/qtcsv/blob/master/src/include/reader.h
