@@ -5,8 +5,7 @@
 Small easy-to-use library for reading and writing [csv-files][1] in Qt.  
 Tested with Qt 4.8 and higher.
 
-## Quick example
-
+## Quick Example
 ```cpp
 #include <QStringList>
 #include <QDir>
@@ -93,20 +92,20 @@ with **VariantData** class. Put your values into **QVariants** and use
 one of **VariantData::addRow()** overloaded functions.
 
 #### Reader
-Use **Reader** class to read csv-files. It's simple. It have only two funtions
+Use **Reader** class to read csv-files. It's simple. It has only two funtions
 and to read csv-file you can use one of them:
 
-1. **QList\<QStringList\> Reader::readToList(QString, QString)**  
+1. **QList\<QStringList\> Reader::readToList(QString &filePath, QString &separator)**  
 This function as first argument require string with absolute path to existent
 csv-file (example: "/home/user/my-file.csv") and as second parameter it
 needs delimeter symbol, that separate elements in a row (by default it use
-comma - ","). As a result function will return QList<QStringList> with
+comma - ","). As a result function will return **QList\<QStringList\>** with
 read content of the file. If you're lucky, it will not be empty and
-size of the QList will be equal to number of rows in csv-file. Each
-QStringList contains elements of the corresponding row, represented as
+size of the **QList** will be equal to number of rows in csv-file. Each
+**QStringList** contains elements of the corresponding row, represented as
 strings.
 
-2. **bool Reader::readToData(QString, AbstractData&, QString)**
+2. **bool Reader::readToData(QString &filePath, AbstractData &data, QString &separator)**
 Second function is a little more advenced and I hope little more useful.
 First argument - string with absolute path to existent csv-file, third
 argument - delimeter symbol. And in the middle - second argument - there
@@ -125,6 +124,31 @@ to int, second - to double and save all three elements to some container
 (or do with them whatever you want).
 
 #### Writer
+Use **Writer** class to write to csv-files. It's simpler than **Reader**. It has
+only one function! Here it is:
+
+```cpp
+bool Writer::write(QString &filePath, 
+                   AbstractData &data,
+                   QString &separator,
+                   Writer::WriteMode &mode,
+                   QStringList &header,
+                   QStringList &footer)
+```
+
+1. filePath - string with absolute path to csv-file (new or existent);
+2. data - object, that contains information that you want to write to csv-file.  
+**Writer** internally will use **QStringList AbstractData::getRowValues(int)**
+function to get row values;
+3. separator - delimeter symbol (default symbol is comma - ",");
+4. mode - write mode flag.  
+If it set to **WriteMode::REWRITE** and csv-file exist, then csv-file will be
+rewritten. If flag set to **WriteMode::APPEND** and csv-file exist, then new
+information will be appended to the end of the file.
+5. header - strings that will be written at the beginning of the file, separated
+with defined separator;
+6. footer - strings that will be written at the end of the file, separated
+with defined separator.
 
 ## Requirements
 Because **qtcsv** library uses C++11 features, you have to use compiler that
@@ -149,6 +173,15 @@ version >= 4.7.
 ```
 
 ## Build
+```bash
+# Suppose we are in /qtcsv folder
+qmake -r
+make
+
+# If you want to run tests
+cp ./src/libqtcsv.so.1 ./tests
+make check
+```
 
 ## Examples
 
