@@ -3,16 +3,11 @@ QT -= gui
 TARGET = qtcsv
 TEMPLATE = lib
 
-equals(QT_MAJOR_VERSION, 4):lessThan(QT_MINOR_VERSION, 8) {
-    error("qtcsv library requires Qt 4.8 and higher")
-}
-
-equals(QT_MAJOR_VERSION, 4):equals(QT_MINOR_VERSION, 8) {
-    QMAKE_CXXFLAGS += -std=c++0x
-}
-
-greaterThan(QT_MAJOR_VERSION, 4) {
+greaterThan(QT_MAJOR_VERSION, 4){    
     CONFIG += c++11
+} 
+else {
+    QMAKE_CXXFLAGS += -std=c++0x
 }
 
 CONFIG += warn_on
