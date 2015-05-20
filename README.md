@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/iamantony/qtcsv.svg?branch=master)](https://travis-ci.org/iamantony/qtcsv)
 
 Small easy-to-use library for reading and writing [csv-files][1] in Qt.  
-Tested under Ubuntu 12.04 with Qt 4.8 and higher.
+Tested on Ubuntu 12.04 with Qt 4.8 and higher.
 
 ## Quick Example
 ```cpp
@@ -47,9 +47,8 @@ There are three main classes: **[Reader][2]**, **[Writer][3]** and
 **[AbstractData][4]**.
 
 #### AbstractData
-**AbstractData** class is a pure abstract class that provide interface for
-container class. It may sound scary, but in fact it just declare some function
-names, that derived (concrete) class have to implement.
+**AbstractData** class is a pure abstract class that provide interface for a
+container class. Here is the code:
 
 ```cpp
 class AbstractData
@@ -73,40 +72,41 @@ public:
 };
 ```
 
-As you can see, there are methods for adding new rows, getting rows values,
-clearing all information and so on. Basic stuff that helps you to store
-information.
+As you can see, **AbstractData** declare virtual functions for adding new rows,
+getting rows values, clearing all information and so on. Basic stuff.
 
 If you have said *Pure Abstract Class*, you must also say *Implementation*.
-And we have some: **[StringData][5]** and **[VariantData][6]**.
+Don't worry, we have some: **[StringData][5]** and **[VariantData][6]**.
 
 **StringData** class have the same interface as **AbstractData** and stores
-all data as strings. It's useful when all information that you want to save
-in csv-file is already presented as strings. In this case use function
-**StringData::addRow(QStringList&)**.
+all data as strings. It's useful when information that you want to save
+in csv-file represented as strings. So if you have several strings that
+form elements of one row, put them in **QStringList** and use function
+**StringData::addRow(QStringList&)** to add new row.
 
-If you have *raw* data - list of integers, floating point values, strings that
-you want to save in one row (like this: [1, 3.14, "check"]) - and you don't
-want to manually transform it to strings, then you can use **QVariant** magic
-with **VariantData** class. Put your values into **QVariants** and use
-one of **VariantData::addRow()** overloaded functions.
+If instead of strings you have list of *raw* data - integers, floating point
+values, strings or (almost) anything else (example: [1, 3.14, "check"]) -
+and you don't want to manually transform it to strings, then you can use
+**QVariant** magic with **VariantData** class. Put your values into
+**QVariants** and use one of **VariantData::addRow()** overloaded functions.
 
 #### Reader
-Use **Reader** class to read csv-files. It's simple. It has only two funtions
-and to read csv-file you can use one of them:
+Use **Reader** class to read csv-files. It's simple. It has only two funtions.
+To read csv-file you can use one of them:
 
 1. **QList\<QStringList\> Reader::readToList(QString &filePath, QString &separator)**  
 This function as first argument require string with absolute path to existent
 csv-file (example: "/home/user/my-file.csv") and as second parameter it
 needs delimeter symbol, that separate elements in a row (by default it use
-comma - ","). As a result function will return **QList\<QStringList\>** with
+comma - ",").  
+As a result function will return **QList\<QStringList\>** with
 read content of the file. If you're lucky, it will not be empty and
 size of the **QList** will be equal to number of rows in csv-file. Each
 **QStringList** contains elements of the corresponding row, represented as
 strings.
 
 2. **bool Reader::readToData(QString &filePath, AbstractData &data, QString &separator)**
-Second function is a little more advenced and I hope little more useful.
+Second function is a little more advanced and, I hope, little more useful.
 First argument - string with absolute path to existent csv-file, third
 argument - delimeter symbol. And in the middle - second argument - there
 is reference to **AbstractData**-based class object. Function will save
@@ -116,7 +116,7 @@ of class **StringData** or **VariantData**, elements of csv-file will
 be saved in them as strings.  
 If you are not happy with this fact, you can create your own
 **AbstractData**-based concrete class and implement function
-**addRow(QStringList)** in a way you want.  
+**addRow(QStringList)** in a way you want it.  
 For example, if you know, that each row of your csv-file contains 3 elements
 (integer value, floating-point value and string), then in function
 **addRow(QStringList)** you can convert first element of **QStringList**
