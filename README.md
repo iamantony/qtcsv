@@ -2,7 +2,10 @@
 
 [![Build Status](https://travis-ci.org/iamantony/qtcsv.svg?branch=master)](https://travis-ci.org/iamantony/qtcsv)
 
-Small easy-to-use library for reading and writing [csv-files][1] in Qt.  
+Author: [Antony Cherepanov][1]  
+E-mail: antony.cherepanov@gmail.com
+
+Small easy-to-use library for reading and writing [csv-files][2] in Qt.  
 Tested on Ubuntu 12.04 with Qt 4.8 and higher.
 
 ## Quick Example
@@ -43,8 +46,8 @@ int main()
 ```
 
 ## Usage
-There are three main classes: **[Reader][2]**, **[Writer][3]** and
-**[AbstractData][4]**.
+There are three main classes: **[Reader][3]**, **[Writer][4]** and
+**[AbstractData][5]**.
 
 #### AbstractData
 **AbstractData** class is a pure abstract class that provide interface for a
@@ -76,7 +79,7 @@ As you can see, **AbstractData** declare virtual functions for adding new rows,
 getting rows values, clearing all information and so on. Basic stuff.
 
 If you have said *Pure Abstract Class*, you must also say *Implementation*.
-Don't worry, we have some: **[StringData][5]** and **[VariantData][6]**.
+Don't worry, we have some: **[StringData][6]** and **[VariantData][7]**.
 
 **StringData** class have the same interface as **AbstractData** and stores
 all data as strings. It's useful when information that you want to save
@@ -298,9 +301,10 @@ So the structure of folder MyProject will be like this:
 ## Tags
 c++, qt, qt4, qt5, csv, file
 
-[1]: http://en.wikipedia.org/wiki/Comma-separated_values
-[2]: https://github.com/iamantony/qtcsv/blob/master/src/include/reader.h
-[3]: https://github.com/iamantony/qtcsv/blob/master/src/include/writer.h
-[4]: https://github.com/iamantony/qtcsv/blob/master/src/include/abstractdata.h
-[5]: https://github.com/iamantony/qtcsv/blob/master/src/include/stringdata.h
-[6]: https://github.com/iamantony/qtcsv/blob/master/src/include/variantdata.h
+[1]: https://github.com/iamantony
+[2]: http://en.wikipedia.org/wiki/Comma-separated_values
+[3]: https://github.com/iamantony/qtcsv/blob/master/src/include/reader.h
+[4]: https://github.com/iamantony/qtcsv/blob/master/src/include/writer.h
+[5]: https://github.com/iamantony/qtcsv/blob/master/src/include/abstractdata.h
+[6]: https://github.com/iamantony/qtcsv/blob/master/src/include/stringdata.h
+[7]: https://github.com/iamantony/qtcsv/blob/master/src/include/variantdata.h
