@@ -29,8 +29,7 @@ bool Writer::write(const QString &filePath,
                    const QStringList &header,
                    const QStringList &footer)
 {
-    if ( true == filePath.isEmpty() ||
-         true == data.isEmpty() )
+    if ( filePath.isEmpty() || data.isEmpty() )
     {
         qDebug() << __func__ << "Error - invalid arguments";
         return false;
@@ -85,9 +84,9 @@ QIODevice::OpenMode Writer::GetMode(const WriteMode &mode)
 {
     switch (mode)
     {
-        case WriteMode::APPEND:
+        case APPEND:
             return QIODevice::Append;
-        case WriteMode::REWRITE:
+        case REWRITE:
         default:
             return QIODevice::WriteOnly;
     }

@@ -19,7 +19,7 @@ using namespace QtCSV;
 QList<QStringList> Reader::readToList(const QString &filePath,
                                       const QString &separator)
 {
-    if ( true == filePath.isEmpty() || true == separator.isEmpty() )
+    if ( filePath.isEmpty() || separator.isEmpty() )
     {
         qDebug() << __func__ << "Error - invalid arguments";
         return QList<QStringList>();
@@ -63,7 +63,7 @@ bool Reader::readToData(const QString &filePath,
                         AbstractData &data,
                         const QString &separator)
 {
-    if ( true == filePath.isEmpty() || true == separator.isEmpty() )
+    if ( filePath.isEmpty() || separator.isEmpty() )
     {
         qDebug() << __func__ << "Error - invalid arguments";
         return false;

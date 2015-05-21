@@ -5,18 +5,21 @@
 #include "testreader.h"
 #include "testwriter.h"
 
-int main(int argc, char** argv)
+int AssertTest(QObject* obj)
+{
+    int status = QTest::qExec(obj);
+    delete obj;
+
+    return status;
+}
+
+int main()
 {
     int status = 0;
-    auto ASSERT_TEST = [&status, argc, argv](QObject* obj) {
-      status |= QTest::qExec(obj, argc, argv);
-      delete obj;
-    };
-
-    ASSERT_TEST(new TestStringData());
-    ASSERT_TEST(new TestVariantData());
-    ASSERT_TEST(new TestReader());
-    ASSERT_TEST(new TestWriter());
+    status |= AssertTest(new TestStringData());
+    status |= AssertTest(new TestVariantData());
+    status |= AssertTest(new TestReader());
+    status |= AssertTest(new TestWriter());
 
     return status;
 }

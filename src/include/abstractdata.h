@@ -7,7 +7,7 @@
 
 namespace QtCSV
 {
-    // AbstractData is pure abstract container class. It's main purpouse is to
+    // AbstractData is pure abstract container class. Its main purpouse is to
     // provide common interface for concrete container classes, that could be
     // used in processing of csv-files.
     //
@@ -32,8 +32,8 @@ namespace QtCSV
     // - and so on.
     //
     // Note, that AbstractData is just interface for container class, not a
-    // container class. So you are free to decide how to store added
-    // information.
+    // container class. So you are free to decide how to store
+    // information in derived classes.
     class QTCSVSHARED_EXPORT AbstractData
     {
     public:

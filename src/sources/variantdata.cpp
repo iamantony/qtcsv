@@ -5,7 +5,7 @@ using namespace QtCSV;
 // Add new empty row
 void VariantData::addEmptyRow()
 {
-    m_values.append(QList<QVariant>());
+    m_values << QList<QVariant>();
 }
 
 // Add new row with one value
@@ -17,13 +17,17 @@ void VariantData::addEmptyRow()
 // - bool - True if new row was successfully added, else False
 bool VariantData::addRow(const QVariant& value)
 {
-    if ( value.canConvert<QString>() )
+    if ( false == value.canConvert<QString>() )
     {
-        m_values.append( QList<QVariant>({value}) );
-        return true;
+        return false;
     }
 
-    return false;
+    QList<QVariant> rowValues;
+    rowValues << value;
+
+    m_values << rowValues;
+
+    return true;
 }
 
 // Add new row with list of values
@@ -34,15 +38,16 @@ bool VariantData::addRow(const QVariant& value)
 // - bool - True if new row was successfully added, else False
 bool VariantData::addRow(const QList<QVariant> &values)
 {
-    for ( const QVariant &val : values )
+    for ( QList<QVariant>::const_iterator iter = values.constBegin();
+          iter != values.constEnd(); ++iter)
     {
-        if ( false == val.canConvert<QString>() )
+        if ( false == (*iter).canConvert<QString>() )
         {
             return false;
         }
     }
 
-    m_values.append(values);
+    m_values << values;
 
     return true;
 }
@@ -53,12 +58,13 @@ bool VariantData::addRow(const QList<QVariant> &values)
 void VariantData::addRow(const QStringList &values)
 {
     QList<QVariant> rowValues;
-    for ( const QString &val : values )
+    for ( QStringList::const_iterator iter = values.constBegin();
+          iter != values.constEnd(); ++iter)
     {
-        rowValues.append(QVariant(val));
+        rowValues << QVariant(*iter);
     }
 
-    m_values.append(rowValues);
+    m_values << rowValues;
 }
 
 // Clear all data
@@ -91,7 +97,7 @@ QStringList VariantData::getRowValues(const int &row) const
     QStringList values;
     for ( int i = 0; i < m_values.at(row).size(); ++i )
     {
-        values.append( m_values.at(row).at(i).toString() );
+        values << m_values.at(row).at(i).toString();
     }
 
     return values;

@@ -90,7 +90,7 @@ void TestWriter::testWriteAppendMode()
     bool newWriteResult = QtCSV::Writer::write(getFilePath(),
                                               newStrData,
                                               ",",
-                                              QtCSV::Writer::WriteMode::APPEND);
+                                              QtCSV::Writer::APPEND);
 
     QVERIFY2(true == newWriteResult, "Failed to write to file");
 
@@ -134,7 +134,7 @@ void TestWriter::testWriteWithHeader()
     bool writeResult = QtCSV::Writer::write(getFilePath(),
                                             strData,
                                             ",",
-                                            QtCSV::Writer::WriteMode::REWRITE,
+                                            QtCSV::Writer::REWRITE,
                                             header);
 
     QVERIFY2(true == writeResult, "Failed to write to file");
@@ -160,7 +160,7 @@ void TestWriter::testWriteWithFooter()
     bool writeResult = QtCSV::Writer::write(getFilePath(),
                                             strData,
                                             ",",
-                                            QtCSV::Writer::WriteMode::REWRITE,
+                                            QtCSV::Writer::REWRITE,
                                             QStringList(),
                                             footer);
 
@@ -190,7 +190,7 @@ void TestWriter::testWriteWithHeaderAndFooter()
     bool writeResult = QtCSV::Writer::write(getFilePath(),
                                             strData,
                                             ",",
-                                            QtCSV::Writer::WriteMode::REWRITE,
+                                            QtCSV::Writer::REWRITE,
                                             header,
                                             footer);
 

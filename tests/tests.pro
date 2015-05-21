@@ -11,12 +11,12 @@ QT       -= gui
 TARGET = tst_tests
 CONFIG   += console testcase
 CONFIG   -= app_bundle
-QMAKE_CXXFLAGS += -std=c++0x
 
 TEMPLATE = app
 
 INCLUDEPATH += ../src/include
 LIBS += -L../src/ -lqtcsv
+DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 SOURCES += \
     tst_testmain.cpp \
@@ -24,7 +24,6 @@ SOURCES += \
     testvariantdata.cpp \
     testreader.cpp \
     testwriter.cpp
-DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 HEADERS += \
     teststringdata.h \

@@ -10,13 +10,13 @@
 
 namespace QtCSV
 {
-    // VariantData is a simple container class that uses interface provided
-    // be AbstractData. It uses QVariant to hold information, so it could be
-    // almost of any type - integral, strings and so on. There is only one
+    // VariantData is a simple container class. It implement interface of
+    // AbstractData class. It use QVariant to hold information, so data could be
+    // of almost any type - integral, strings and so on. There is only one
     // limitation - QVariant must be convertible to string (because,
     // obviously, if we want to save information to CSV file, we would need to
     // convert it to plain-text form). So don't forget to see docs of QVariant
-    // before usage of this class.
+    // before you start use this class.
     class QTCSVSHARED_EXPORT VariantData : public AbstractData
     {
     public:
@@ -24,21 +24,21 @@ namespace QtCSV
         virtual ~VariantData() {}
 
         // Add new empty row
-        virtual void addEmptyRow() override;
+        virtual void addEmptyRow();
         // Add new row with one value
         bool addRow(const QVariant& value);
         // Add new row with list of values
         bool addRow(const QList<QVariant> &values);
         // Add new row with specified values (as strings)
-        virtual void addRow(const QStringList &values) override;
+        virtual void addRow(const QStringList &values);
         // Clear all data
-        virtual void clear() override;
+        virtual void clear();
         // Get number of rows
-        virtual int getNumberOfRows() const override;
+        virtual int getNumberOfRows() const;
         // Get values (as list of strings) of specified row
-        virtual QStringList getRowValues(const int &row) const override;
+        virtual QStringList getRowValues(const int &row) const;
         // Check if there are any rows
-        virtual bool isEmpty() const override;
+        virtual bool isEmpty() const;
 
     private:
         // Container for class data
