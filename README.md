@@ -36,9 +36,9 @@ int main()
 
     // read data from file
     QList<QStringList> readData = QtCSV::Reader::readToList(filePath);
-    for ( QStringList &list : readData )
+    for ( int i = 0; i < readData.size(); ++i )
     {
-        qDebug() << list.join(",");
+        qDebug() << readData.at(i).join(",");
     }
 
     return 0;
@@ -108,12 +108,12 @@ size of the **QList** will be equal to number of rows in csv-file. Each
 **QStringList** contains elements of the corresponding row, represented as
 strings.
 
-2. **bool Reader::readToData(QString &filePath, AbstractData &data, QString &separator)**
+2. **bool Reader::readToData(QString &filePath, AbstractData &data, QString &separator)**  
 Second function is a little more advanced and, I hope, little more useful.
 First argument - string with absolute path to existent csv-file, third
 argument - delimeter symbol. And in the middle - second argument - there
 is reference to **AbstractData**-based class object. Function will save
-content of the file in this object, using virtual function 
+content of the file in this object, using virtual function
 **AbstractData::addRow(QStringList)**. If you pass to function object
 of class **StringData** or **VariantData**, elements of csv-file will
 be saved in them as strings.  
@@ -131,12 +131,12 @@ Use **Writer** class to write to csv-files. It's simpler than **Reader**. It has
 only one function! Here it is:
 
 ```cpp
-bool Writer::write(QString &filePath, 
-                   AbstractData &data,
-                   QString &separator,
-                   Writer::WriteMode &mode,
-                   QStringList &header,
-                   QStringList &footer)
+bool Writer::write(const QString &filePath,
+                   const AbstractData &data,
+                   const QString &separator,
+                   const WriteMode &mode,
+                   const QStringList &header,
+                   const QStringList &footer)
 ```
 
 1. filePath - string with absolute path to csv-file (new or existent);
@@ -154,30 +154,13 @@ with defined separator;
 with defined separator.
 
 ## Requirements
-Because **qtcsv** library uses C++11 features, you have to use compiler that
-provide support for C++11. If you use **gcc** compiler, be sure that it's
-version >= 4.7.
-
-#### Install gcc-4.7 in Ubuntu 12.04
-```bash
-    # Add new repository
-    sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-    sudo apt-get update
-    
-    # Install gcc-4.7 and g++-4.7 packages
-    sudo apt-get install gcc-4.7 g++-4.7
-    
-    # Set up gcc-4.7 as default compiler
-    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.6
-    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.7 100 --slave /usr/bin/g++ g++ /usr/bin/g++-4.7
-    
-    # Check g++ version
-    g++ --version
-```
+Qt 4.8 and higher.  
+It is highly possible, that library will be successfully built with older Qt
+versions (4.7, 4.6, ...). If you would try it, please write me back the results!
 
 ## Build
 ```bash
-# Suppose we are in /qtcsv folder
+cd /path/to/folder/with/qtcsv
 qmake -r
 make
 
@@ -188,11 +171,10 @@ make check
 
 ## Examples
 Lets create example Qt project, that will use qtcsv library. We suppose, that
-you use Ubuntu 12.04 and already have installed Qt Framework (version 4.8 or
-higher) with QtCreator and read [Requirements](#requirements) section of this
-Readme file.
+you use Ubuntu 12.04 and already have installed Qt Framework) with QtCreator
+and read [Requirements](#requirements) section.
 
-1. Open QtCreator and create new subdirs project (File -> New file or Project 
+1. Open QtCreator and create new subdirs project (File -> New file or Project
 -> Other Project -> Subdirs Project) with name MyProject.
 2. Enter settings of our new project and clear flag *Shadow build*.
 3. Add new console subproject to MyProject. Call it MyApp.
@@ -214,7 +196,7 @@ So the structure of folder MyProject will be like this:
 
     ```qmake
     TEMPLATE = subdirs
-    
+
     SUBDIRS += \
         qtcsv \
         MyApp
@@ -225,77 +207,69 @@ So the structure of folder MyProject will be like this:
     ```qmake
     QT += core
     QT -= gui
-    
+
     TARGET = MyApp
     CONFIG += console
     CONFIG -= app_bundle
-    
+
     TEMPLATE = app
-    
+
     INCLUDEPATH += ../qtcsv/src/include
     LIBS += -lqtcsv
-    
+
     unix {
         LIBS += -L../qtcsv/src
     }
-    
-    equals(QT_MAJOR_VERSION, 4):equals(QT_MINOR_VERSION, 8) {
-        QMAKE_CXXFLAGS += -std=c++0x
-    }
-    
-    greaterThan(QT_MAJOR_VERSION, 4) {
-        CONFIG += c++11
-    }
-    
+
     SOURCES += main.cpp
     ```
 
 7. Edit /MyProject/MyApp/main.cpp
- 
+
     ```cpp
     #include <QVariant>
     #include <QList>
     #include <QStringList>
     #include <QDir>
     #include <QDebug>
-    
+
     #include "variantdata.h"
     #include "reader.h"
     #include "writer.h"
-    
+
     int main()
     {
         QVariant first(2);
-    
+
         QList<QVariant> second;
         second << QVariant("pi") << 3.14159265359;
-    
+
         QStringList fourth;
         fourth << "one" << "two";
-    
+
         QtCSV::VariantData varData;
         varData.addRow(first);
         varData.addRow(second);
         varData.addEmptyRow();
         varData.addRow(fourth);
-    
+
         QString filePath = QDir::currentPath() + "/info.csv";
         if ( false == QtCSV::Writer::write(filePath, varData) )
         {
             qDebug() << "Failed to write to a file";
             return 1;
         }
-    
+
         QList<QStringList> readData = QtCSV::Reader::readToList(filePath);
-        for ( QStringList &list : readData )
+        for ( int i = 0; i < readData.size(); ++i )
         {
-            qDebug() << list.join(",");
+            qDebug() << readData.at(i).join(",");
         }
-    
+
         return 0;
     }
     ```
-    
+
 8. Build and run. In console you'll see content of the created csv-file.
 
 ## Tags
