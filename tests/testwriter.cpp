@@ -214,19 +214,16 @@ void TestWriter::testWriteWithHeaderAndFooter()
 void TestWriter::testWriteDifferentDataAmount()
 {
     int rowsNumber = 10;
-    int rowsMultiplier = 5;
-    int rowCycles = 10;
+    int rowsMultiplier  = 4;
+    int rowCycles = 8;
+    QTime time;
     for ( int i = 0; i < rowCycles; ++i )
     {
         int symbolsNumber = 10;
-        int symbolsMultiplier = 10;
-        int symbolCycles = 5;
+        int symbolsMultiplier  = 5;
+        int symbolCycles = 4;
         for ( int j = 0; j < symbolCycles; ++j )
         {
-            qDebug() << endl << "Data parameters:" << endl <<
-                        "-- symbols in row:" << symbolsNumber << endl <<
-                        "-- number of rows:" << rowsNumber << endl;
-
             QtCSV::StringData data;
             try
             {
@@ -234,27 +231,25 @@ void TestWriter::testWriteDifferentDataAmount()
             }
             catch (std::exception &e)
             {
-                qDebug() << "Exception:" << e.what();
                 QFAIL("No enough memory to create data object");
             }
 
             QVERIFY2(false == data.isEmpty(), "Failed to create content");
 
             bool writeResult = false;
+            time.restart();
             try
             {
-                QTime time;
-                time.start();
-
                 writeResult = QtCSV::Writer::write(getFilePath(), data);
-
-                qDebug() << "Write operation:" << time.elapsed() << "ms";
             }
             catch (std::exception &e)
             {
-                qDebug() << "Exception:" << e.what();
                 QFAIL("No enough memory to write data to the file");
             }
+
+            qDebug() << "symbols:" << symbolsNumber <<
+                        ", rows:" << rowsNumber <<
+                        ", time:" << time.elapsed() << "ms";
 
             QVERIFY2(true == writeResult, "Failed to write to file");
 
