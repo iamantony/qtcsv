@@ -1,12 +1,14 @@
 #include "testwriter.h"
 
+#include <exception>
+
 #include <QDir>
 #include <QFile>
+#include <QTime>
 #include <QDebug>
 
 #include "writer.h"
 #include "reader.h"
-#include "stringdata.h"
 #include "variantdata.h"
 
 TestWriter::TestWriter()
@@ -19,6 +21,11 @@ void TestWriter::cleanup()
     {
         qDebug() << "Can't remove file:" << getFilePath();
     }
+}
+
+QString TestWriter::getFilePath() const
+{
+    return QDir::currentPath() + "/test-file.csv";
 }
 
 void TestWriter::testWriteFromStringData()
@@ -204,7 +211,113 @@ void TestWriter::testWriteWithHeaderAndFooter()
     QVERIFY2(footer == data.at(2), "Wrong footer");
 }
 
-QString TestWriter::getFilePath() const
+void TestWriter::testWriteDifferentDataAmount()
 {
-    return QDir::currentPath() + "/test-file.csv";
+    int rowsNumber = 10;
+    int rowsMultiplier = 5;
+    int rowCycles = 10;
+    for ( int i = 0; i < rowCycles; ++i )
+    {
+        int symbolsNumber = 10;
+        int symbolsMultiplier = 10;
+        int symbolCycles = 5;
+        for ( int j = 0; j < symbolCycles; ++j )
+        {
+            qDebug() << endl << "Data parameters:" << endl <<
+                        "-- symbols in row:" << symbolsNumber << endl <<
+                        "-- number of rows:" << rowsNumber << endl;
+
+            QtCSV::StringData data;
+            try
+            {
+                data = getTestStringData(symbolsNumber, rowsNumber);
+            }
+            catch (std::exception &e)
+            {
+                qDebug() << "Exception:" << e.what();
+                QFAIL("No enough memory to create data object");
+            }
+
+            QVERIFY2(false == data.isEmpty(), "Failed to create content");
+
+            bool writeResult = false;
+            try
+            {
+                QTime time;
+                time.start();
+
+                writeResult = QtCSV::Writer::write(getFilePath(), data);
+
+                qDebug() << "Write operation:" << time.elapsed() << "ms";
+            }
+            catch (std::exception &e)
+            {
+                qDebug() << "Exception:" << e.what();
+                QFAIL("No enough memory to write data to the file");
+            }
+
+            QVERIFY2(true == writeResult, "Failed to write to file");
+
+            QList<QStringList> result =
+                    QtCSV::Reader::readToList(getFilePath());
+            QVERIFY2(false == result.isEmpty(), "Failed to read file content");
+            QVERIFY2(data.getNumberOfRows() == result.size(),
+                     "Wrong number of rows");
+
+            for ( int k = 0; k < result.size(); ++k )
+            {
+                QVERIFY2(data.getRowValues(k) == result.at(k),
+                         "Original and result data are not the same");
+            }
+
+            symbolsNumber *= symbolsMultiplier;
+        }
+
+        rowsNumber *= rowsMultiplier;
+    }
+}
+
+QtCSV::StringData TestWriter::getTestStringData(const int &symbolsInRow,
+                                                const int &rowsNumber)
+{
+    if ( symbolsInRow <= 0 || rowsNumber <= 0 )
+    {
+        qDebug() << __FUNCTION__ << "Invalid argumnets";
+        return QtCSV::StringData();
+    }
+
+    QStringList elements;
+    elements << "1234567890" << "3.14159265359" << "abcdefgh" <<
+                "ijklmnopqrs" << "tuvwxyz" << "ABCDEFGH" << "IJKLMNOPQRS" <<
+                "TUVWXYZ" << "some_STRANGE-string=" <<
+                "?!\\|/*+.<>@#$%^&(){}[]'`~";
+
+    QStringList rowElements;
+    int rowLength = 0;
+    int elementIndex = 0;
+    while ( rowLength < symbolsInRow )
+    {
+        if ( elements.size() <= elementIndex )
+        {
+            elementIndex = 0;
+        }
+
+        QString nextElement = elements.at(elementIndex);
+        if ( symbolsInRow < rowLength + nextElement.size() )
+        {
+            nextElement.resize( symbolsInRow - rowLength );
+        }
+
+        rowElements << nextElement;
+        rowLength += nextElement.size();
+        ++elementIndex;
+    }
+
+    QtCSV::StringData data;
+    for ( int i = 0; i < rowsNumber; ++i )
+    {
+        data.addRow(rowElements);
+    }
+
+    return data;
 }

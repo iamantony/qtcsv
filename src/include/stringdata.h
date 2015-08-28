@@ -32,10 +32,22 @@ namespace QtCSV
         // Check if there are any data
         virtual bool isEmpty() const;
 
+//        friend bool operator==(const StringData& left, const StringData& right);
+
     private:
         // Container for class data
         QList<QStringList> m_values;
     };
+
+//    bool operator==(const StringData& left, const StringData& right)
+//    {
+//        return left.m_values == right.m_values;
+//    }
+
+//    bool operator!=(const StringData& left, const StringData& right)
+//    {
+//        return !(left == right);
+//    }
 }
 
 #endif // STRINGDATA_H

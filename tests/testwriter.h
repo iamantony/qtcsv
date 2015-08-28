@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QtTest>
 
+#include "stringdata.h"
+
 class TestWriter : public QObject
 {
     Q_OBJECT
@@ -20,9 +22,12 @@ private Q_SLOTS:
     void testWriteWithHeader();
     void testWriteWithFooter();
     void testWriteWithHeaderAndFooter();
+    void testWriteDifferentDataAmount();
 
 private:
     QString getFilePath() const;
+    QtCSV::StringData getTestStringData(const int &symbolsInRow,
+                                        const int &rowsNumber);
 };
 
 #endif // TESTWRITER_H
