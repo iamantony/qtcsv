@@ -37,7 +37,8 @@ bool Writer::write(const QString &filePath,
 
     if ( false == CheckFile(filePath) )
     {
-        qDebug() << __FUNCTION__  << "Error - wrong file path/name:" << filePath;
+        qDebug() << __FUNCTION__  << "Error - wrong file path/name:" <<
+                    filePath;
         return false;
     }
 

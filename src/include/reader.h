@@ -29,6 +29,11 @@ namespace QtCSV
         static bool readToData(const QString &filePath,
                                AbstractData &data,
                                const QString &separator = ",");
+
+    private:
+        // Check if file path and separator are valid
+        static bool checkArguments(const QString &filePath,
+                                   const QString &separator);
     };
 }
 

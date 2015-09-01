@@ -19,15 +19,8 @@ using namespace QtCSV;
 QList<QStringList> Reader::readToList(const QString &filePath,
                                       const QString &separator)
 {
-    if ( filePath.isEmpty() || separator.isEmpty() )
+    if ( false == checkArguments(filePath, separator) )
     {
-        qDebug() << __FUNCTION__  << "Error - invalid arguments";
-        return QList<QStringList>();
-    }
-
-    if ( false == CheckFile(filePath) )
-    {
-        qDebug() << __FUNCTION__  << "Error - wrong file path/name:" << filePath;
         return QList<QStringList>();
     }
 
@@ -63,15 +56,8 @@ bool Reader::readToData(const QString &filePath,
                         AbstractData &data,
                         const QString &separator)
 {
-    if ( filePath.isEmpty() || separator.isEmpty() )
+    if ( false == checkArguments(filePath, separator) )
     {
-        qDebug() << __FUNCTION__  << "Error - invalid arguments";
-        return false;
-    }
-
-    if ( false == CheckFile(filePath) )
-    {
-        qDebug() << __FUNCTION__  << "Error - wrong file path/name:" << filePath;
         return false;
     }
 
@@ -90,6 +76,31 @@ bool Reader::readToData(const QString &filePath,
     }
 
     csvFile.close();
+
+    return true;
+}
+
+// Check if file path and separator are valid
+// @input:
+// - filePath - string with absolute path to csv-file
+// - separator - string or character that separate values in a row
+// @output:
+// - bool - True if file path and separator are valid, otherwise False
+bool Reader::checkArguments(const QString &filePath, const QString &separator)
+{
+    if ( filePath.isEmpty() || separator.isEmpty() )
+    {
+        qDebug() << __FUNCTION__  <<
+                    "Error - invalid file path and/or separator";
+        return false;
+    }
+
+    if ( false == CheckFile(filePath) )
+    {
+        qDebug() << __FUNCTION__  << "Error - wrong file path/name:" <<
+                    filePath;
+        return false;
+    }
 
     return true;
 }
