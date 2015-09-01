@@ -31,13 +31,13 @@ bool Writer::write(const QString &filePath,
 {
     if ( filePath.isEmpty() || data.isEmpty() )
     {
-        qDebug() << __func__ << "Error - invalid arguments";
+        qDebug() << __FUNCTION__  << "Error - invalid arguments";
         return false;
     }
 
     if ( false == CheckFile(filePath) )
     {
-        qDebug() << __func__ << "Error - wrong file path/name:" << filePath;
+        qDebug() << __FUNCTION__  << "Error - wrong file path/name:" << filePath;
         return false;
     }
 
@@ -63,7 +63,7 @@ bool Writer::write(const QString &filePath,
     QFile csvFile(filePath);
     if ( false == csvFile.open(GetMode(mode) | QIODevice::Text) )
     {
-        qDebug() << __func__ << "Error - can't open file:" << filePath;
+        qDebug() << __FUNCTION__  << "Error - can't open file:" << filePath;
         return false;
     }
 

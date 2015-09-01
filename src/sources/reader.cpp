@@ -21,20 +21,20 @@ QList<QStringList> Reader::readToList(const QString &filePath,
 {
     if ( filePath.isEmpty() || separator.isEmpty() )
     {
-        qDebug() << __func__ << "Error - invalid arguments";
+        qDebug() << __FUNCTION__  << "Error - invalid arguments";
         return QList<QStringList>();
     }
 
     if ( false == CheckFile(filePath) )
     {
-        qDebug() << __func__ << "Error - wrong file path/name:" << filePath;
+        qDebug() << __FUNCTION__  << "Error - wrong file path/name:" << filePath;
         return QList<QStringList>();
     }
 
     QFile csvFile(filePath);
     if ( false == csvFile.open(QIODevice::ReadOnly | QIODevice::Text) )
     {
-        qDebug() << __func__ << "Error - can't open file:" << filePath;
+        qDebug() << __FUNCTION__  << "Error - can't open file:" << filePath;
         return QList<QStringList>();
     }
 
@@ -65,20 +65,20 @@ bool Reader::readToData(const QString &filePath,
 {
     if ( filePath.isEmpty() || separator.isEmpty() )
     {
-        qDebug() << __func__ << "Error - invalid arguments";
+        qDebug() << __FUNCTION__  << "Error - invalid arguments";
         return false;
     }
 
     if ( false == CheckFile(filePath) )
     {
-        qDebug() << __func__ << "Error - wrong file path/name:" << filePath;
+        qDebug() << __FUNCTION__  << "Error - wrong file path/name:" << filePath;
         return false;
     }
 
     QFile csvFile(filePath);
     if ( false == csvFile.open(QIODevice::ReadOnly | QIODevice::Text) )
     {
-        qDebug() << __func__ << "Error - can't open file:" << filePath;
+        qDebug() << __FUNCTION__  << "Error - can't open file:" << filePath;
         return false;
     }
 
