@@ -15,6 +15,7 @@ public:
 
 private Q_SLOTS:
     void cleanup();
+    void testWriteInvalidArgs();
     void testWriteFromStringData();
     void testWriteFromVariantData();
     void testWriteAppendMode();

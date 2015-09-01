@@ -10,6 +10,57 @@ TestReader::TestReader()
 {
 }
 
+void TestReader::testReadToListInvalidArgs()
+{
+    QVERIFY2(QList<QStringList>() ==
+                            QtCSV::Reader::readToList(QString(), QString()),
+             "Invalid arguments was accepted");
+
+    QVERIFY2(QList<QStringList>() ==
+             QtCSV::Reader::readToList(getPathToFileTestComma(), QString()),
+             "Invalid arguments was accepted");
+
+    QVERIFY2(QList<QStringList>() == QtCSV::Reader::readToList(QString(), ","),
+             "Invalid arguments was accepted");
+
+    QVERIFY2(QList<QStringList>() ==
+             QtCSV::Reader::readToList("./some/path.exe", ","),
+             "Invalid arguments was accepted");
+
+    QVERIFY2(QList<QStringList>() ==
+             QtCSV::Reader::readToList("./some/path.csv", ","),
+             "Invalid arguments was accepted");
+
+    QVERIFY2(QList<QStringList>() ==
+             QtCSV::Reader::readToList(getPathToFileTestComma() + ".md5", ","),
+             "Invalid arguments was accepted");
+}
+
+void TestReader::testReadToDataInvalidArgs()
+{
+    QtCSV::StringData data;
+
+    QVERIFY2(false == QtCSV::Reader::readToData(QString(), data, QString()),
+             "Invalid arguments was accepted");
+
+    QVERIFY2(false == QtCSV::Reader::readToData(getPathToFileTestComma(), data,
+                                                QString()),
+             "Invalid arguments was accepted");
+
+    QVERIFY2(false == QtCSV::Reader::readToData(QString(), data, ","),
+             "Invalid arguments was accepted");
+
+    QVERIFY2(false == QtCSV::Reader::readToData("./some/path.exe", data, ","),
+             "Invalid arguments was accepted");
+
+    QVERIFY2(false == QtCSV::Reader::readToData("./some/path.csv", data,","),
+             "Invalid arguments was accepted");
+
+    QVERIFY2(false == QtCSV::Reader::readToData(
+                 getPathToFileTestComma() + ".md5", data,","),
+             "Invalid arguments was accepted");
+}
+
 void TestReader::testReadFileWithCommas()
 {
     const QString path = getPathToFileTestComma();

@@ -12,6 +12,8 @@ public:
     TestReader();
 
 private Q_SLOTS:
+    void testReadToListInvalidArgs();
+    void testReadToDataInvalidArgs();
     void testReadFileWithCommas();
     void testReadFileWithCommasToStringData();
     void testReadFileWithCommasToVariantData();

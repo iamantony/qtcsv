@@ -28,6 +28,30 @@ QString TestWriter::getFilePath() const
     return QDir::currentPath() + "/test-file.csv";
 }
 
+void TestWriter::testWriteInvalidArgs()
+{
+    QVERIFY2(false == QtCSV::Writer::write(QString(), QtCSV::StringData()),
+             "Invalid arguments was accepted");
+
+    QVERIFY2(false == QtCSV::Writer::write(getFilePath(), QtCSV::StringData()),
+             "Empty data was accepted");
+
+    QtCSV::StringData strData;
+    strData << "one" << "two" << "three";
+
+    QVERIFY2(false == QtCSV::Writer::write(QString(), strData),
+             "Empty path was accepted");
+
+    QVERIFY2(false == QtCSV::Writer::write("./some/path.exe", strData),
+             "Relative path to exe-file was accepted");
+
+    QVERIFY2(false == QtCSV::Writer::write("./some/path.csv", strData),
+             "Relative path to csv-file was accepted");
+
+    QVERIFY2(false == QtCSV::Writer::write(getFilePath() + ".xls", strData),
+             "Absolute path to xls-file was accepted");
+}
+
 void TestWriter::testWriteFromStringData()
 {
     QStringList strList;
