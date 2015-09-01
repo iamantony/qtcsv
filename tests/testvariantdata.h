@@ -18,6 +18,10 @@ private Q_SLOTS:
     void testAddRows();
     void testClearEmptyData();
     void testClearNotEmptyData();
+    void testCompareForEquality();
+    void testCopyConstruction();
+    void testCopyAssignment();
+    void testOperatorInput();
 };
 
 #endif // TESTVARIANTDATA_H

@@ -8,6 +8,12 @@ void StringData::addEmptyRow()
     m_values << QStringList();
 }
 
+// Add new row with one value
+void StringData::addRow(const QString &value)
+{
+    m_values << (QStringList() << value);
+}
+
 // Add new row with specified values (as strings)
 // @input:
 // - values - list of strings. If list is empty, it will be interpreted
@@ -53,4 +59,18 @@ QStringList StringData::getRowValues(const int &row) const
 bool StringData::isEmpty() const
 {
     return m_values.isEmpty();
+}
+
+// Add new row that would contain one value
+StringData& StringData::operator<<(const QString &value)
+{
+    this->addRow(value);
+    return *this;
+}
+
+// Add new row with specified values
+StringData& StringData::operator<<(const QStringList &values)
+{
+    this->addRow(values);
+    return *this;
 }

@@ -40,6 +40,24 @@ namespace QtCSV
         // Check if there are any rows
         virtual bool isEmpty() const;
 
+        friend bool operator==(const VariantData& left,
+                               const VariantData& right)
+        {
+            return left.m_values == right.m_values;
+        }
+
+        friend bool operator!=(const VariantData& left,
+                               const VariantData& right)
+        {
+            return !(left == right);
+        }
+
+        // Add new row that would contain one value
+        VariantData& operator<<(const QVariant &value);
+        // Add new row with specified values
+        VariantData& operator<<(const QList<QVariant> &values);
+        VariantData& operator<<(const QStringList &values);
+
     private:
         // Container for class data
         QList< QList<QVariant> > m_values;

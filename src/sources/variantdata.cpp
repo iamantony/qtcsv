@@ -22,10 +22,7 @@ bool VariantData::addRow(const QVariant& value)
         return false;
     }
 
-    QList<QVariant> rowValues;
-    rowValues << value;
-
-    m_values << rowValues;
+    m_values << (QList<QVariant>() << value);
 
     return true;
 }
@@ -110,4 +107,25 @@ bool VariantData::isEmpty() const
 {
 
     return m_values.isEmpty();
+}
+
+// Add new row that would contain one value
+VariantData& VariantData::operator<<(const QVariant &value)
+{
+    this->addRow(value);
+    return *this;
+}
+
+// Add new row with specified values
+VariantData& VariantData::operator<<(const QList<QVariant> &values)
+{
+    this->addRow(values);
+    return *this;
+}
+
+// Add new row with specified values
+VariantData& VariantData::operator<<(const QStringList &values)
+{
+    this->addRow(values);
+    return *this;
 }

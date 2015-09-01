@@ -21,6 +21,8 @@ namespace QtCSV
 
         // Add new empty row
         virtual void addEmptyRow();
+        // Add new row with one value
+        void addRow(const QString& value);
         // Add new row with specified values (as strings)
         virtual void addRow(const QStringList &values);
         // Clear all data
@@ -32,22 +34,25 @@ namespace QtCSV
         // Check if there are any data
         virtual bool isEmpty() const;
 
-//        friend bool operator==(const StringData& left, const StringData& right);
+        friend bool operator==(const StringData& left, const StringData& right)
+        {
+            return left.m_values == right.m_values;
+        }
+
+        friend bool operator!=(const StringData& left, const StringData& right)
+        {
+            return !(left == right);
+        }
+
+        // Add new row that would contain one value
+        StringData& operator<<(const QString &value);
+        // Add new row with specified values
+        StringData& operator<<(const QStringList &values);
 
     private:
         // Container for class data
         QList<QStringList> m_values;
     };
-
-//    bool operator==(const StringData& left, const StringData& right)
-//    {
-//        return left.m_values == right.m_values;
-//    }
-
-//    bool operator!=(const StringData& left, const StringData& right)
-//    {
-//        return !(left == right);
-//    }
 }
 
 #endif // STRINGDATA_H
