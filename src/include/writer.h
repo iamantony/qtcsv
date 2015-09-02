@@ -9,6 +9,7 @@
 namespace QtCSV
 {
     class AbstractData;
+    class ContentIterator;
 
     // Writer is a file-writer class that works with csv-files.
     // As a source of information it requires AbstractData-based container
@@ -35,9 +36,16 @@ namespace QtCSV
                           const QStringList &header = QStringList(),
                           const QStringList &footer = QStringList());
 
-    private:
-        // Get QIODevice mode
-        static QIODevice::OpenMode GetMode(const WriteMode &mode);
+        private:
+            // Append information to the file
+            static bool appendToFile(const QString &filePath,
+                                     ContentIterator &content);
+
+            // Overwrite file with new information
+            static bool overwriteFile(const QString &filePath,
+                                      ContentIterator &content);
+
+            static QString getTempFileName();
     };
 }
 

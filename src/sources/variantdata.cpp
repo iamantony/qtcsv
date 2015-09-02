@@ -1,5 +1,7 @@
 #include "include/variantdata.h"
 
+#include <QStringList>
+
 using namespace QtCSV;
 
 // Add new empty row

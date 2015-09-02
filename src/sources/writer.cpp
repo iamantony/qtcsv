@@ -1,13 +1,31 @@
 #include "include/writer.h"
 
+#include <limits>
+
 #include <QFile>
+#include <QDir>
 #include <QTextStream>
+#include <QCoreApplication>
 #include <QDebug>
 
 #include "include/abstractdata.h"
 #include "filechecker.h"
+#include "sources/contentiterator.h"
 
 using namespace QtCSV;
+
+class TempFileHandler
+{
+public:
+    explicit TempFileHandler(const QString &filePath) : m_filePath(filePath) {}
+    ~TempFileHandler()
+    {
+        QFile::remove(m_filePath);
+    }
+
+private:
+    QString m_filePath;
+};
 
 // Write data to csv-file
 // @input:
@@ -29,68 +47,127 @@ bool Writer::write(const QString &filePath,
                    const QStringList &header,
                    const QStringList &footer)
 {
-    if ( filePath.isEmpty() || data.isEmpty() )
+    if ( true == filePath.isEmpty() || true == data.isEmpty() )
     {
-        qDebug() << __FUNCTION__  << "Error - invalid arguments";
+        qDebug() << __FUNCTION__ << "Error - invalid arguments";
         return false;
     }
 
     if ( false == CheckFile(filePath) )
     {
-        qDebug() << __FUNCTION__  << "Error - wrong file path/name:" <<
-                    filePath;
+        qDebug() << __FUNCTION__ << "Error - wrong file path/name:" << filePath;
         return false;
     }
 
-    // Prepare data that would be written to file
-    QStringList content;
-    if ( false == header.isEmpty() )
+    ContentIterator content(data, separator, header, footer);
+
+    bool result = false;
+    switch (mode)
     {
-        content << header.join(separator);
+        case APPEND:
+            result = appendToFile(filePath, content);
+            break;
+        case REWRITE:
+        default:
+            result = overwriteFile(filePath, content);
     }
 
-    const int rowsNum = data.getNumberOfRows();
-    for (int i = 0; i < rowsNum; ++i)
-    {
-        content << data.getRowValues(i).join(separator);
-    }
+    return result;
+}
 
-    if ( false == footer.isEmpty() )
+// Append information to the file
+// @input:
+// - filePath - string with absolute path to csv-file
+// - content - not empty handler of content for csv-file
+// @output:
+// - bool - True if data was appended to the file, otherwise False
+bool Writer::appendToFile(const QString &filePath,
+                          ContentIterator &content)
+{
+    if ( true == filePath.isEmpty() || true == content.isEmpty() )
     {
-        content << footer.join(separator);
-    }
-
-    // Write prepaired data to file
-    QFile csvFile(filePath);
-    if ( false == csvFile.open(GetMode(mode) | QIODevice::Text) )
-    {
-        qDebug() << __FUNCTION__  << "Error - can't open file:" << filePath;
+        qDebug() << __FUNCTION__ << "Error - invalid arguments";
         return false;
     }
 
-    QTextStream stream(&csvFile);
-    stream << content.join("\n") << endl;
+    while( content.hasNext() )
+    {
+        QFile csvFile(filePath);
+        if ( false == csvFile.open(QIODevice::Append | QIODevice::Text) )
+        {
+            qDebug() << __FUNCTION__ << "Error - can't open file:" <<
+                        csvFile.fileName();
+            return false;
+        }
 
-    csvFile.close();
+        QTextStream stream(&csvFile);
+        stream << content.getNext();
+        stream.flush();
+        csvFile.close();
+    }
 
     return true;
 }
 
-// Get QIODevice mode
+// Overwrite file with new information
 // @input:
-// - mode - write mode
+// - filePath - string with absolute path to csv-file
+// - content - not empty handler of content for csv-file
 // @output:
-// - QIODevice::OpenMode - corresponding QIODevice::OpenMode
-QIODevice::OpenMode Writer::GetMode(const WriteMode &mode)
+// - bool - True if file was overwritten with new data, otherwise False
+bool Writer::overwriteFile(const QString &filePath,
+                           ContentIterator &content)
 {
-    switch (mode)
+    // Create temporary file object
+    QString tempFileName = getTempFileName();
+    if ( tempFileName.isEmpty() )
     {
-        case APPEND:
-            return QIODevice::Append;
-        case REWRITE:
-        default:
-            return QIODevice::WriteOnly;
+        qDebug() << __FUNCTION__ <<
+                    "Error - failed to create unique name for temp file";
+        return false;
     }
 
-    return QIODevice::WriteOnly;
+    TempFileHandler handler(tempFileName);
+
+    // Write information to temporary file
+    if ( false == appendToFile(tempFileName, content) )
+    {
+        return false;
+    }
+
+    // Remove "old" file if it exists
+    if ( true == QFile::exists(filePath) && false == QFile::remove(filePath) )
+    {
+        qDebug() << __FUNCTION__ << "Error - failed to remove file" << filePath;
+        return false;
+    }
+
+    // Copy "new" file (temporary file) to the destination path (replace
+    // "old" file)
+    if ( false == QFile::copy(tempFileName, filePath))
+    {
+        qDebug() << __FUNCTION__ <<
+                    "Error - failed to copy temp file to" << filePath;
+        return false;
+    }
+
+    return true;
+}
+
+QString Writer::getTempFileName()
+{
+    QString nameTemplate = QDir::tempPath() + "/qtcsv_" +
+                QString::number(QCoreApplication::applicationPid()) + "_%1.csv";
+
+    QString name;
+    for (int counter = 0; counter < std::numeric_limits<int>::max(); ++counter)
+    {
+        name = nameTemplate.arg(QString::number(qrand()));
+        if ( false == QFile::exists(name) )
+        {
+            break;
+        }
+    }
+
+    return name;
 }

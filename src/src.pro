@@ -15,7 +15,8 @@ SOURCES += \
     sources/writer.cpp \
     sources/variantdata.cpp \
     sources/stringdata.cpp \
-    sources/reader.cpp
+    sources/reader.cpp \
+    sources/contentiterator.cpp
 
 HEADERS += \
     include/qtcsv_global.h \
@@ -24,7 +25,8 @@ HEADERS += \
     include/stringdata.h \
     include/reader.h \
     include/abstractdata.h \
-    sources/filechecker.h
+    sources/filechecker.h \
+    sources/contentiterator.h
 
 unix {
     target.path = /usr/lib

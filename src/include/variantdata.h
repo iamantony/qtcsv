@@ -2,11 +2,12 @@
 #define QTCSVDATA_H
 
 #include <QList>
-#include <QStringList>
 #include <QVariant>
 
 #include "abstractdata.h"
 #include "qtcsv_global.h"
+
+class QStringList;
 
 namespace QtCSV
 {
