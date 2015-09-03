@@ -239,7 +239,7 @@ void TestWriter::testWriteDifferentDataAmount()
 {
     int rowsNumber = 10;
     int rowsMultiplier  = 4;
-    int rowCycles = 10;
+    int rowCycles = 9;
     QTime time;
     for ( int rc = 0; rc < rowCycles; ++rc )
     {
