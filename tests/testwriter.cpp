@@ -239,14 +239,14 @@ void TestWriter::testWriteDifferentDataAmount()
 {
     int rowsNumber = 10;
     int rowsMultiplier  = 4;
-    int rowCycles = 9;
+    int rowCycles = 10;
     QTime time;
-    for ( int i = 0; i < rowCycles; ++i )
+    for ( int rc = 0; rc < rowCycles; ++rc )
     {
         int symbolsNumber = 10;
         int symbolsMultiplier  = 5;
         int symbolCycles = 4;
-        for ( int j = 0; j < symbolCycles; ++j )
+        for ( int sc = 0; sc < symbolCycles; ++sc )
         {
             QtCSV::StringData data;
             try
@@ -277,17 +277,21 @@ void TestWriter::testWriteDifferentDataAmount()
 
             QVERIFY2(true == writeResult, "Failed to write to file");
 
-            QList<QStringList> result =
-                    QtCSV::Reader::readToList(getFilePath());
-            QVERIFY2(false == result.isEmpty(), "Failed to read file content");
-            QVERIFY2(data.getNumberOfRows() == result.size(),
-                     "Wrong number of rows");
-
-            for ( int k = 0; k < result.size(); ++k )
+            QFile csvFile(getFilePath());
+            if ( false == csvFile.open(QIODevice::ReadOnly | QIODevice::Text) )
             {
-                QVERIFY2(data.getRowValues(k) == result.at(k),
+                QFAIL("Failed to open created csv-file");
+            }
+
+            QTextStream stream(&csvFile);
+            for ( int line = 0; line < data.getNumberOfRows(); ++line )
+            {
+                QStringList lineElements = stream.readLine().split(",");
+                QVERIFY2(data.getRowValues(line) == lineElements,
                          "Original and result data are not the same");
             }
+
+            csvFile.close();
 
             symbolsNumber *= symbolsMultiplier;
         }

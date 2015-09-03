@@ -45,6 +45,7 @@ namespace QtCSV
             static bool overwriteFile(const QString &filePath,
                                       ContentIterator &content);
 
+            // Create unique name for the temporary file
             static QString getTempFileName();
     };
 }

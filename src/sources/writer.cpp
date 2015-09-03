@@ -14,6 +14,11 @@
 
 using namespace QtCSV;
 
+// Class TempFileHandler is a helper class. Its main purpose is to delete file
+// on destruction. It is kinda "smart poiter" but for temporary file. When you
+// create object of class TempFileHandler, you must specify absolute path
+// to the (temp) file (as a string). When object will be about to destroy, it
+// will try to remove specified file.
 class TempFileHandler
 {
 public:
@@ -32,7 +37,8 @@ private:
 // - filePath - string with absolute path to csv-file
 // - data - not empty AbstractData object that contains information that should
 // be written to csv-file
-// - separator - string or character that separate values in a row
+// - separator - string or character that would separate values in a row
+// (line) in csv-file
 // - mode - write mode of the file
 // - header - strings that will be written at the beginning of the file in
 // one line. separator will be used as delimiter character.
@@ -90,21 +96,22 @@ bool Writer::appendToFile(const QString &filePath,
         return false;
     }
 
+    QFile csvFile(filePath);
+    if ( false == csvFile.open(QIODevice::Append | QIODevice::Text) )
+    {
+        qDebug() << __FUNCTION__ << "Error - can't open file:" <<
+                    csvFile.fileName();
+        return false;
+    }
+
+    QTextStream stream(&csvFile);
     while( content.hasNext() )
     {
-        QFile csvFile(filePath);
-        if ( false == csvFile.open(QIODevice::Append | QIODevice::Text) )
-        {
-            qDebug() << __FUNCTION__ << "Error - can't open file:" <<
-                        csvFile.fileName();
-            return false;
-        }
-
-        QTextStream stream(&csvFile);
         stream << content.getNext();
-        stream.flush();
-        csvFile.close();
     }
+
+    stream.flush();
+    csvFile.close();
 
     return true;
 }
@@ -118,7 +125,7 @@ bool Writer::appendToFile(const QString &filePath,
 bool Writer::overwriteFile(const QString &filePath,
                            ContentIterator &content)
 {
-    // Create temporary file object
+    // Create path to the unique temporary file
     QString tempFileName = getTempFileName();
     if ( tempFileName.isEmpty() )
     {
@@ -154,20 +161,24 @@ bool Writer::overwriteFile(const QString &filePath,
     return true;
 }
 
+// Create unique name for the temporary file
+// @output:
+// - QString - string with the absolute path to the temporary file that is not
+// exist yet. If function failed to create unique path, it will return empty
+// string.
 QString Writer::getTempFileName()
 {
     QString nameTemplate = QDir::tempPath() + "/qtcsv_" +
                 QString::number(QCoreApplication::applicationPid()) + "_%1.csv";
 
-    QString name;
     for (int counter = 0; counter < std::numeric_limits<int>::max(); ++counter)
     {
-        name = nameTemplate.arg(QString::number(qrand()));
+        QString name = nameTemplate.arg(QString::number(qrand()));
         if ( false == QFile::exists(name) )
         {
-            break;
+            return name;
         }
     }
 
-    return name;
+    return QString();
 }
