@@ -189,7 +189,7 @@ void TestVariantData::testCopyAssignment()
 void TestVariantData::testOperatorInput()
 {
     QtCSV::VariantData data;
-    data << QString("1") << QVariant(3.14);
+    data << QString("1") << QVariant(double(3.14));
 
     QStringList thirdRow;
     thirdRow << "one" << "two" << "three";
@@ -200,7 +200,7 @@ void TestVariantData::testOperatorInput()
 
     QStringList expectedFirstRow, expectedSecondRow;
     expectedFirstRow << "1";
-    expectedSecondRow << "3.14";
+    expectedSecondRow << QVariant(double(3.14)).toString();
 
     QVERIFY2(expectedFirstRow == data.getRowValues(0),
              "Wrong data for first row");
