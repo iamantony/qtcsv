@@ -4,7 +4,7 @@
 #include <QTextStream>
 #include <QDebug>
 
-#include "abstractdata.h"
+#include "include/abstractdata.h"
 #include "filechecker.h"
 
 using namespace QtCSV;
