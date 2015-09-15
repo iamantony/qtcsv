@@ -66,13 +66,13 @@ QString ContentIterator::getNext()
     // Check if m_dataRow is less than number of rows in m_data. If this is
     // true, add to the chunk information from the m_data. Otherwise, this means
     // that we already have passed all the rows in the m_data.
-    if ( m_dataRow < m_data.getNumberOfRows() )
+    if ( m_dataRow < m_data.rowCount() )
     {
         int endRow = qMin(m_dataRow + m_chunkSize - rowsNumber,
-                          m_data.getNumberOfRows());
+                          m_data.rowCount());
         for ( int i = m_dataRow; i < endRow; ++i, ++m_dataRow, ++rowsNumber )
         {
-            content.append(m_data.getRowValues(i).join(m_separator))
+            content.append(m_data.rowValues(i).join(m_separator))
                     .append('\n');
         }
     }
