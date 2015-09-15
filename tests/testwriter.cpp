@@ -91,13 +91,13 @@ void TestWriter::testWriteFromVariantData()
     QList<QStringList> data = QtCSV::Reader::readToList(getFilePath());
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
     QVERIFY2(3 == data.size(), "Wrong number of rows");
-    QVERIFY2(varData.getRowValues(0) == data.at(0),
+    QVERIFY2(varData.rowValues(0) == data.at(0),
              "Wrong values in first row");
 
-    QVERIFY2(varData.getRowValues(1) == data.at(1),
+    QVERIFY2(varData.rowValues(1) == data.at(1),
              "Wrong values in second row");
 
-    QVERIFY2(varData.getRowValues(2) == data.at(2),
+    QVERIFY2(varData.rowValues(2) == data.at(2),
              "Wrong values in third row");
 }
 
@@ -284,10 +284,10 @@ void TestWriter::testWriteDifferentDataAmount()
             }
 
             QTextStream stream(&csvFile);
-            for ( int line = 0; line < data.getNumberOfRows(); ++line )
+            for ( int line = 0; line < data.rowCount(); ++line )
             {
                 QStringList lineElements = stream.readLine().split(",");
-                QVERIFY2(data.getRowValues(line) == lineElements,
+                QVERIFY2(data.rowValues(line) == lineElements,
                          "Original and result data are not the same");
             }
 
