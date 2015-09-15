@@ -1,13 +1,13 @@
 #ifndef ABSTRACTDATA_H
 #define ABSTRACTDATA_H
 
-#include <QStringList>
-
 #include "qtcsv_global.h"
+
+class QStringList;
 
 namespace QtCSV
 {
-    // AbstractData is pure abstract container class. Its main purpouse is to
+    // AbstractData is a pure abstract container class. Its main purpouse is to
     // provide common interface for concrete container classes, that could be
     // used in processing of csv-files.
     //
@@ -43,15 +43,15 @@ namespace QtCSV
         // Add new empty row
         virtual void addEmptyRow() = 0;
         // Add new row with specified values (as strings)
-        virtual void addRow(const QStringList &values) = 0;
+        virtual void addRow(const QStringList& values) = 0;
         // Clear all data
         virtual void clear() = 0;
-        // Get number of rows
-        virtual int getNumberOfRows() const = 0;
-        // Get values (as list of strings) of specified row
-        virtual QStringList getRowValues(const int &row) const = 0;
         // Check if there are any rows
         virtual bool isEmpty() const = 0;
+        // Get number of rows
+        virtual int rowCount() const = 0;
+        // Get values of specified row as list of strings
+        virtual QStringList rowValues(const int& row) const = 0;
     };
 }
 
