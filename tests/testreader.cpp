@@ -99,7 +99,7 @@ void TestReader::testReadFileWithCommasToStringData()
     QVERIFY2(true == readResult, "Failed to read file content");
 
     QVERIFY2(false == strData.isEmpty(), "StringData is empty");
-    QVERIFY2(5 == strData.getNumberOfRows(), "Wrong number of rows");
+    QVERIFY2(5 == strData.rowCount(), "Wrong number of rows");
 
     QStringList expectedFirstRow;
     expectedFirstRow << "one" << "two" << "three";
@@ -116,11 +116,11 @@ void TestReader::testReadFileWithCommasToStringData()
     QStringList expectedFifthRow;
     expectedFifthRow << "3.14";
 
-    QVERIFY2(expectedFirstRow == strData.getRowValues(0), "Wrong first row");
-    QVERIFY2(expectedSecondRow == strData.getRowValues(1), "Wrong second row");
-    QVERIFY2(expectedThirdRow == strData.getRowValues(2), "Wrong third row");
-    QVERIFY2(expectedFourthRow == strData.getRowValues(3), "Wrong fourth row");
-    QVERIFY2(expectedFifthRow == strData.getRowValues(4), "Wrong fifth row");
+    QVERIFY2(expectedFirstRow == strData.rowValues(0), "Wrong first row");
+    QVERIFY2(expectedSecondRow == strData.rowValues(1), "Wrong second row");
+    QVERIFY2(expectedThirdRow == strData.rowValues(2), "Wrong third row");
+    QVERIFY2(expectedFourthRow == strData.rowValues(3), "Wrong fourth row");
+    QVERIFY2(expectedFifthRow == strData.rowValues(4), "Wrong fifth row");
 }
 
 void TestReader::testReadFileWithCommasToVariantData()
@@ -131,7 +131,7 @@ void TestReader::testReadFileWithCommasToVariantData()
     QVERIFY2(true == readResult, "Failed to read file content");
 
     QVERIFY2(false == varData.isEmpty(), "StringData is empty");
-    QVERIFY2(5 == varData.getNumberOfRows(), "Wrong number of rows");
+    QVERIFY2(5 == varData.rowCount(), "Wrong number of rows");
 
     QStringList expectedFirstRow;
     expectedFirstRow << "one" << "two" << "three";
@@ -148,11 +148,11 @@ void TestReader::testReadFileWithCommasToVariantData()
     QStringList expectedFifthRow;
     expectedFifthRow << "3.14";
 
-    QVERIFY2(expectedFirstRow == varData.getRowValues(0), "Wrong first row");
-    QVERIFY2(expectedSecondRow == varData.getRowValues(1), "Wrong second row");
-    QVERIFY2(expectedThirdRow == varData.getRowValues(2), "Wrong third row");
-    QVERIFY2(expectedFourthRow == varData.getRowValues(3), "Wrong fourth row");
-    QVERIFY2(expectedFifthRow == varData.getRowValues(4), "Wrong fifth row");
+    QVERIFY2(expectedFirstRow == varData.rowValues(0), "Wrong first row");
+    QVERIFY2(expectedSecondRow == varData.rowValues(1), "Wrong second row");
+    QVERIFY2(expectedThirdRow == varData.rowValues(2), "Wrong third row");
+    QVERIFY2(expectedFourthRow == varData.rowValues(3), "Wrong fourth row");
+    QVERIFY2(expectedFifthRow == varData.rowValues(4), "Wrong fifth row");
 }
 
 void TestReader::testReadFileWithSemicolons()
@@ -181,7 +181,7 @@ void TestReader::testReadFileWithSemicolonsToStringData()
     QVERIFY2(true == readResult, "Failed to read file content");
 
     QVERIFY2(false == strData.isEmpty(), "Failed to read file content");
-    QVERIFY2(2 == strData.getNumberOfRows(), "Wrong number of rows");
+    QVERIFY2(2 == strData.rowCount(), "Wrong number of rows");
 
     QStringList expectedFirstRow;
     expectedFirstRow << "1" << "2" << "3";
@@ -189,8 +189,8 @@ void TestReader::testReadFileWithSemicolonsToStringData()
     QStringList expectedSecondRow;
     expectedSecondRow << "j" << "io" << "pp";
 
-    QVERIFY2(expectedFirstRow == strData.getRowValues(0), "Wrong first row");
-    QVERIFY2(expectedSecondRow == strData.getRowValues(1), "Wrong second row");
+    QVERIFY2(expectedFirstRow == strData.rowValues(0), "Wrong first row");
+    QVERIFY2(expectedSecondRow == strData.rowValues(1), "Wrong second row");
 }
 
 void TestReader::testReadFileWithSemicolonsToVariantData()
@@ -201,7 +201,7 @@ void TestReader::testReadFileWithSemicolonsToVariantData()
     QVERIFY2(true == readResult, "Failed to read file content");
 
     QVERIFY2(false == varData.isEmpty(), "Failed to read file content");
-    QVERIFY2(2 == varData.getNumberOfRows(), "Wrong number of rows");
+    QVERIFY2(2 == varData.rowCount(), "Wrong number of rows");
 
     QStringList expectedFirstRow;
     expectedFirstRow << "1" << "2" << "3";
@@ -209,8 +209,8 @@ void TestReader::testReadFileWithSemicolonsToVariantData()
     QStringList expectedSecondRow;
     expectedSecondRow << "j" << "io" << "pp";
 
-    QVERIFY2(expectedFirstRow == varData.getRowValues(0), "Wrong first row");
-    QVERIFY2(expectedSecondRow == varData.getRowValues(1), "Wrong second row");
+    QVERIFY2(expectedFirstRow == varData.rowValues(0), "Wrong first row");
+    QVERIFY2(expectedSecondRow == varData.rowValues(1), "Wrong second row");
 }
 
 QString TestReader::getPathToFolderWithTestFiles() const
