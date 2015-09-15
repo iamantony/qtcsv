@@ -9,10 +9,8 @@
 
 namespace QtCSV
 {
-    // StringData is a simple container class. It implement interface of
-    // AbstractData class. It use strings to store information. It doesn't
-    // provide support for converting other types to strings, so it will be
-    // your work.
+    // StringData is a simple container class. It implements interface of
+    // AbstractData class and uses strings to store information.
     class QTCSVSHARED_EXPORT StringData : public AbstractData
     {
     public:
@@ -24,15 +22,25 @@ namespace QtCSV
         // Add new row with one value
         void addRow(const QString& value);
         // Add new row with specified values (as strings)
-        virtual void addRow(const QStringList &values);
+        virtual void addRow(const QStringList& values);
         // Clear all data
         virtual void clear();
-        // Get number of rows
-        virtual int getNumberOfRows() const;
-        // Get values (as list of strings) of specified row
-        virtual QStringList getRowValues(const int &row) const;
+        // Insert new row at index position 'row'
+        void insertRow(const int& row, const QString& value);
+        void insertRow(const int& row, const QStringList& values);
         // Check if there are any data
         virtual bool isEmpty() const;
+        // Removes the row at index position 'row'
+        void removeRow(const int& row);
+        // Replaces the row at index position 'row' with new row
+        void replaceRow(const int& row, const QString& value);
+        void replaceRow(const int& row, const QStringList& values);
+        // Reserve space for 'size' rows
+        void reserve(const int& size);
+        // Get number of rows
+        virtual int rowCount() const;
+        // Get values (as list of strings) of specified row
+        virtual QStringList rowValues(const int& row) const;
 
         friend bool operator==(const StringData& left, const StringData& right)
         {
@@ -45,9 +53,9 @@ namespace QtCSV
         }
 
         // Add new row that would contain one value
-        StringData& operator<<(const QString &value);
+        StringData& operator<<(const QString& value);
         // Add new row with specified values
-        StringData& operator<<(const QStringList &values);
+        StringData& operator<<(const QStringList& values);
 
     private:
         // Container for class data

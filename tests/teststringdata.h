@@ -18,10 +18,13 @@ private Q_SLOTS:
     void testAddRows();
     void testClearEmptyData();
     void testClearNotEmptyData();
+    void testInsertRows();
     void testCompareForEquality();
     void testCopyConstruction();
     void testCopyAssignment();
     void testOperatorInput();
+    void testRemoveRow();
+    void testReplaceRow();
 };
 
 #endif // TESTSTRINGDATA_H
