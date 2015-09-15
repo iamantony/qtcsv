@@ -35,9 +35,9 @@ namespace QtCSV
         // Clear all data
         virtual void clear();
         // Get number of rows
-        virtual int getNumberOfRows() const;
+        virtual int rowCount() const;
         // Get values (as list of strings) of specified row
-        virtual QStringList getRowValues(const int &row) const;
+        virtual QStringList rowValues(const int &row) const;
         // Check if there are any rows
         virtual bool isEmpty() const;
 

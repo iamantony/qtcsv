@@ -75,7 +75,7 @@ void VariantData::clear()
 // Get number of rows
 // @output:
 // - int - current number of rows
-int VariantData::getNumberOfRows() const
+int VariantData::rowCount() const
 {
     return m_values.size();
 }
@@ -86,9 +86,9 @@ int VariantData::getNumberOfRows() const
 // @output:
 // - QStringList - values of row. If row have invalid value, function will
 // return empty QStringList.
-QStringList VariantData::getRowValues(const int &row) const
+QStringList VariantData::rowValues(const int &row) const
 {
-    if ( row < 0 || getNumberOfRows() <= row )
+    if ( row < 0 || rowCount() <= row )
     {
         return QStringList();
     }
