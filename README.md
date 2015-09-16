@@ -6,7 +6,7 @@ Author: [Antony Cherepanov][1]
 E-mail: antony.cherepanov@gmail.com
 
 Small easy-to-use library for reading and writing [csv-files][2] in Qt.  
-Tested on Ubuntu 12.04 with Qt 4.8 and higher.
+Tested on Ubuntu 12.04 with gcc 4.6.3, Qt 4.8 and higher.
 
 ## Quick Example
 ```cpp
@@ -271,9 +271,6 @@ So the structure of folder MyProject will be like this:
     ```
 
 8. Build and run. In console you'll see content of the created csv-file.
-
-## Tags
-c++, qt, qt4, qt5, csv, file
 
 [1]: https://github.com/iamantony
 [2]: http://en.wikipedia.org/wiki/Comma-separated_values
