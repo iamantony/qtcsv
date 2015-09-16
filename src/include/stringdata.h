@@ -1,21 +1,24 @@
 #ifndef STRINGDATA_H
 #define STRINGDATA_H
 
-#include <QList>
-#include <QStringList>
-
 #include "qtcsv_global.h"
 #include "abstractdata.h"
+
+class QString;
+class QStringList;
 
 namespace QtCSV
 {
     // StringData is a simple container class. It implements interface of
-    // AbstractData class and uses strings to store information.
+    // AbstractData class and uses strings to store information. Also it
+    // provide basic functions such as addRow(), insertRow(), removeRow(),
+    // replaceRow() and so on.
     class QTCSVSHARED_EXPORT StringData : public AbstractData
     {
     public:
-        explicit StringData() {}
-        virtual ~StringData() {}
+        explicit StringData();
+        StringData(const StringData& other);
+        virtual ~StringData();
 
         // Add new empty row
         virtual void addEmptyRow();
@@ -26,15 +29,23 @@ namespace QtCSV
         // Clear all data
         virtual void clear();
         // Insert new row at index position 'row'
-        void insertRow(const int& row, const QString& value);
-        void insertRow(const int& row, const QStringList& values);
+        void insertRow(const int& row,
+                       const QString& value);
+
+        void insertRow(const int& row,
+                       const QStringList& values);
+
         // Check if there are any data
         virtual bool isEmpty() const;
         // Removes the row at index position 'row'
         void removeRow(const int& row);
         // Replaces the row at index position 'row' with new row
-        void replaceRow(const int& row, const QString& value);
-        void replaceRow(const int& row, const QStringList& values);
+        void replaceRow(const int& row,
+                        const QString& value);
+
+        void replaceRow(const int& row,
+                        const QStringList& values);
+
         // Reserve space for 'size' rows
         void reserve(const int& size);
         // Get number of rows
@@ -42,15 +53,15 @@ namespace QtCSV
         // Get values (as list of strings) of specified row
         virtual QStringList rowValues(const int& row) const;
 
-        friend bool operator==(const StringData& left, const StringData& right)
-        {
-            return left.m_values == right.m_values;
-        }
+        bool operator==(const StringData& other) const;
 
-        friend bool operator!=(const StringData& left, const StringData& right)
+        friend bool operator!=(const StringData& left,
+                               const StringData& right)
         {
             return !(left == right);
         }
+
+        StringData& operator=(const StringData& other);
 
         // Add new row that would contain one value
         StringData& operator<<(const QString& value);
@@ -58,8 +69,8 @@ namespace QtCSV
         StringData& operator<<(const QStringList& values);
 
     private:
-        // Container for class data
-        QList<QStringList> m_values;
+        class StringDataPrivate;
+        StringDataPrivate* d_ptr;
     };
 }
 

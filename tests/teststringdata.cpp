@@ -156,6 +156,11 @@ void TestStringData::testCompareForEquality()
     secondData.addRow(firstRow);
     secondData.addRow(secondRow);
 
+    QVERIFY2(firstData == firstData,
+             "Failed to compare for equality same object");
+    QVERIFY2(false == (firstData != firstData),
+             "Failed to compare for equality same object");
+
     QVERIFY2(firstData == secondData, "Objects are not the same");
     QVERIFY2(false == (firstData != secondData), "Objects are not the same");
 
@@ -175,14 +180,20 @@ void TestStringData::testCopyConstruction()
     firstData.addRow(firstRow);
     firstData.addRow(secondRow);
 
-    QtCSV::StringData secondData(firstData);
+    {
+        QtCSV::StringData secondData(firstData);
 
-    QVERIFY2(firstData.rowCount() == secondData.rowCount(),
-             "Wrong number of rows");
-    QVERIFY2(firstRow == secondData.rowValues(0),
-             "Wrong data for first row");
-    QVERIFY2(secondRow == secondData.rowValues(1),
-             "Wrong data for second row");
+        QVERIFY2(firstData.rowCount() == secondData.rowCount(),
+                 "Wrong number of rows");
+        QVERIFY2(firstRow == secondData.rowValues(0),
+                 "Wrong data for first row");
+        QVERIFY2(secondRow == secondData.rowValues(1),
+                 "Wrong data for second row");
+    }
+
+    QVERIFY2(2 == firstData.rowCount(), "Wrong number of rows");
+    QVERIFY2(firstRow == firstData.rowValues(0), "Wrong data for first row");
+    QVERIFY2(secondRow == firstData.rowValues(1), "Wrong data for second row");
 }
 
 void TestStringData::testCopyAssignment()
@@ -195,15 +206,21 @@ void TestStringData::testCopyAssignment()
     firstData.addRow(firstRow);
     firstData.addRow(secondRow);
 
-    QtCSV::StringData secondData;
-    secondData = firstData;
+    {
+        QtCSV::StringData secondData;
+        secondData = firstData;
 
-    QVERIFY2(firstData.rowCount() == secondData.rowCount(),
-             "Wrong number of rows");
-    QVERIFY2(firstRow == secondData.rowValues(0),
-             "Wrong data for first row");
-    QVERIFY2(secondRow == secondData.rowValues(1),
-             "Wrong data for second row");
+        QVERIFY2(firstData.rowCount() == secondData.rowCount(),
+                 "Wrong number of rows");
+        QVERIFY2(firstRow == secondData.rowValues(0),
+                 "Wrong data for first row");
+        QVERIFY2(secondRow == secondData.rowValues(1),
+                 "Wrong data for second row");
+    }
+
+    QVERIFY2(2 == firstData.rowCount(), "Wrong number of rows");
+    QVERIFY2(firstRow == firstData.rowValues(0), "Wrong data for first row");
+    QVERIFY2(secondRow == firstData.rowValues(1), "Wrong data for second row");
 }
 
 void TestStringData::testOperatorInput()
