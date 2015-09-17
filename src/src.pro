@@ -9,7 +9,7 @@ QMAKE_CXXFLAGS_WARN_ON += -Werror -Wformat=2 -Wuninitialized -Winit-self \
         -Wdisabled-optimization -Wcast-align -Wcast-qual
 
 DEFINES += QTCSV_LIBRARY
-INCLUDEPATH += ./include
+INCLUDEPATH += $$PWD
 
 SOURCES += \
     sources/writer.cpp \
