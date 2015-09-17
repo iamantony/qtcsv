@@ -74,10 +74,10 @@ getting rows values, clearing all information and so on. Basic stuff for a
 container class.
 
 If you have said *Pure Abstract Class*, you must also say *Implementation*.
-Don't worry, we have some: **[StringData][6]** and **[VariantData][7]**.
+Don't worry, we have some:
 
 ##### StringData
-**StringData** have the same interface as **AbstractData** (plus some useful
+**[StringData][6]** have the same interface as **AbstractData** (plus some useful
 functions for inserting rows, removing rows and so on) and stores
 all data as strings. It's useful when information that you want to save
 in csv-file is represented as strings.
@@ -87,49 +87,49 @@ If you store information in different types - integers, floating point
 values, strings or (almost) anything else (example: [1, 3.14, "check"]) -
 and you don't want to manually transform each element to string, then you
 can use **QVariant** magic. Wrap your data into **QVariants** and pass it to
-**VariantData** class.
+**[VariantData][7]** class.
 
 #### Reader
 Use **Reader** class to read csv-files. It's simple. It has only two funtions:
 
 1. **QList\<QStringList\> readToList(QString& filePath, QString& separator, QTextCodec* codec)**
 
-    1.1 *filePath* - string with absolute path to existent csv-file 
-    (example: "/home/user/my-file.csv");  
-    1.2 *separator* (optional) - delimeter symbol, that separate elements 
-    in a row (by default it is comma - ",");  
-    1.3 *codec* (optional) - pointer to the codec object that will be used 
-    to read data from the file (by default it is codec for locale).  
+  - *filePath* - string with absolute path to existent csv-file 
+  (example: "/home/user/my-file.csv");  
+  - *separator* (optional) - delimeter symbol, that separate elements 
+  in a row (by default it is comma - ",");  
+  - *codec* (optional) - pointer to the codec object that will be used 
+  to read data from the file (by default it is codec for locale).  
     
-    As a result function will return **QList\<QStringList\>** with
-    that hold content of the file. If all went smooth, list will not be 
-    empty and size of it will be equal to number of rows in csv-file. Each
-    **QStringList** will contain elements of the corresponding row, 
-    represented as strings.
+  As a result function will return **QList\<QStringList\>** with
+  that hold content of the file. If all went smooth, list will not be 
+  empty and size of it will be equal to number of rows in csv-file. Each
+  **QStringList** will contain elements of the corresponding row, 
+  represented as strings.
 
 2. **bool Reader::readToData(QString& filePath, AbstractData& data, QString& separator, QTextCodec* codec)**
 
-    Second function is a little more advanced and, I hope, a little more useful.
+  Second function is a little more advanced and, I hope, a little more useful.
     
-    2.1 *filePath* - string with absolute path to existent csv-file;  
-    2.2 *data* - reference to **AbstractData**-based class object;  
-    2.3 *separator* (optional) - delimeter symbol;  
-    2.4 *codec* (optional) - pointer to the codec object.  
+  - *filePath* - string with absolute path to existent csv-file;  
+  - *data* - reference to **AbstractData**-based class object;  
+  - *separator* (optional) - delimeter symbol;  
+  - *codec* (optional) - pointer to the codec object.  
 
-    Function will save content of the file in *data* object, using virtual 
-    function **AbstractData::addRow(QStringList)**. If you pass to the 
-    function **readToData()** object of class **StringData** or 
-    **VariantData**, elements of csv-file will be saved in them as strings.
+  Function will save content of the file in *data* object, using virtual 
+  function **AbstractData::addRow(QStringList)**. If you pass to the 
+  function **readToData()** object of class **StringData** or 
+  **VariantData**, elements of csv-file will be saved in them as strings.
     
-    If you are not happy with this fact, you can create your own
-    **AbstractData**-based container class and implement function
-    **addRow(QStringList)** in a way you want it.
+  If you are not happy with this fact, you can create your own
+  **AbstractData**-based container class and implement function
+  **addRow(QStringList)** in a way you want it.
     
-    For example, if you know, that each row of your csv-file contains 3 elements
-    (integer value, floating-point value and string), then in function
-    **addRow(QStringList)** you can convert first element of **QStringList**
-    to int, second - to double and save all three elements to some 
-    internal container (or do with them whatever you want).
+  For example, if you know, that each row of your csv-file contains 3 elements
+  (integer value, floating-point value and string), then in function
+  **addRow(QStringList)** you can convert first element of **QStringList**
+  to int, second - to double and save all three elements to some 
+  internal container (or do with them whatever you want).
 
 #### Writer
 Use **Writer** class to write to csv-files. It's simpler than **Reader**. It has
@@ -145,21 +145,21 @@ bool Writer::write(const QString& filePath,
                    QTextCodec* codec)
 ```
 
-1. *filePath* - string with absolute path to csv-file (new or existent);
-2. *data* - object, that contains information that you want to write to csv-file.  
+- *filePath* - string with absolute path to csv-file (new or existent);
+- *data* - object, that contains information that you want to write to csv-file.  
 **Writer** internally will use **QStringList AbstractData::rowValues(int)**
 function to get row values;
-3. *separator* (optional) - delimeter symbol (default symbol is comma - ",");
-4. *mode* (optional) - write mode flag.  
+- *separator* (optional) - delimeter symbol (default symbol is comma - ",");
+- *mode* (optional) - write mode flag.  
 If it set to **WriteMode::REWRITE** and csv-file exist, then csv-file will be
 rewritten. If *mode* set to **WriteMode::APPEND** and csv-file exist, then new
 information will be appended to the end of the file.  
 By default mode set to **WriteMode::REWRITE**.
-5. *header* (optional) - strings that will be written at the beginning of the file, separated
+- *header* (optional) - strings that will be written at the beginning of the file, separated
 with defined separator (empty by default);
-6. *footer* (optional) - strings that will be written at the end of the file, separated
+- *footer* (optional) - strings that will be written at the end of the file, separated
 with defined separator (empty by default);
-7. *codec* (optional) - pointer to the codec object that will be used 
+- *codec* (optional) - pointer to the codec object that will be used 
 to write data to the file (by default it is codec for locale).
 
 ## Requirements
