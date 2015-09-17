@@ -54,8 +54,7 @@ void TestStringData::testAddOneRowUsingOneString()
 
     QStringList expectedRow;
     expectedRow << value;
-    QVERIFY2(expectedRow == strData.rowValues(0),
-             "Wrong data for empty row");
+    QVERIFY2(expectedRow == strData.rowValues(0), "Wrong data for empty row");
 }
 
 void TestStringData::testAddRows()
@@ -75,12 +74,9 @@ void TestStringData::testAddRows()
 
     QVERIFY2(false == strData.isEmpty(), "StringData is empty");
     QVERIFY2(3 == strData.rowCount(), "Wrong number of rows");
-    QVERIFY2(valuesFirst == strData.rowValues(0),
-             "Wrong data for first row");
-    QVERIFY2(valuesSecond == strData.rowValues(1),
-             "Wrong data for second row");
-    QVERIFY2(valuesThird == strData.rowValues(2),
-             "Wrong data for third row");
+    QVERIFY2(valuesFirst == strData.rowValues(0), "Wrong data for first row");
+    QVERIFY2(valuesSecond == strData.rowValues(1), "Wrong data for second row");
+    QVERIFY2(valuesThird == strData.rowValues(2), "Wrong data for third row");
 }
 
 void TestStringData::testClearEmptyData()
@@ -121,8 +117,7 @@ void TestStringData::testInsertRows()
     strData.insertRow(0, valuesFirst);
 
     QVERIFY2(1 == strData.rowCount(), "Wrong number of rows");
-    QVERIFY2(valuesFirst == strData.rowValues(0),
-             "Wrong data for first row");
+    QVERIFY2(valuesFirst == strData.rowValues(0), "Wrong data for first row");
 
     strData.addEmptyRow();
     strData.addRow(stringOne);
@@ -130,14 +125,12 @@ void TestStringData::testInsertRows()
     strData.insertRow(100, stringTwo);
 
     QVERIFY2(5 == strData.rowCount(), "Wrong number of rows");
-    QVERIFY2(valuesFirst == strData.rowValues(0),
-             "Wrong data for first row");
-    QVERIFY2(valuesSecond == strData.rowValues(1),
-             "Wrong data for second row");
-    QVERIFY2(QStringList() == strData.rowValues(2),
-             "Wrong data for third row");
+    QVERIFY2(valuesFirst == strData.rowValues(0), "Wrong data for first row");
+    QVERIFY2(valuesSecond == strData.rowValues(1), "Wrong data for second row");
+    QVERIFY2(QStringList() == strData.rowValues(2), "Wrong data for third row");
     QVERIFY2((QStringList() << stringOne) == strData.rowValues(3),
              "Wrong data for fourth row");
+
     QVERIFY2((QStringList() << stringTwo) == strData.rowValues(4),
              "Wrong data for fifth row");
 }
@@ -158,6 +151,7 @@ void TestStringData::testCompareForEquality()
 
     QVERIFY2(firstData == firstData,
              "Failed to compare for equality same object");
+
     QVERIFY2(false == (firstData != firstData),
              "Failed to compare for equality same object");
 
@@ -185,8 +179,10 @@ void TestStringData::testCopyConstruction()
 
         QVERIFY2(firstData.rowCount() == secondData.rowCount(),
                  "Wrong number of rows");
+
         QVERIFY2(firstRow == secondData.rowValues(0),
                  "Wrong data for first row");
+
         QVERIFY2(secondRow == secondData.rowValues(1),
                  "Wrong data for second row");
     }
@@ -212,8 +208,10 @@ void TestStringData::testCopyAssignment()
 
         QVERIFY2(firstData.rowCount() == secondData.rowCount(),
                  "Wrong number of rows");
+
         QVERIFY2(firstRow == secondData.rowValues(0),
                  "Wrong data for first row");
+
         QVERIFY2(secondRow == secondData.rowValues(1),
                  "Wrong data for second row");
     }
@@ -239,12 +237,11 @@ void TestStringData::testOperatorInput()
     expectedFirstRow << "1";
     expectedSecondRow << "one";
 
-    QVERIFY2(expectedFirstRow == data.rowValues(0),
-             "Wrong data for first row");
+    QVERIFY2(expectedFirstRow == data.rowValues(0), "Wrong data for first row");
     QVERIFY2(expectedSecondRow == data.rowValues(1),
              "Wrong data for second row");
-    QVERIFY2(thirdRow == data.rowValues(2),
-             "Wrong data for third row");
+
+    QVERIFY2(thirdRow == data.rowValues(2), "Wrong data for third row");
 }
 
 void TestStringData::testRemoveRow()
@@ -266,10 +263,8 @@ void TestStringData::testRemoveRow()
     strData.removeRow(2);
 
     QVERIFY2(3 == strData.rowCount(), "Wrong number of rows");
-    QVERIFY2(valuesFirst == strData.rowValues(0),
-             "Wrong data for first row");
-    QVERIFY2(valuesSecond == strData.rowValues(1),
-             "Wrong data for second row");
+    QVERIFY2(valuesFirst == strData.rowValues(0), "Wrong data for first row");
+    QVERIFY2(valuesSecond == strData.rowValues(1), "Wrong data for second row");
     QVERIFY2((QStringList() << stringTwo) == strData.rowValues(2),
              "Wrong data for third row");
 }
@@ -290,10 +285,8 @@ void TestStringData::testReplaceRow()
              "Wrong data for first row");
 
     strData.replaceRow(2, QStringList());
-    QVERIFY2(QStringList() == strData.rowValues(2),
-             "Wrong data for third row");
+    QVERIFY2(QStringList() == strData.rowValues(2), "Wrong data for third row");
 
     strData.replaceRow(1, valuesFirst);
-    QVERIFY2(valuesFirst == strData.rowValues(1),
-             "Wrong data for second row");
+    QVERIFY2(valuesFirst == strData.rowValues(1), "Wrong data for second row");
 }
