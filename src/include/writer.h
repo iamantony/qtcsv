@@ -1,8 +1,9 @@
-#ifndef QCSVWRITER_H
-#define QCSVWRITER_H
+#ifndef QTCSVWRITER_H
+#define QTCSVWRITER_H
 
 #include <QString>
 #include <QStringList>
+#include <QTextCodec>
 
 #include "qtcsv_global.h"
 
@@ -29,25 +30,14 @@ namespace QtCSV
         };
 
         // Write data to csv-file
-        static bool write(const QString &filePath,
-                          const AbstractData &data,
-                          const QString &separator = ",",
-                          const WriteMode &mode = REWRITE,
-                          const QStringList &header = QStringList(),
-                          const QStringList &footer = QStringList());
-
-        private:
-            // Append information to the file
-            static bool appendToFile(const QString &filePath,
-                                     ContentIterator &content);
-
-            // Overwrite file with new information
-            static bool overwriteFile(const QString &filePath,
-                                      ContentIterator &content);
-
-            // Create unique name for the temporary file
-            static QString getTempFileName();
+        static bool write(const QString& filePath,
+                          const AbstractData& data,
+                          const QString& separator = ",",
+                          const WriteMode& mode = REWRITE,
+                          const QStringList& header = QStringList(),
+                          const QStringList& footer = QStringList(),
+                          QTextCodec* codec = QTextCodec::codecForLocale());
     };
 }
 
-#endif // QCSVWRITER_H
+#endif // QTCSVWRITER_H

@@ -32,63 +32,33 @@ private:
     QString m_filePath;
 };
 
-// Write data to csv-file
-// @input:
-// - filePath - string with absolute path to csv-file
-// - data - not empty AbstractData object that contains information that should
-// be written to csv-file
-// - separator - string or character that would separate values in a row
-// (line) in csv-file
-// - mode - write mode of the file
-// - header - strings that will be written at the beginning of the file in
-// one line. separator will be used as delimiter character.
-// - footer - strings that will be written at the end of the file in
-// one line. separator will be used as delimiter character.
-// @output:
-// - bool - True if data was written to the file, otherwise False
-bool Writer::write(const QString &filePath,
-                   const AbstractData &data,
-                   const QString &separator,
-                   const WriteMode &mode,
-                   const QStringList &header,
-                   const QStringList &footer)
+class WriterPrivate
 {
-    if ( true == filePath.isEmpty() || true == data.isEmpty() )
-    {
-        qDebug() << __FUNCTION__ << "Error - invalid arguments";
-        return false;
-    }
+public:
+    // Append information to the file
+    static bool appendToFile(const QString& filePath,
+                             ContentIterator& content,
+                             QTextCodec* codec);
 
-    if ( false == CheckFile(filePath) )
-    {
-        qDebug() << __FUNCTION__ << "Error - wrong file path/name:" << filePath;
-        return false;
-    }
+    // Overwrite file with new information
+    static bool overwriteFile(const QString& filePath,
+                              ContentIterator& content,
+                              QTextCodec* codec);
 
-    ContentIterator content(data, separator, header, footer);
-
-    bool result = false;
-    switch (mode)
-    {
-        case APPEND:
-            result = appendToFile(filePath, content);
-            break;
-        case REWRITE:
-        default:
-            result = overwriteFile(filePath, content);
-    }
-
-    return result;
-}
+    // Create unique name for the temporary file
+    static QString getTempFileName();
+};
 
 // Append information to the file
 // @input:
 // - filePath - string with absolute path to csv-file
 // - content - not empty handler of content for csv-file
+// - codec - pointer to codec object that would be used for file writing
 // @output:
 // - bool - True if data was appended to the file, otherwise False
-bool Writer::appendToFile(const QString &filePath,
-                          ContentIterator &content)
+bool WriterPrivate::appendToFile(const QString& filePath,
+                                 ContentIterator& content,
+                                 QTextCodec* codec)
 {
     if ( true == filePath.isEmpty() || true == content.isEmpty() )
     {
@@ -105,6 +75,7 @@ bool Writer::appendToFile(const QString &filePath,
     }
 
     QTextStream stream(&csvFile);
+    stream.setCodec(codec);
     while( content.hasNext() )
     {
         stream << content.getNext();
@@ -120,10 +91,12 @@ bool Writer::appendToFile(const QString &filePath,
 // @input:
 // - filePath - string with absolute path to csv-file
 // - content - not empty handler of content for csv-file
+// - codec - pointer to codec object that would be used for file writing
 // @output:
 // - bool - True if file was overwritten with new data, otherwise False
-bool Writer::overwriteFile(const QString &filePath,
-                           ContentIterator &content)
+bool WriterPrivate::overwriteFile(const QString& filePath,
+                                  ContentIterator& content,
+                                  QTextCodec* codec)
 {
     // Create path to the unique temporary file
     QString tempFileName = getTempFileName();
@@ -137,7 +110,7 @@ bool Writer::overwriteFile(const QString &filePath,
     TempFileHandler handler(tempFileName);
 
     // Write information to temporary file
-    if ( false == appendToFile(tempFileName, content) )
+    if ( false == appendToFile(tempFileName, content, codec) )
     {
         return false;
     }
@@ -166,7 +139,7 @@ bool Writer::overwriteFile(const QString &filePath,
 // - QString - string with the absolute path to the temporary file that is not
 // exist yet. If function failed to create unique path, it will return empty
 // string.
-QString Writer::getTempFileName()
+QString WriterPrivate::getTempFileName()
 {
     QString nameTemplate = QDir::tempPath() + "/qtcsv_" +
                 QString::number(QCoreApplication::applicationPid()) + "_%1.csv";
@@ -181,4 +154,55 @@ QString Writer::getTempFileName()
     }
 
     return QString();
+}
+
+// Write data to csv-file
+// @input:
+// - filePath - string with absolute path to csv-file
+// - data - not empty AbstractData object that contains information that should
+// be written to csv-file
+// - separator - string or character that would separate values in a row
+// (line) in csv-file
+// - mode - write mode of the file
+// - header - strings that will be written at the beginning of the file in
+// one line. separator will be used as delimiter character.
+// - footer - strings that will be written at the end of the file in
+// one line. separator will be used as delimiter character.
+// - codec - pointer to codec object that would be used for file writing
+// @output:
+// - bool - True if data was written to the file, otherwise False
+bool Writer::write(const QString& filePath,
+                   const AbstractData& data,
+                   const QString& separator,
+                   const WriteMode& mode,
+                   const QStringList& header,
+                   const QStringList& footer,
+                   QTextCodec* codec)
+{
+    if ( true == filePath.isEmpty() || true == data.isEmpty() )
+    {
+        qDebug() << __FUNCTION__ << "Error - invalid arguments";
+        return false;
+    }
+
+    if ( false == CheckFile(filePath) )
+    {
+        qDebug() << __FUNCTION__ << "Error - wrong file path/name:" << filePath;
+        return false;
+    }
+
+    ContentIterator content(data, separator, header, footer);
+
+    bool result = false;
+    switch (mode)
+    {
+        case APPEND:
+            result = WriterPrivate::appendToFile(filePath, content, codec);
+            break;
+        case REWRITE:
+        default:
+            result = WriterPrivate::overwriteFile(filePath, content, codec);
+    }
+
+    return result;
 }
