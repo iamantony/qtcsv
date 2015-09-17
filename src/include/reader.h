@@ -23,15 +23,15 @@ namespace QtCSV
     {
     public:
         // Read csv-file and save it's data as strings to QList<QStringList>
-        static QList<QStringList> readToList(const QString &filePath,
-                            const QString &separator = ",",
+        static QList<QStringList> readToList(const QString& filePath,
+                            const QString& separator = ",",
                             QTextCodec* codec = QTextCodec::codecForLocale());
 
         // Read csv-file and save it's data to AbstractData-based container
         // class
-        static bool readToData(const QString &filePath,
-                            AbstractData &data,
-                            const QString &separator = ",",
+        static bool readToData(const QString& filePath,
+                            AbstractData& data,
+                            const QString& separator = ",",
                             QTextCodec* codec = QTextCodec::codecForLocale());
     };
 }

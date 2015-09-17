@@ -7,10 +7,10 @@
 
 using namespace QtCSV;
 
-ContentIterator::ContentIterator(const AbstractData &data,
-                                 const QString &separator,
-                                 const QStringList &header,
-                                 const QStringList &footer,
+ContentIterator::ContentIterator(const AbstractData& data,
+                                 const QString& separator,
+                                 const QStringList& header,
+                                 const QStringList& footer,
                                  int chunkSize) :
     m_data(data), m_separator(separator), m_header(header), m_footer(footer),
     m_chunkSize(chunkSize), m_dataRow(-1), atEnd(false)

@@ -1,5 +1,5 @@
-#ifndef CONTENTITERATOR_H
-#define CONTENTITERATOR_H
+#ifndef QTCSVCONTENTITERATOR_H
+#define QTCSVCONTENTITERATOR_H
 
 class QString;
 class QStringList;
@@ -21,10 +21,10 @@ namespace QtCSV
     {
         // == METHODS ==
     public:
-        explicit ContentIterator(const AbstractData &data,
-                                const QString &separator,
-                                const QStringList &header,
-                                const QStringList &footer,
+        explicit ContentIterator(const AbstractData& data,
+                                const QString& separator,
+                                const QStringList& header,
+                                const QStringList& footer,
                                 int chunkSize = 1000);
 
         ~ContentIterator() {}
@@ -38,14 +38,14 @@ namespace QtCSV
 
         // == DATA ==
     private:
-        const AbstractData &m_data;
-        const QString &m_separator;
-        const QStringList &m_header;
-        const QStringList &m_footer;
+        const AbstractData& m_data;
+        const QString& m_separator;
+        const QStringList& m_header;
+        const QStringList& m_footer;
         const int m_chunkSize;
         int m_dataRow;
         bool atEnd;
     };
 }
 
-#endif // CONTENTITERATOR_H
+#endif // QTCSVCONTENTITERATOR_H

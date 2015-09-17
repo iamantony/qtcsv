@@ -52,8 +52,8 @@ bool ReaderPrivate::checkParams(const QString& filePath,
 // @output:
 // - QList<QStringList> - list of values (as strings) from csv-file. If case of
 // error will return empty QList<QStringList>.
-QList<QStringList> Reader::readToList(const QString &filePath,
-                                      const QString &separator,
+QList<QStringList> Reader::readToList(const QString& filePath,
+                                      const QString& separator,
                                       QTextCodec* codec)
 {
     if ( false == ReaderPrivate::checkParams(filePath, separator) )
@@ -91,9 +91,9 @@ QList<QStringList> Reader::readToList(const QString &filePath,
 // - codec - pointer to codec object that would be used for file reading
 // @output:
 // - bool - True if file was successfully read, otherwise False
-bool Reader::readToData(const QString &filePath,
-                        AbstractData &data,
-                        const QString &separator,
+bool Reader::readToData(const QString& filePath,
+                        AbstractData& data,
+                        const QString& separator,
                         QTextCodec* codec)
 {
     if ( false == ReaderPrivate::checkParams(filePath, separator) )

@@ -1,5 +1,5 @@
-#ifndef VARIANTDATA_H
-#define VARIANTDATA_H
+#ifndef QTCSVVARIANTDATA_H
+#define QTCSVVARIANTDATA_H
 
 #include <QList>
 
@@ -88,4 +88,4 @@ namespace QtCSV
     };
 }
 
-#endif // VARIANTDATA_H
+#endif // QTCSVVARIANTDATA_H

@@ -1,5 +1,5 @@
-#ifndef ABSTRACTDATA_H
-#define ABSTRACTDATA_H
+#ifndef QTCSVABSTRACTDATA_H
+#define QTCSVABSTRACTDATA_H
 
 #include "qtcsv_global.h"
 
@@ -55,4 +55,4 @@ namespace QtCSV
     };
 }
 
-#endif // ABSTRACTDATA_H
+#endif // QTCSVABSTRACTDATA_H

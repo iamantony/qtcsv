@@ -1,5 +1,5 @@
-#ifndef STRINGDATA_H
-#define STRINGDATA_H
+#ifndef QTCSVSTRINGDATA_H
+#define QTCSVSTRINGDATA_H
 
 #include "qtcsv_global.h"
 #include "abstractdata.h"
@@ -74,4 +74,4 @@ namespace QtCSV
     };
 }
 
-#endif // STRINGDATA_H
+#endif // QTCSVSTRINGDATA_H

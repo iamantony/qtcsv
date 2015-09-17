@@ -1,5 +1,5 @@
-#ifndef FILECHECKER_H
-#define FILECHECKER_H
+#ifndef QTCSVFILECHECKER_H
+#define QTCSVFILECHECKER_H
 
 #include <QString>
 #include <QFileInfo>
@@ -11,7 +11,7 @@ namespace QtCSV
     // - filePath - string with absolute path to csv-file
     // @output:
     // - bool - True if file is OK, else False
-    inline bool CheckFile(const QString &filePath)
+    inline bool CheckFile(const QString& filePath)
     {
         QFileInfo fileInfo(filePath);
         if ( fileInfo.isAbsolute() && "csv" == fileInfo.completeSuffix() )
@@ -23,4 +23,4 @@ namespace QtCSV
     }
 }
 
-#endif // FILECHECKER_H
+#endif // QTCSVFILECHECKER_H
