@@ -181,106 +181,10 @@ make check
 ```
 
 ## Examples
-Lets create example Qt project, that will use *qtcsv* library. We suppose, that
-you use Ubuntu 12.04 and already have installed Qt Framework with QtCreator
-and have read [Requirements](#requirements) section.
+If you want to try *qtcsv*, you can download this example project
+(don't forget to read README file):
 
-1. Open QtCreator and create new subdirs project (File -> New file or Project
--> Other Project -> Subdirs Project) with name MyProject.
-2. Enter settings of our new project and clear flag *Shadow build*.
-3. Add new console subproject to MyProject. Call it MyApp.
-4. Clone repository of *qtcsv* library into MyProject folder. Via console:
-
-    ```bash
-    cd /path/to/MyProject
-    git clone https://github.com/iamantony/qtcsv.git
-    ```
-So the structure of folder MyProject will look like this:
-    ```
-    /MyProject
-    - /MyApp
-    - /qtcsv
-    - MyProject.pro
-    ```
-
-5. Edit MyProject.pro:
-
-    ```qmake
-    TEMPLATE = subdirs
-
-    SUBDIRS += \
-        qtcsv \
-        MyApp
-    ```
-
-6. Edit MyApp.pro
-
-    ```qmake
-    QT += core
-    QT -= gui
-
-    TARGET = MyApp
-    CONFIG += console
-    CONFIG -= app_bundle
-
-    TEMPLATE = app
-
-    INCLUDEPATH += ../qtcsv/src/include
-    LIBS += -lqtcsv
-
-    unix {
-        LIBS += -L../qtcsv/src
-    }
-
-    SOURCES += main.cpp
-    ```
-
-7. Edit file ./MyProject/MyApp/main.cpp
-
-    ```cpp
-    #include <QVariant>
-    #include <QList>
-    #include <QStringList>
-    #include <QDir>
-    #include <QDebug>
-
-    #include "variantdata.h"
-    #include "reader.h"
-    #include "writer.h"
-
-    int main()
-    {
-        QVariant first(2);
-
-        QList<QVariant> second;
-        second << QVariant("pi") << 3.14159265359;
-
-        QStringList fourth;
-        fourth << "one" << "two";
-
-        QtCSV::VariantData varData;
-        varData << first << second;
-        varData.addEmptyRow();
-        varData.addRow(fourth);
-
-        QString filePath = QDir::currentPath() + "/info.csv";
-        if ( false == QtCSV::Writer::write(filePath, varData) )
-        {
-            qDebug() << "Failed to write to a file";
-            return 1;
-        }
-
-        QList<QStringList> readData = QtCSV::Reader::readToList(filePath);
-        for ( int i = 0; i < readData.size(); ++i )
-        {
-            qDebug() << readData.at(i).join(",");
-        }
-
-        return 0;
-    }
-    ```
-
-8. Build and run. In console you'll see content of the created csv-file.
+https://github.com/iamantony/qtcsv-example
 
 [1]: https://github.com/iamantony
 [2]: http://en.wikipedia.org/wiki/Comma-separated_values
