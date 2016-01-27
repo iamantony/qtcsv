@@ -213,9 +213,9 @@ void TestReader::testReadFileWithSemicolonsToVariantData()
     QVERIFY2(expectedSecondRow == varData.rowValues(1), "Wrong second row");
 }
 
-void TestReader::testReadFileWithCommasAndDataWithSeparators()
+void TestReader::testReadFileWithTextDelimDQoutes()
 {
-    const QString path = getPathToFileTestDataWithSeparators();
+    const QString path = getPathToFileTestDataTextDelimDQuotes();
     QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
 
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
@@ -252,7 +252,8 @@ QString TestReader::getPathToFileTestSemicolon() const
     return getPathToFolderWithTestFiles() + "test-semicolon.csv";
 }
 
-QString TestReader::getPathToFileTestDataWithSeparators() const
+QString TestReader::getPathToFileTestDataTextDelimDQuotes() const
 {
-    return getPathToFolderWithTestFiles() + "test-data-with-separators.csv";
+    return getPathToFolderWithTestFiles() +
+            "test-data-text-delim-double-quotes.csv";
 }
