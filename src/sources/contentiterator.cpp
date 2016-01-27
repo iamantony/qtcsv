@@ -9,11 +9,13 @@ using namespace QtCSV;
 
 ContentIterator::ContentIterator(const AbstractData& data,
                                  const QString& separator,
+                                 const QString& textDelimeter,
                                  const QStringList& header,
                                  const QStringList& footer,
                                  int chunkSize) :
-    m_data(data), m_separator(separator), m_header(header), m_footer(footer),
-    m_chunkSize(chunkSize), m_dataRow(-1), atEnd(false)
+    m_data(data), m_separator(separator), m_textDelimeter(textDelimeter),
+    m_header(header), m_footer(footer), m_chunkSize(chunkSize), m_dataRow(-1),
+    atEnd(false)
 {
 }
 
@@ -56,7 +58,7 @@ QString ContentIterator::getNext()
     {
         if ( false == m_header.isEmpty() )
         {
-            content.append(m_header.join(m_separator)).append('\n');
+            content.append(composeRow(m_header)).append('\n');
             ++rowsNumber;
         }
 
@@ -72,8 +74,7 @@ QString ContentIterator::getNext()
                           m_data.rowCount());
         for ( int i = m_dataRow; i < endRow; ++i, ++m_dataRow, ++rowsNumber )
         {
-            content.append(m_data.rowValues(i).join(m_separator))
-                    .append('\n');
+            content.append(composeRow(m_data.rowValues(i))).append('\n');
         }
     }
 
@@ -82,7 +83,7 @@ QString ContentIterator::getNext()
     {
         if ( false == m_footer.isEmpty() )
         {
-            content.append(m_footer.join(m_separator)).append('\n');
+            content.append(composeRow(m_footer)).append('\n');
             ++rowsNumber;
         }
 
@@ -92,4 +93,22 @@ QString ContentIterator::getNext()
     }
 
     return content;
+}
+
+// Compose row string from values
+QString ContentIterator::composeRow(const QStringList& values) const
+{
+    if (m_textDelimeter.isEmpty())
+    {
+        return values.join(m_separator);
+    }
+
+    QStringList rowValues = values;
+    for (int i = 0; i < rowValues.size(); ++i)
+    {
+        rowValues[i].append(m_textDelimeter);
+        rowValues[i].prepend(m_textDelimeter);
+    }
+
+    return rowValues.join(m_separator);
 }

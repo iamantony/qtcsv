@@ -163,6 +163,7 @@ QString WriterPrivate::getTempFileName()
 // be written to csv-file
 // - separator - string or character that would separate values in a row
 // (line) in csv-file
+// - textDelimeter - string or character that enclose each element in a row
 // - mode - write mode of the file
 // - header - strings that will be written at the beginning of the file in
 // one line. separator will be used as delimiter character.
@@ -174,6 +175,7 @@ QString WriterPrivate::getTempFileName()
 bool Writer::write(const QString& filePath,
                    const AbstractData& data,
                    const QString& separator,
+                   const QString& textDelimeter,
                    const WriteMode& mode,
                    const QStringList& header,
                    const QStringList& footer,
@@ -191,7 +193,7 @@ bool Writer::write(const QString& filePath,
         return false;
     }
 
-    ContentIterator content(data, separator, header, footer);
+    ContentIterator content(data, separator, textDelimeter, header, footer);
 
     bool result = false;
     switch (mode)
