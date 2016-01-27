@@ -106,8 +106,10 @@ QString ContentIterator::composeRow(const QStringList& values) const
     QStringList rowValues = values;
     for (int i = 0; i < rowValues.size(); ++i)
     {
-        rowValues[i].append(m_textDelimeter);
+        rowValues[i].reserve(
+                    rowValues.at(i).size() + 2 * m_textDelimeter.size());
         rowValues[i].prepend(m_textDelimeter);
+        rowValues[i].append(m_textDelimeter);
     }
 
     return rowValues.join(m_separator);
