@@ -22,6 +22,7 @@ private Q_SLOTS:
     void testReadFileWithSemicolonsToVariantData();
     void testReadFileWithTextDelimDQoutes();
     void testReadFileWithTextDelimQoutes();
+    void testReadFileWithTextDelimDQToStringData();
 
 private:
     QString getPathToFolderWithTestFiles() const;
