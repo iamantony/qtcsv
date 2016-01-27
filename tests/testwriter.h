@@ -23,6 +23,7 @@ private Q_SLOTS:
     void testWriteWithHeader();
     void testWriteWithFooter();
     void testWriteWithHeaderAndFooter();
+    void testWriterDataContainSeparators();
     void testWriteDifferentDataAmount();
 
 private:
