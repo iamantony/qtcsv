@@ -30,16 +30,16 @@ namespace QtCSV
     public:
         // Read csv-file and save it's data as strings to QList<QStringList>
         static QList<QStringList> readToList(const QString& filePath,
-                        const QString& separator = ",",
-                        const QString& textDelimeter = QString(),
+                        const QString& separator = QString(","),
+                        const QString& textDelimeter = QString("\""),
                         QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
 
         // Read csv-file and save it's data to AbstractData-based container
         // class
         static bool readToData(const QString& filePath,
                         AbstractData& data,
-                        const QString& separator = ",",
-                        const QString& textDelimeter = QString(),
+                        const QString& separator = QString(","),
+                        const QString& textDelimeter = QString("\""),
                         QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
     };
 }
