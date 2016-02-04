@@ -219,17 +219,13 @@ void TestReader::testReadFileWithTextDelimDQoutes()
     QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
 
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
-    QVERIFY2(6 == data.size(), "Wrong number of rows");
 
     QList<QStringList> expected;
     expected << (QStringList() << "one" << "two" << "three, four" << "five");
     expected << (QStringList() << "this, is, one, element");
-    expected << (QStringList() << "test" << "this \"example" << "to find\"" <<
-                 "bugs");
-    expected << (QStringList() << "six" << "seven" << "\"eight");
-    expected << (QStringList() << "nine" << "\"ten,eleven");
-    expected << (QStringList() << "twelve" << "thirteen" << "14" << "15.16");
+    expected << (QStringList() << "six" << "seven" << "eight");
 
+    QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
     for (int i = 0; i < data.size(); ++i)
     {
         QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
@@ -242,17 +238,13 @@ void TestReader::testReadFileWithTextDelimQoutes()
     QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "'");
 
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
-    QVERIFY2(6 == data.size(), "Wrong number of rows");
 
     QList<QStringList> expected;
     expected << (QStringList() << "one" << "two" << "three, four" << "five");
     expected << (QStringList() << "this, is, one, element");
-    expected << (QStringList() << "test" << "this 'example" << "to find'" <<
-                 "bugs");
-    expected << (QStringList() << "six" << "seven" << "'eight");
-    expected << (QStringList() << "nine" << "'ten,eleven");
-    expected << (QStringList() << "twelve" << "thirteen" << "14" << "15.16");
+    expected << (QStringList() << "six" << "seven" << "eight");
 
+    QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
     for (int i = 0; i < data.size(); ++i)
     {
         QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
@@ -265,19 +257,14 @@ void TestReader::testReadFileWithTextDelimDQToStringData()
     QtCSV::StringData strData;
     bool readResult = QtCSV::Reader::readToData(path, strData, ",", "\"");
     QVERIFY2(true == readResult, "Failed to read file content");
-
     QVERIFY2(false == strData.isEmpty(), "Failed to read file content");
-    QVERIFY2(6 == strData.rowCount(), "Wrong number of rows");
 
     QList<QStringList> expected;
     expected << (QStringList() << "one" << "two" << "three, four" << "five");
     expected << (QStringList() << "this, is, one, element");
-    expected << (QStringList() << "test" << "this \"example" << "to find\"" <<
-                 "bugs");
-    expected << (QStringList() << "six" << "seven" << "\"eight");
-    expected << (QStringList() << "nine" << "\"ten,eleven");
-    expected << (QStringList() << "twelve" << "thirteen" << "14" << "15.16");
+    expected << (QStringList() << "six" << "seven" << "eight");
 
+    QVERIFY2(expected.size() == strData.rowCount(), "Wrong number of rows");
     for (int i = 0; i < strData.rowCount(); ++i)
     {
         QVERIFY2(expected.at(i) == strData.rowValues(i), "Wrong row data");
