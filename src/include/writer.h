@@ -32,8 +32,8 @@ namespace QtCSV
         // Write data to csv-file
         static bool write(const QString& filePath,
                         const AbstractData& data,
-                        const QString& separator = ",",
-                        const QString& textDelimeter = QString(),
+                        const QString& separator = QString(","),
+                        const QString& textDelimeter = QString("\""),
                         const WriteMode& mode = REWRITE,
                         const QStringList& header = QStringList(),
                         const QStringList& footer = QStringList(),
