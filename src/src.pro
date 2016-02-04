@@ -26,7 +26,8 @@ HEADERS += \
     include/reader.h \
     include/abstractdata.h \
     sources/filechecker.h \
-    sources/contentiterator.h
+    sources/contentiterator.h \
+    sources/symbols.h
 
 unix {
     target.path = /usr/lib
