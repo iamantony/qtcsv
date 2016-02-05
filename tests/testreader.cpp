@@ -276,6 +276,24 @@ void TestReader::testReadFieldWithCRLF()
     }
 }
 
+void TestReader::testReadFieldWithCRLFLong()
+{
+    const QString path = getPathToFileTestFieldWithCRLFLong();
+    QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
+    QVERIFY2(false == data.isEmpty(), "Failed to read file content");
+
+    QList<QStringList> expected;
+    expected << (QStringList() << "one" << "two" <<
+                 "three\nfour,\"five\n\"six\",seven\neight" << "nine");
+    expected << (QStringList() << "ten" << "eleven");
+
+    QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
+    for (int i = 0; i < data.size(); ++i)
+    {
+        QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
+    }
+}
+
 QString TestReader::getPathToFolderWithTestFiles() const
 {
     return QDir::currentPath() + "/data/";
@@ -310,4 +328,9 @@ QString TestReader::getPathToFileTestFieldWithDQuotes() const
 QString TestReader::getPathToFileTestFieldWithCRLF() const
 {
     return getPathToFolderWithTestFiles() + "test-field-with-crlf.csv";
+}
+
+QString TestReader::getPathToFileTestFieldWithCRLFLong() const
+{
+    return getPathToFolderWithTestFiles() + "test-field-with-crlf-long.csv";
 }
