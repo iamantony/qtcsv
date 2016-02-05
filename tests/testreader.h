@@ -24,6 +24,7 @@ private Q_SLOTS:
     void testReadFileWithTextDelimQoutes();
     void testReadFileWithTextDelimDQToStringData();
     void testReadLongWithDQuotes();
+    void testReadFieldWithCRLF();
 
 private:
     QString getPathToFolderWithTestFiles() const;
@@ -32,6 +33,7 @@ private:
     QString getPathToFileTestDataTextDelimDQuotes() const;
     QString getPathToFileTestDataTextDelimQuotes() const;
     QString getPathToFileTestFieldWithDQuotes() const;
+    QString getPathToFileTestFieldWithCRLF() const;
 };
 
 #endif // TESTREADER_H

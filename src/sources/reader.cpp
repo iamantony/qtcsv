@@ -102,7 +102,11 @@ bool ReaderPrivate::read(const QString& filePath,
         {
             if (false == elements.isEmpty())
             {
-                row.last().append(elements.takeFirst());
+                if (false == row.isEmpty())
+                {
+                    row.last().append(elements.takeFirst());
+                }
+
                 row << elements;
             }
         }
@@ -174,7 +178,7 @@ QStringList ReaderPrivate::splitElements(const QString& line,
         }
         else
         {
-            return (QStringList() << CRLF);
+            return (QStringList() << LF);
         }
     }
 
@@ -186,12 +190,12 @@ QStringList ReaderPrivate::splitElements(const QString& line,
     // symbol
     // - information at the beginning of the row would be appended to the end
     // of the last element of the previous row
-    // - the last element of the previous row should contain CRLF symbol (new
+    // - the last element of the previous row should contain LF symbol (new
     // line)
     QStringList result;
     if (false == rowEnded)
     {
-        result << CRLF;
+        result << LF;
     }
 
     const QString doubleTextDelim = getDoubleTextDelimiter(textDelimeter);
@@ -283,11 +287,21 @@ QStringList ReaderPrivate::removeTextDelimeters(const QStringList& elements,
 
         // If string starts and ends with text delimiter symbols, then remove
         // them
-        if (str.startsWith(textDelimeter) &&
-                str.endsWith(textDelimeter))
+//        if (str.startsWith(textDelimeter) &&
+//                str.endsWith(textDelimeter))
+//        {
+//            str.chop(textDelimeter.size());
+//            str.remove(0, textDelimeter.size());
+//        }
+
+        if (str.startsWith(textDelimeter))
+        {
+            str.remove(0, textDelimeter.size());
+        }
+
+        if (str.endsWith(textDelimeter))
         {
             str.chop(textDelimeter.size());
-            str.remove(0, textDelimeter.size());
         }
 
         // Also replace double text delimiter with one text delimiter symbol
