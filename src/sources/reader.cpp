@@ -6,7 +6,8 @@
 #include <QDebug>
 
 #include "include/abstractdata.h"
-#include "filechecker.h"
+#include "sources/filechecker.h"
+#include "sources/symbols.h"
 
 using namespace QtCSV;
 
@@ -29,12 +30,15 @@ private:
     // Split string line to elements by separators
     static QStringList splitElements(const QString& line,
                                      const QString& separator,
-                                     const QString& textDelimeter);
+                                     const QString& textDelimeter,
+                                     bool& rowEnded);
 
-    // Remove text delimeter symbols from the beginning and the end of the
-    // elements
+    // Remove text delimeter symbols
     static QStringList removeTextDelimeters(const QStringList& elements,
                                             const QString& textDelimeter);
+
+    // Get two text delimeter symbols
+    static QString getDoubleTextDelimiter(const QString& textDelimiter);
 };
 
 // Function that really reads csv-file and save it's data as strings to
@@ -68,13 +72,48 @@ bool ReaderPrivate::read(const QString& filePath,
 
     QTextStream stream(&csvFile);
     stream.setCodec(codec);
+
+    QStringList row;
+    bool rowEnded = true;
     while ( false == stream.atEnd() )
     {
         QString line = stream.readLine();
-        list << ReaderPrivate::splitElements(line, separator, textDelimeter);
+        QStringList elements = ReaderPrivate::splitElements(
+                  line, separator, textDelimeter, rowEnded);
+        if (rowEnded)
+        {
+            if (row.isEmpty())
+            {
+                list << elements;
+            }
+            else
+            {
+                if (false == elements.isEmpty())
+                {
+                    row.last().append(elements.takeFirst());
+                    row << elements;
+                }
+
+                list << row;
+                row.clear();
+            }
+        }
+        else
+        {
+            if (false == elements.isEmpty())
+            {
+                row.last().append(elements.takeFirst());
+                row << elements;
+            }
+        }
     }
 
     csvFile.close();
+
+    if (false == rowEnded && false == row.isEmpty())
+    {
+        list << row;
+    }
 
     return true;
 }
@@ -114,52 +153,115 @@ bool ReaderPrivate::checkParams(const QString& filePath,
 // - QStringList - list of elements
 QStringList ReaderPrivate::splitElements(const QString& line,
                                          const QString& separator,
-                                         const QString& textDelimeter)
+                                         const QString& textDelimeter,
+                                         bool& rowEnded)
 {
-    if (line.isEmpty() || separator.isEmpty())
+    // If separator is empty, return whole line. Can't work in this
+    // conditions!
+    if (separator.isEmpty())
     {
-        return (QStringList() << QString());
+        rowEnded = true;
+        return (QStringList() << line);
     }
 
-    QStringList elements = line.split(separator);
-    if (1 == elements.size() || textDelimeter == separator)
+    if (line.isEmpty())
     {
-        return removeTextDelimeters(elements, textDelimeter);
+        // If previous row was ended, then return empty QStringList.
+        // Otherwise return list that contains one element - new line symbols
+        if (rowEnded)
+        {
+            return QStringList();
+        }
+        else
+        {
+            return (QStringList() << CRLF);
+        }
     }
 
+    const QStringList elements = line.split(separator);
+
+    // If rowEnded is True, then we process a new row.
+    // If rowEnded is False, then:
+    // - the last element of the previous row(s) started with text delimeter
+    // symbol
+    // - information at the beginning of the row would be appended to the end
+    // of the last element of the previous row
+    // - the last element of the previous row should contain CRLF symbol (new
+    // line)
     QStringList result;
+    if (false == rowEnded)
+    {
+        result << CRLF;
+    }
+
+    const QString doubleTextDelim = getDoubleTextDelimiter(textDelimeter);
     for (int i = 0; i < elements.size(); ++i)
     {
-        bool startsWith = elements.at(i).startsWith(textDelimeter);
-        bool endsWith = elements.at(i).endsWith(textDelimeter);
-        if ( (false == startsWith) ||
-             (startsWith && endsWith) )
+        const bool startsWith = elements.at(i).startsWith(textDelimeter);
+        const bool endsWith = elements.at(i).endsWith(textDelimeter);
+        if (rowEnded)
         {
-            result << elements.at(i);
-            continue;
-        }
-
-        QString str = elements.at(i);
-        for (int j = i + 1; j < elements.size(); ++j, ++i)
-        {
-            str += separator + elements.at(j);
-            if (elements.at(j).endsWith(textDelimeter))
+            // If rowEnded is True, then this element will be the new element.
+            // If it is ends and starts with text delimiter or just not starts
+            // with text delimiter, then add this element to the result list
+            // as is.
+            if ( (false == startsWith) ||
+                 (startsWith && endsWith) )
             {
-                ++i;
-                break;
+                result << elements.at(i);
+                continue;
             }
-        }
 
-        if (false == str.isEmpty())
-        {
+            // If current elements only starts with text delimiter, then
+            // next elements in a row should be appended to this element till
+            // the element that ends with text delimiter. Because it is
+            // possible, that we will not find in this line such 'end' element,
+            // we set flag rowEnded to false.
+            rowEnded = false;
+            QString str = elements.at(i);
+            for (int j = i + 1; j < elements.size(); ++j, ++i)
+            {
+                str += separator + elements.at(j);
+
+                const bool elemEndsWithTD =
+                        elements.at(j).endsWith(textDelimeter);
+                const bool elemEndsWithDoubleTD =
+                        elements.at(j).endsWith(doubleTextDelim);
+                if (elemEndsWithTD && false == elemEndsWithDoubleTD)
+                {
+                    // We found 'end' element. Set up new i value and set
+                    // rowEnded to true.
+                    ++i;
+                    rowEnded = true;
+                    break;
+                }
+            }
+
             result << str;
+        }
+        else
+        {
+            QString strToAdd = elements.at(i);
+            if (0 < i)
+            {
+                strToAdd.prepend(separator);
+            }
+
+            result.last().append(strToAdd);
+
+            const bool endsWithDoubleTD =
+                    elements.at(i).endsWith(doubleTextDelim);
+            if (endsWith && false == endsWithDoubleTD)
+            {
+                rowEnded = true;
+            }
         }
     }
 
     return removeTextDelimeters(result, textDelimeter);
 }
 
-// Remove text delimeter symbols from the beginning and the end of the elements
+// Remove text delimeter symbols
 // @input:
 // - elements - list of string elements
 // - textDelimeter - string that delimeter text parts from each other
@@ -174,9 +276,13 @@ QStringList ReaderPrivate::removeTextDelimeters(const QStringList& elements,
     }
 
     QStringList result;
+    const QString doubleTextDelim = getDoubleTextDelimiter(textDelimeter);
     for (int i = 0; i < elements.size(); ++i)
     {
         QString str = elements.at(i);
+
+        // If string starts and ends with text delimiter symbols, then remove
+        // them
         if (str.startsWith(textDelimeter) &&
                 str.endsWith(textDelimeter))
         {
@@ -184,10 +290,22 @@ QStringList ReaderPrivate::removeTextDelimeters(const QStringList& elements,
             str.remove(0, textDelimeter.size());
         }
 
+        // Also replace double text delimiter with one text delimiter symbol
+        str.replace(doubleTextDelim, textDelimeter);
         result << str;
     }
 
     return result;
+}
+
+// Get two text delimeter symbols
+// @input:
+// - textDelimiter - string
+// @output:
+// - QString - string that contains two text delimiter symbols
+QString ReaderPrivate::getDoubleTextDelimiter(const QString& textDelimiter)
+{
+    return textDelimiter + textDelimiter;
 }
 
 // Read csv-file and save it's data as strings to QList<QStringList>
