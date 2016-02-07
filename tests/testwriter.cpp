@@ -296,7 +296,8 @@ void TestWriter::testWriteDifferentDataAmount()
             time.restart();
             try
             {
-                writeResult = QtCSV::Writer::write(getFilePath(), data);
+                writeResult = QtCSV::Writer::write(
+                                  getFilePath(), data, ",", QString());
             }
             catch (std::exception &e)
             {

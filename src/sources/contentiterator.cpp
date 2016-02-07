@@ -4,6 +4,7 @@
 #include <QStringList>
 
 #include "include/abstractdata.h"
+#include "sources/symbols.h"
 
 using namespace QtCSV;
 
@@ -58,7 +59,7 @@ QString ContentIterator::getNext()
     {
         if ( false == m_header.isEmpty() )
         {
-            content.append(composeRow(m_header)).append('\n');
+            content.append(composeRow(m_header));
             ++rowsNumber;
         }
 
@@ -74,7 +75,7 @@ QString ContentIterator::getNext()
                           m_data.rowCount());
         for ( int i = m_dataRow; i < endRow; ++i, ++m_dataRow, ++rowsNumber )
         {
-            content.append(composeRow(m_data.rowValues(i))).append('\n');
+            content.append(composeRow(m_data.rowValues(i)));
         }
     }
 
@@ -83,7 +84,7 @@ QString ContentIterator::getNext()
     {
         if ( false == m_footer.isEmpty() )
         {
-            content.append(composeRow(m_footer)).append('\n');
+            content.append(composeRow(m_footer));
             ++rowsNumber;
         }
 
@@ -96,21 +97,33 @@ QString ContentIterator::getNext()
 }
 
 // Compose row string from values
+// @input:
+// - values - list of values in rows
+// @output:
+// - QString - result row string
 QString ContentIterator::composeRow(const QStringList& values) const
 {
-    if (m_textDelimeter.isEmpty())
-    {
-        return values.join(m_separator);
-    }
-
     QStringList rowValues = values;
+    const QString twoDelimeters = m_textDelimeter + m_textDelimeter;
     for (int i = 0; i < rowValues.size(); ++i)
     {
-        rowValues[i].reserve(
-                    rowValues.at(i).size() + 2 * m_textDelimeter.size());
-        rowValues[i].prepend(m_textDelimeter);
-        rowValues[i].append(m_textDelimeter);
+        rowValues[i].replace(m_textDelimeter, twoDelimeters);
+
+        QString delimeter = m_textDelimeter;
+        if (delimeter.isEmpty() &&
+                (rowValues.at(i).contains(m_separator) ||
+                 rowValues.at(i).contains(CR) ||
+                 rowValues.at(i).contains(LF)))
+        {
+            delimeter = DOUBLE_QUOTE;
+        }
+
+        rowValues[i].prepend(delimeter);
+        rowValues[i].append(delimeter);
     }
 
-    return rowValues.join(m_separator);
+    QString result = rowValues.join(m_separator);
+    result.append(CRLF);
+
+    return result;
 }
