@@ -23,7 +23,9 @@ private Q_SLOTS:
     void testWriteWithHeader();
     void testWriteWithFooter();
     void testWriteWithHeaderAndFooter();
+    void testWriterDataContainSeparators();
     void testWriteDifferentDataAmount();
+    void testWriteDataContainCRLF();
 
 private:
     QString getFilePath() const;

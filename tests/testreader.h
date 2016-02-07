@@ -20,11 +20,22 @@ private Q_SLOTS:
     void testReadFileWithSemicolons();
     void testReadFileWithSemicolonsToStringData();
     void testReadFileWithSemicolonsToVariantData();
+    void testReadFileWithTextDelimDQoutes();
+    void testReadFileWithTextDelimQoutes();
+    void testReadFileWithTextDelimDQToStringData();
+    void testReadLongWithDQuotes();
+    void testReadFieldWithCRLF();
+    void testReadFieldWithCRLFLong();
 
 private:
     QString getPathToFolderWithTestFiles() const;
     QString getPathToFileTestComma() const;
     QString getPathToFileTestSemicolon() const;
+    QString getPathToFileTestDataTextDelimDQuotes() const;
+    QString getPathToFileTestDataTextDelimQuotes() const;
+    QString getPathToFileTestFieldWithDQuotes() const;
+    QString getPathToFileTestFieldWithCRLF() const;
+    QString getPathToFileTestFieldWithCRLFLong() const;
 };
 
 #endif // TESTREADER_H

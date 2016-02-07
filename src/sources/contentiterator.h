@@ -19,13 +19,13 @@ namespace QtCSV
     // new line symbol.
     class ContentIterator
     {
-        // == METHODS ==
     public:
         explicit ContentIterator(const AbstractData& data,
-                                const QString& separator,
-                                const QStringList& header,
-                                const QStringList& footer,
-                                int chunkSize = 1000);
+                                 const QString& separator,
+                                 const QString& textDelimeter,
+                                 const QStringList& header,
+                                 const QStringList& footer,
+                                 int chunkSize = 1000);
 
         ~ContentIterator() {}
 
@@ -36,10 +36,14 @@ namespace QtCSV
         // Get next chunk of information
         QString getNext();
 
-        // == DATA ==
+    private:
+        // Compose row string from values
+        QString composeRow(const QStringList& values) const;
+
     private:
         const AbstractData& m_data;
         const QString& m_separator;
+        const QString& m_textDelimeter;
         const QStringList& m_header;
         const QStringList& m_footer;
         const int m_chunkSize;
