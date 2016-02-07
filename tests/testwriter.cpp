@@ -377,3 +377,30 @@ QtCSV::StringData TestWriter::getTestStringData(const int &symbolsInRow,
 
     return data;
 }
+
+void TestWriter::testWriteDataContainCRLF()
+{
+    QStringList firstLine = QStringList() << "one" << "two" <<
+                                             "three\nfour,five";
+
+    QStringList secondLine = QStringList() << "six" << "seven,eight";
+
+    QtCSV::StringData strData;
+    strData.addRow(firstLine);
+    strData.addRow(secondLine);
+
+    bool writeResult = QtCSV::Writer::write(getFilePath(),
+                                            strData,
+                                            ",",
+                                            QString());
+    QVERIFY2(true == writeResult, "Failed to write to file");
+
+    QList<QStringList> data = QtCSV::Reader::readToList(getFilePath(),
+                                                        ",",
+                                                        "\"");
+
+    QVERIFY2(false == data.isEmpty(), "Failed to read file content");
+    QVERIFY2(2 == data.size(), "Wrong number of rows");
+    QVERIFY2(firstLine == data.at(0), "Wrong data at first row");
+    QVERIFY2(secondLine == data.at(1), "Wrong data at second row");
+}
