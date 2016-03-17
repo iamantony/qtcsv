@@ -6,7 +6,9 @@ Author: [Antony Cherepanov][mypage]
 E-mail: antony.cherepanov@gmail.com
 
 Small easy-to-use library for reading and writing [csv-files][csvwiki]
-in Qt. Tested on Ubuntu 12.04 with gcc 4.6.3, Qt 4.8 and higher.
+in Qt.
+
+Tested on Ubuntu 14.04 with gcc 4.8.4, Qt 4.8 and higher.
 
 ## Table of contents
 * [Quick Example](#quick-example)
