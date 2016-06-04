@@ -20,6 +20,8 @@ Tested on Ubuntu 14.04 with gcc 4.8.4, Qt 4.8 and higher.
   * [Writer](#writer)
 * [Requirements](#requirements) 
 * [Build](#build)
+* [Run tests](#run-tests)
+* [Installation](#installation)
 * [Examples](#examples)
 * [Other](#other)
 
@@ -109,16 +111,15 @@ Use **[_Reader_][reader]** class to read csv-files. It's very simple.
 It has only two functions:
 
 1. Read data to **_QList\<QStringList\>_**
-
-```cpp
-QList<QStringList> readToList(const QString& filePath,
-                              const QString& separator,
-                              const QString& textDelimeter,
-                              QTextCodec* codec);
-```
+  ```cpp
+  QList<QStringList> readToList(const QString& filePath,
+                                const QString& separator,
+                                const QString& textDelimeter,
+                                QTextCodec* codec);
+  ```
 
   - *filePath* - string with absolute path to existent csv-file 
-  (example: "/home/user/my-file.csv");  
+    (example: "/home/user/my-file.csv");  
   - *separator* (optional) - delimeter symbol, that separate elements 
   in a row (by default it is comma - ",");  
   - *textDelimeter* (optional) - text delimeter symbol that enclose
@@ -132,14 +133,13 @@ QList<QStringList> readToList(const QString& filePath,
   Each **_QStringList_** will contain elements of the corresponding row.
 
 2. Read data to **_AbstractData_**-based container
-
-```cpp
-bool readToData(const QString& filePath,
-                AbstractData& data,
-                const QString& separator,
-                const QString& textDelimeter,
-                QTextCodec* codec);
-```
+  ```cpp
+  bool readToData(const QString& filePath,
+                  AbstractData& data,
+                  const QString& separator,
+                  const QString& textDelimeter,
+                  QTextCodec* codec);
+  ```
 
   Second function is a little more advanced and, I hope, a little more useful.
     
@@ -214,11 +214,29 @@ qmake -r
 make
 ```
 
-If you want to run tests, then do this:
+## Run tests
+If you want to run tests, then use this commands:
 ```bash
-cp ./src/libqtcsv.so.1 ./tests
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/src
 make check
 ```
+
+## Installation
+On Unix-like OS you can install *qtcsv* library using this command:
+```bash
+sudo make install
+sudo ldconfig -n -v /usr/local/lib
+```
+
+This command will copy all compiled files (libqtcsv.so\*) from *"./src"*
+folder to *"/usr/local/lib"*. Also all headers files will be copied
+from *"./src/include"* folder to *"/usr/local/include/qtcsv"*.
+
+All installation settings are defined in [*./src/src.pro*][src-pro] file.
+See *libheaders* and *target* variables.
+
+For additional information, see [Qt documentation][install-files] about
+files installation.
 
 ## Examples
 If you want to try *qtcsv*, you can download [qtcsv-example project][qtcsv-example].
@@ -237,6 +255,8 @@ proper csv-file.
 [absdata]: https://github.com/iamantony/qtcsv/blob/master/src/include/abstractdata.h
 [strdata]: https://github.com/iamantony/qtcsv/blob/master/src/include/stringdata.h
 [vardata]: https://github.com/iamantony/qtcsv/blob/master/src/include/variantdata.h
+[src-pro]: https://github.com/iamantony/qtcsv/blob/master/src/src.pro
+[install-files]: http://doc.qt.io/qt-5/qmake-advanced-usage.html#installing-files
 [qtcsv-example]: https://github.com/iamantony/qtcsv-example
 [rfc]: http://tools.ietf.org/pdf/rfc4180.pdf
 [csvlint]: http://csvlint.io/about
