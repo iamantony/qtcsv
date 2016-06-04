@@ -37,8 +37,11 @@ install:
 script:
   - qmake -r
   - make
-  - cp ./src/libqtcsv.so.1 ./tests
+  # run tests
+  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/src
   - make check
+  # install library
+  - sudo make install
 
 notifications:
   email: false
