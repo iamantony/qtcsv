@@ -1,5 +1,4 @@
 QT -= gui
-
 TARGET = qtcsv
 TEMPLATE = lib
 
@@ -30,6 +29,9 @@ HEADERS += \
     sources/symbols.h
 
 unix {
-    target.path = /usr/lib
-    INSTALLS += target
+    libheaders.path = /usr/local/include/qtcsv/
+    libheaders.files = $$PWD/include/*.h
+
+    target.path = /usr/local/lib
+    INSTALLS += target libheaders
 }
