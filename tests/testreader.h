@@ -26,6 +26,7 @@ private Q_SLOTS:
     void testReadLongWithDQuotes();
     void testReadFieldWithCRLF();
     void testReadFieldWithCRLFLong();
+    void testReadFieldEndTripleQuotes();
 
 private:
     QString getPathToFolderWithTestFiles() const;
@@ -36,6 +37,7 @@ private:
     QString getPathToFileTestFieldWithDQuotes() const;
     QString getPathToFileTestFieldWithCRLF() const;
     QString getPathToFileTestFieldWithCRLFLong() const;
+    QString getPathToFileTestFieldEndTripleQuotes() const;
 };
 
 #endif // TESTREADER_H

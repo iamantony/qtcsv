@@ -294,6 +294,23 @@ void TestReader::testReadFieldWithCRLFLong()
     }
 }
 
+void TestReader::testReadFieldEndTripleQuotes()
+{
+    const QString path = getPathToFileTestFieldEndTripleQuotes();
+    QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
+    QVERIFY2(false == data.isEmpty(), "Failed to read file content");
+
+    QList<QStringList> expected;
+    expected << (QStringList() << "CCLK=\"yy/MM/dd,hh:mm:ssÂ±zz\"" << "test");
+    expected << (QStringList() << "new" << "line \"it is\"" << "def");
+
+    QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
+    for (int i = 0; i < data.size(); ++i)
+    {
+        QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
+    }
+}
+
 QString TestReader::getPathToFolderWithTestFiles() const
 {
     return QDir::currentPath() + "/data/";
@@ -333,4 +350,9 @@ QString TestReader::getPathToFileTestFieldWithCRLF() const
 QString TestReader::getPathToFileTestFieldWithCRLFLong() const
 {
     return getPathToFolderWithTestFiles() + "test-field-with-crlf-long.csv";
+}
+
+QString TestReader::getPathToFileTestFieldEndTripleQuotes() const
+{
+    return getPathToFolderWithTestFiles() + "test-field-end-triple-quotes.csv";
 }
