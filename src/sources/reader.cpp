@@ -48,6 +48,12 @@ private:
                                         const QString& textDelimeter,
                                         ElementInfo& elemInfo);
 
+    static int FindMiddleElementPositioin(const QString& str,
+                                          const int& startPos,
+                                          const QString& separator,
+                                          const QString& txtDelim,
+                                          const QString& doubleTxtDelim);
+
     // Remove text delimeter symbols
     static QStringList removeTextDelimeters(const QStringList& elements,
                                             const QString& textDelimeter);
@@ -59,11 +65,27 @@ private:
 struct ElementInfo
 {
     bool isEnded = true;
-    bool startedWithTD = false;
-    int numberOfTD = 0;
-    // use only if startedWithTD is True
-    int numberOfDoubleTD = 0;
+    bool startedWithTxtDelim = false;
+    int numberOfTxtDelim = 0;
+    // use only if startedWithTxtDelim is True
+    int numberOfDoubleTxtDelim = 0;
+
+    ElementInfo();
+    void ResetTxtDelimValues();
 };
+
+ElementInfo::ElementInfo()
+{
+    isEnded = true;
+    ResetTxtDelimValues();
+}
+
+void ElementInfo::ResetTxtDelimValues()
+{
+    startedWithTxtDelim = false;
+    numberOfTxtDelim = 0;
+    numberOfDoubleTxtDelim = 0;
+}
 
 // Function that really reads csv-file and save it's data as strings to
 // QList<QStringList>
@@ -387,49 +409,222 @@ QStringList ReaderPrivate::splitElementsNew(const QString& line,
     }
 
     QStringList result;
+    if (elemInfo.isEnded)
+    {
+        result << LF;
+    }
+
     const QString doubleTextDelim = getDoubleTextDelimiter(textDelimeter);
     int pos = 0;
     while(pos < line.size())
     {
-        if (false == elemInfo.isEnded)
+        if (elemInfo.isEnded)
         {
-            result << LF;
-
-            int separatorPos = line.indexOf(separator, pos);
+            // This line is a new line, not a continuation of the previous
+            // line.
+            // Check if element starts with delimeter symbol
             int delimeterPos = line.indexOf(textDelimeter, pos);
-            int doubleDelimPos = line.indexOf(doubleTextDelim, pos);
-            if (elemInfo.startedWithTD)
+            if (delimeterPos == pos)
             {
-                if (elemInfo.numberOfDoubleTD == 0)
+                // Element starts with the delimeter symbol. It means that
+                // this element could contain any number of double
+                // delimeters and separator symbols. This element could:
+                // 1. Be the first or the middle element. Then it should end
+                // with delimeter and the seprator symbols standing next to each
+                // other.
+                int midElemEndPos = FindMiddleElementPositioin(line,
+                                                               pos + 1,
+                                                               separator,
+                                                               textDelimeter);
+                if (midElemEndPos > 0)
                 {
-                    if (delimeterPos < doubleDelimPos || doubleDelimPos < 0)
-                    {
-                        result.last().append(/*chars in line from pos to separatorPos*/);
-                        pos = separatorPos;
-                        elemInfo.isEnded = true;
-                    }
-                    else
-                    {
+                    result << line.mid(pos + 1, midElemEndPos);
+                    pos = midElemEndPos + 2;
+                    continue;
+                }
 
-                    }
+
+                // 2. Be The last element on the line. Then it should end with
+                // delimeter symbol.
+                // 3. Not end on this line
+
+                //ends with
+                // delimeter and the seprator symbols standing next to each
+                // other.
+                // Lets try to find element end symbols and track the position
+                // of the double delimeter so we could not mix up element
+                // end symbols and part of the double delimeter symbol with
+                // separator symbol.
+                const QString elemEndSymbols = textDelimeter + separator;
+
+                // Start search from the next position after delimiter symbol
+                ++pos;
+                int elemEndPos = line.indexOf(elemEndSymbols, pos);
+                if (elemEndPos < 0)
+                {
+                    // This element is the last in this line. It coud end
+                    // with delimeter symbol or it could not end on this
+                    // line.
                 }
                 else
                 {
+                    // Check that this is really the end symbols of the
+                    // element and we don't mix up it with double delimeter
+                    // and separator
+                }
 
+
+
+                int doubleDelimPos = pos;
+
+                while(true)
+                {
+                    // Find position of element end symbol
+                    elemEndPos = line.indexOf(elemEndSymbols, elemEndPos);
+
+                    // If line do not contain such symbols, then it means
+                    // that:
+                    if (elemEndPos < 0)
+                    {
+                        result << line.mid(pos);
+                        pos = line.size();
+                        elemInfo.isEnded = false;
+                        break;
+                    }
+
+                    doubleDelimPos = line.indexOf(doubleTextDelim,
+                                                  doubleDelimPos);
+                    while(doubleDelimPos > 0 && doubleDelimPos < elemEndPos - 1)
+                    {
+                        doubleDelimPos = line.indexOf(doubleTextDelim,
+                                    doubleDelimPos + doubleTextDelim.size());
+                    }
+
+                    if (doubleDelimPos == elemEndPos - 1)
+                    {
+                        elemEndPos += elemEndSymbols.size();
+                    }
+                    else
+                    {
+                        result << line.mid(pos, elemEndPos - 1);
+                        pos = elemEndPos + elemEndSymbols.size();
+                        break;
+                    }
                 }
             }
             else
             {
-
+                // Element do not starts with the delimeter symbol. It means
+                // that this element do not contain double delimeters and it
+                // ends at the next separator symbol.
+                // Check if line contains separator symbol.
+                int separatorPos = line.indexOf(separator, pos);
+                if (separatorPos >= 0 )
+                {
+                    // If line contains separator symbol, then our element
+                    // located between current position and separator
+                    // position. Copy it into result list and move
+                    // current position over the separator position.
+                    result << line.mid(pos, separatorPos - 1);
+                    pos = separatorPos + 1;
+                }
+                else
+                {
+                    // If line do not contains separator symbol, then
+                    // this element ends at the end of the string.
+                    // Copy it into result list and exit the loop.
+                    result << line.mid(pos);
+                    break;
+                }
             }
-
-
         }
+        else
+        {
+//            int separatorPos = line.indexOf(separator, pos);
+//            int delimeterPos = line.indexOf(textDelimeter, pos);
+//            int doubleDelimPos = line.indexOf(doubleTextDelim, pos);
+//            if (elemInfo.startedWithTxtDelim)
+//            {
+//                if (elemInfo.numberOfDoubleTxtDelim == 0)
+//                {
+//                    if (delimeterPos < doubleDelimPos || doubleDelimPos < 0)
+//                    {
+//                        result.last().append(/*chars in line from pos to separatorPos*/);
+//                        pos = separatorPos;
+//                        elemInfo.isEnded = true;
+//                    }
+//                    else
+//                    {
 
-        int separatorPos = line.indexOf(separator);
-        int delimeterPos = line.indexOf(textDelimeter);
+//                    }
+//                }
+//                else
+//                {
+
+//                }
+//            }
+//            else
+//            {
+
+//            }
+        }
     }
 
+    return result;
+}
+
+int ReaderPrivate::FindMiddleElementPositioin(const QString& str,
+                                              const int& startPos,
+                                              const QString& separator,
+                                              const QString& txtDelim)
+{
+    const int ERROR = -1;
+    if (str.isEmpty() ||
+            startPos < 0 ||
+            separator.isEmpty() ||
+            txtDelim.isEmpty())
+    {
+        return ERROR;
+    }
+
+    const QString elemEndSymbols = txtDelim + separator;
+    int elemEndPos = startPos;
+    while(elemEndPos < str.size())
+    {
+        // Find position of element end symbol
+        elemEndPos = str.indexOf(elemEndSymbols, elemEndPos);
+        if (elemEndPos < 0)
+        {
+            // This element could not be the middle element, becaise string
+            // do not contains any end symbols
+            return ERROR;
+        }
+
+        // Check that this is really the end symbols of the
+        // element and we don't mix up it with double delimeter
+        // and separator. Calc number of delimeter symbols from elemEndPos
+        // to startPos that stands together.
+        int numOfDelimeters = 0;
+        for (int pos = elemEndPos; str[pos] == txtDelim;
+             --pos, ++numOfDelimeters);
+
+        // If we have odd number of delimeter symbols that stand together,
+        // then this is the even number of double delimeter symbols + last
+        // delimeter symbol. That means that we have found end position of
+        // the middle element.
+        if (numOfDelimeters % 2 == 1)
+        {
+            return elemEndPos - 1;
+        }
+        else
+        {
+            // Otherwise this is not the end of the middle element and we
+            // should try again
+            elemEndPos += elemEndSymbols.size();
+        }
+    }
+
+    return ERROR;
 }
 
 // Remove text delimeter symbols
