@@ -14,6 +14,7 @@ env:
   - QT_BASE=54
   - QT_BASE=55
   - QT_BASE=56
+  - QT_BASE=57
 
 before_install:
   - if [ "$QT_BASE" = "48" ]; then sudo add-apt-repository ppa:beineri/opt-qt487-trusty -y; fi
@@ -22,7 +23,8 @@ before_install:
   - if [ "$QT_BASE" = "53" ]; then sudo add-apt-repository ppa:beineri/opt-qt532-trusty -y; fi
   - if [ "$QT_BASE" = "54" ]; then sudo add-apt-repository ppa:beineri/opt-qt542-trusty -y; fi
   - if [ "$QT_BASE" = "55" ]; then sudo add-apt-repository ppa:beineri/opt-qt551-trusty -y; fi
-  - if [ "$QT_BASE" = "56" ]; then sudo add-apt-repository ppa:beineri/opt-qt56-trusty -y; fi
+  - if [ "$QT_BASE" = "56" ]; then sudo add-apt-repository ppa:beineri/opt-qt561-trusty -y; fi
+  - if [ "$QT_BASE" = "57" ]; then sudo add-apt-repository ppa:beineri/opt-qt57-trusty -y; fi
   - sudo apt-get update -qq
 
 install:
@@ -33,6 +35,7 @@ install:
   - if [ "$QT_BASE" = "54" ]; then sudo apt-get install -qq qt54base; source /opt/qt54/bin/qt54-env.sh; fi
   - if [ "$QT_BASE" = "55" ]; then sudo apt-get install -qq qt55base; source /opt/qt55/bin/qt55-env.sh; fi
   - if [ "$QT_BASE" = "56" ]; then sudo apt-get install -qq qt56base; source /opt/qt56/bin/qt56-env.sh; fi
+  - if [ "$QT_BASE" = "57" ]; then sudo apt-get install -qq qt56base; source /opt/qt57/bin/qt57-env.sh; fi
 
 script:
   - qmake -r
