@@ -301,8 +301,8 @@ void TestReader::testReadFieldEndTripleQuotes()
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
     QList<QStringList> expected;
-    expected << (QStringList() << "CCLK=\"yy/MM/dd,hh:mm:ssÂ±zz\"" << "test");
-    expected << (QStringList() << "new" << "line \"it is\"" << "def");
+    expected << (QStringList() << "CCLK=\"yy/MM/dd,hh:mm:ssA+zz\"" << "test");
+    expected << (QStringList() << "new" << "line \"it is\",\"def");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
     for (int i = 0; i < data.size(); ++i)
