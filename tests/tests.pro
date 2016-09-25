@@ -7,12 +7,10 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../src/release/ -lqtcsv
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../src/debug/ -lqtcsv
-else:unix: LIBS += -L$$OUT_PWD/../src/ -lqtcsv
-
+unix|win32: LIBS += -L$$OUT_PWD/../src/ -lqtcsv
 INCLUDEPATH += $$PWD/../src/include
-DEPENDPATH += $$PWD/../src/
+DEPENDPATH += $$PWD/../src
+DESTDIR = $$PWD
 
 SOURCES += \
     tst_testmain.cpp \
