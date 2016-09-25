@@ -123,7 +123,7 @@ QString ContentIterator::composeRow(const QStringList& values) const
     }
 
     QString result = rowValues.join(m_separator);
-    result.append(CRLF);
+    result.append(LF);
 
     return result;
 }
