@@ -25,6 +25,6 @@ before_build:
 build_script:
 - qmake -v
 - qmake -r
-- make
-- make check
+- mingw32-make
+- mingw32-make check
 
