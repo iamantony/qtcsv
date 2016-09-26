@@ -28,5 +28,5 @@ build_script:
 - mingw32-make
 - cd ./tests
 - ls -l
-- ./tst_tests.exe
+- tst_tests.exe
 
