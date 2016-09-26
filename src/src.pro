@@ -9,7 +9,7 @@ QMAKE_CXXFLAGS_WARN_ON += -Werror -Wformat=2 -Wuninitialized -Winit-self \
 
 DEFINES += QTCSV_LIBRARY
 INCLUDEPATH += $$PWD
-DESTDIR = $$OUT_PWD
+DESTDIR = $$PWD
 
 SOURCES += \
     sources/writer.cpp \
