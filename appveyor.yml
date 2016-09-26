@@ -27,6 +27,6 @@ build_script:
 - qmake -r
 - mingw32-make
 - cp ./src/qtcsv.dll ./tests
-- cd ../tests
+- cd ./tests
 - tst_tests.exe
 
