@@ -1,6 +1,6 @@
 # qtcsv
 
-[![Build Status](https://travis-ci.org/iamantony/qtcsv.svg?branch=master)](https://travis-ci.org/iamantony/qtcsv)
+[![Build Status](https://travis-ci.org/iamantony/qtcsv.svg?branch=master)](https://travis-ci.org/iamantony/qtcsv) [![Build status](https://ci.appveyor.com/api/projects/status/7uv7ghs9uexf08bv/branch/master?svg=true)](https://ci.appveyor.com/project/iamantony/qtcsv/branch/master)
 
 Author: [Antony Cherepanov][mypage]  
 E-mail: antony.cherepanov@gmail.com
@@ -8,7 +8,9 @@ E-mail: antony.cherepanov@gmail.com
 Small easy-to-use library for reading and writing [csv-files][csvwiki]
 in Qt.
 
-Tested on Ubuntu 14.04 with gcc 4.8.4, Qt 4.8 and higher.
+Tested on:
+- Ubuntu 14.04 with gcc 4.8.4, Qt 4.8 and higher
+- Windows with MinGW, Qt 5.3 and higher
 
 ## Table of contents
 * [Quick Example](#quick-example)
