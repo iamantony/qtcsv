@@ -18,6 +18,7 @@ private Q_SLOTS:
     void testWriteInvalidArgs();
     void testWriteFromStringData();
     void testWriteFromVariantData();
+    void testWriteToFileWithDotsInName();
     void testWriteAppendMode();
     void testWriteWithNotDefaultSeparator();
     void testWriteWithHeader();
@@ -29,6 +30,7 @@ private Q_SLOTS:
 
 private:
     QString getFilePath() const;
+    QString getFilePathWithDotsInName() const;
     QtCSV::StringData getTestStringData(const int &symbolsInRow,
                                         const int &rowsNumber);
 };

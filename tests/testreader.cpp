@@ -82,6 +82,24 @@ void TestReader::testReadFileWithCommas()
     }
 }
 
+void TestReader::testReadFileWithDotsInName()
+{
+    const QString path = getPathToFileTestDotsInName();
+    QList<QStringList> data = QtCSV::Reader::readToList(path);
+
+    QVERIFY2(false == data.isEmpty(), "Failed to read file content");
+
+    QList<QStringList> expected;
+    expected << (QStringList() << "one" << "two" << "three");
+    expected << (QStringList() << "one_element");
+
+    QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
+    for (int i = 0; i < data.size(); ++i)
+    {
+        QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
+    }
+}
+
 void TestReader::testReadFileWithCommasToStringData()
 {
     const QString path = getPathToFileTestComma();
@@ -319,6 +337,11 @@ QString TestReader::getPathToFolderWithTestFiles() const
 QString TestReader::getPathToFileTestComma() const
 {
     return getPathToFolderWithTestFiles() + "test-comma.csv";
+}
+
+QString TestReader::getPathToFileTestDotsInName() const
+{
+    return getPathToFolderWithTestFiles() + "test.file.dots.csv";
 }
 
 QString TestReader::getPathToFileTestSemicolon() const

@@ -15,6 +15,7 @@ private Q_SLOTS:
     void testReadToListInvalidArgs();
     void testReadToDataInvalidArgs();
     void testReadFileWithCommas();
+    void testReadFileWithDotsInName();
     void testReadFileWithCommasToStringData();
     void testReadFileWithCommasToVariantData();
     void testReadFileWithSemicolons();
@@ -31,6 +32,7 @@ private Q_SLOTS:
 private:
     QString getPathToFolderWithTestFiles() const;
     QString getPathToFileTestComma() const;
+    QString getPathToFileTestDotsInName() const;
     QString getPathToFileTestSemicolon() const;
     QString getPathToFileTestDataTextDelimDQuotes() const;
     QString getPathToFileTestDataTextDelimQuotes() const;

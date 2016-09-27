@@ -14,7 +14,7 @@ namespace QtCSV
     inline bool CheckFile(const QString& filePath)
     {
         QFileInfo fileInfo(filePath);
-        if ( fileInfo.isAbsolute() && "csv" == fileInfo.completeSuffix() )
+        if ( fileInfo.isAbsolute() && "csv" == fileInfo.suffix() )
         {
             return true;
         }
