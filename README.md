@@ -234,7 +234,6 @@ make check
 
 ### Windows
 ```bash
-# copy library .dll file to ./test folder
 cp ./src/qtcsv.dll ./tests
 cd ./tests
 tst_tests.exe
