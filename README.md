@@ -22,7 +22,7 @@ Tested on:
   * [Writer](#writer)
 * [Requirements](#requirements) 
 * [Build](#build)
-  * [Prebuild step on Windows](#prebuild-step-on-Windows)
+  * [Prebuild step on Windows](#prebuild-step-on-windows)
 * [Run tests](#run-tests)
 * [Installation](#installation)
 * [Examples](#examples)
