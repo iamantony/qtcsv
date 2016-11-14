@@ -24,6 +24,8 @@ Tested on:
 * [Build](#build)
   * [Prebuild step on Windows](#prebuild-step-on-windows)
 * [Run tests](#run-tests)
+  * [Linux](#linux)
+  * [Windows](#windows)
 * [Installation](#installation)
 * [Examples](#examples)
 * [Other](#other)
@@ -213,7 +215,7 @@ versions (4.7, 4.6, ...).
 ## Build
 
 ### Prebuild step on Windows
-If you going to build library on Windows, first of all [check that your PATH variable][path_var] contains paths to _Qt_ and _MinGW_ toolsets. For example, you have installed Qt 5.3 into _C:\Qt_. Then Qt binaries and libraries will be in folder _C:\Qt\5.3\mingw482_32\bin_ and MinGW binaries will be in _C:\Qt\Tools\mingw482_32\bin_. Add these paths to the PATH variable so that Windows would know where to look for _qmake_ and _make_ binaries.
+If you going to build *qtcsv* library on Windows, first of all [check that your PATH variable][path_var] contains paths to _Qt_ and _MinGW_ toolsets. For example, you have installed Qt 5.3 into _C:\Qt_. Then Qt binaries and libraries will be in folder _C:\Qt\5.3\mingw482_32\bin_ and MinGW binaries will be in _C:\Qt\Tools\mingw482_32\bin_. Add these paths to the PATH variable so that Windows would know where to look for _qmake_ and _make_ binaries.
 
 ```bash
 cd /path/to/folder/with/qtcsv
@@ -222,10 +224,20 @@ make
 ```
 
 ## Run tests
-If you want to run tests, then use this commands:
+If you want to run tests, then use this commands after build of *qtcsv*:
+
+### Linux
 ```bash
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/src
 make check
+```
+
+### Windows
+```bash
+# copy library .dll file to ./test folder
+cp ./src/qtcsv.dll ./tests
+cd ./tests
+tst_tests.exe
 ```
 
 ## Installation
