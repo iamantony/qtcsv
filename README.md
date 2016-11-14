@@ -22,6 +22,7 @@ Tested on:
   * [Writer](#writer)
 * [Requirements](#requirements) 
 * [Build](#build)
+  * [Prebuild step on Windows](#prebuild-step-on-Windows)
 * [Run tests](#run-tests)
 * [Installation](#installation)
 * [Examples](#examples)
@@ -210,6 +211,10 @@ It is quite possible, that library will be successfully built with older Qt
 versions (4.7, 4.6, ...).
 
 ## Build
+
+### Prebuild step on Windows
+If you going to build library on Windows, first of all [check that your PATH variable][path_var] contains paths to _Qt_ and _MinGW_ toolsets. For example, you have installed Qt 5.3 into _C:\Qt_. Then Qt binaries and libraries will be in folder _C:\Qt\5.3\mingw482_32\bin_ and MinGW binaries will be in _C:\Qt\Tools\mingw482_32\bin_. Add these paths to the PATH variable so that Windows would know where to look for _qmake_ and _make_ binaries.
+
 ```bash
 cd /path/to/folder/with/qtcsv
 qmake -r
@@ -261,4 +266,5 @@ proper csv-file.
 [install-files]: http://doc.qt.io/qt-5/qmake-advanced-usage.html#installing-files
 [qtcsv-example]: https://github.com/iamantony/qtcsv-example
 [rfc]: http://tools.ietf.org/pdf/rfc4180.pdf
+[path_var]: http://superuser.com/questions/284342/what-are-path-and-other-environment-variables-and-how-can-i-set-or-use-them
 [csvlint]: http://csvlint.io/about
