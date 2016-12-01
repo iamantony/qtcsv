@@ -17,7 +17,7 @@ namespace QtCSV
     // Additionally you cant specify:
     // - a separator character (or string) that is used as values
     // separator in this csv-file. Usually comma (",") is used as separator.
-    // - text delimeter character (or string) that enclose each element in a
+    // - text delimiter character (or string) that enclose each element in a
     // row. Usually uses the following symbols: empty string (""), quote ("'")
     // and double quotes ("\"").
     // - text codec.
@@ -31,7 +31,7 @@ namespace QtCSV
         // Read csv-file and save it's data as strings to QList<QStringList>
         static QList<QStringList> readToList(const QString& filePath,
                         const QString& separator = QString(","),
-                        const QString& textDelimeter = QString("\""),
+                        const QString& textDelimiter = QString("\""),
                         QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
 
         // Read csv-file and save it's data to AbstractData-based container
@@ -39,7 +39,7 @@ namespace QtCSV
         static bool readToData(const QString& filePath,
                         AbstractData& data,
                         const QString& separator = QString(","),
-                        const QString& textDelimeter = QString("\""),
+                        const QString& textDelimiter = QString("\""),
                         QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
     };
 }

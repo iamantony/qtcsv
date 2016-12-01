@@ -21,7 +21,7 @@ public:
     static bool read(const QString& filePath,
                      QList<QStringList>& list,
                      const QString& separator,
-                     const QString& textDelimeter,
+                     const QString& textDelimiter,
                      QTextCodec* codec);
 
 private:
@@ -32,7 +32,7 @@ private:
     // Split string line to elements by separators
     static QStringList splitElements(const QString& line,
                                      const QString& separator,
-                                     const QString& textDelimeter,
+                                     const QString& textDelimiter,
                                      ElementInfo& elemInfo);
 
     // Try to find end position of first or middle element
@@ -47,9 +47,9 @@ private:
                               const QString& separator,
                               const QString& txtDelim);
 
-    // Remove text delimeter symbols
-    static QStringList removeTextDelimeters(const QStringList& elements,
-                                            const QString& textDelimeter);
+    // Remove text delimiter symbols
+    static QStringList removeTextDelimiters(const QStringList& elements,
+                                            const QString& textDelimiter);
 };
 
 struct ElementInfo
@@ -65,7 +65,7 @@ struct ElementInfo
 // - filePath - string with absolute path to csv-file
 // - list - refernce to list container where read data will be saved
 // - separator - string or character that separate values in a row
-// - textDelimeter - string or character that enclose each element in a row
+// - textDelimiter - string or character that enclose each element in a row
 // - codec - pointer to codec object that would be used for file reading
 // @output:
 // - QList<QStringList> - list of values (as strings) from csv-file. If case of
@@ -73,7 +73,7 @@ struct ElementInfo
 bool ReaderPrivate::read(const QString& filePath,
                             QList<QStringList>& list,
                             const QString& separator,
-                            const QString& textDelimeter,
+                            const QString& textDelimiter,
                             QTextCodec* codec)
 {
     if ( false == checkParams(filePath, separator) )
@@ -100,7 +100,7 @@ bool ReaderPrivate::read(const QString& filePath,
     {
         QString line = stream.readLine();
         QStringList elements = ReaderPrivate::splitElements(
-                  line, separator, textDelimeter, elemInfo);
+                  line, separator, textDelimiter, elemInfo);
         if (elemInfo.isEnded)
         {
             // This elements ending in the current line.
@@ -178,12 +178,12 @@ bool ReaderPrivate::checkParams(const QString& filePath,
 // @input:
 // - line - string with data
 // - separator - string or character that separate values in a row
-// - textDelimeter - string that used as text delimeter
+// - textDelimiter - string that used as text delimiter
 // @output:
 // - QStringList - list of elements
 QStringList ReaderPrivate::splitElements(const QString& line,
                                             const QString& separator,
-                                            const QString& textDelimeter,
+                                            const QString& textDelimiter,
                                             ElementInfo& elemInfo)
 {
     // If separator is empty, return whole line. Can't work in this
@@ -216,34 +216,34 @@ QStringList ReaderPrivate::splitElements(const QString& line,
         {
             // This line is a new line, not a continuation of the previous
             // line.
-            // Check if element starts with the delimeter symbol
-            int delimeterPos = line.indexOf(textDelimeter, pos);
-            if (delimeterPos == pos)
+            // Check if element starts with the delimiter symbol
+            int delimiterPos = line.indexOf(textDelimiter, pos);
+            if (delimiterPos == pos)
             {
-                pos = delimeterPos + textDelimeter.size();
+                pos = delimiterPos + textDelimiter.size();
 
-                // Element starts with the delimeter symbol. It means that
+                // Element starts with the delimiter symbol. It means that
                 // this element could contain any number of double
-                // delimeters and separator symbols. This element could:
+                // delimiters and separator symbols. This element could:
                 // 1. Be the first or the middle element. Then it should end
-                // with delimeter and the seprator symbols standing next to each
+                // with delimiter and the seprator symbols standing next to each
                 // other.
                 int midElemEndPos = FindMiddleElementPositioin(
-                                        line, pos, separator, textDelimeter);
+                                        line, pos, separator, textDelimiter);
                 if (midElemEndPos > 0)
                 {
                     int length = midElemEndPos - pos;
                     result << line.mid(pos, length);
                     pos = midElemEndPos +
-                          textDelimeter.size() + separator.size();
+                          textDelimiter.size() + separator.size();
                     continue;
                 }
 
                 // 2. Be The last element on the line. Then it should end with
-                // delimeter symbol.
-                if (IsElementLast(line, pos, separator, textDelimeter))
+                // delimiter symbol.
+                if (IsElementLast(line, pos, separator, textDelimiter))
                 {
-                    int length = line.size() - textDelimeter.size() - pos;
+                    int length = line.size() - textDelimiter.size() - pos;
                     result << line.mid(pos, length);
                     break;
                 }
@@ -256,8 +256,8 @@ QStringList ReaderPrivate::splitElements(const QString& line,
             }
             else
             {
-                // Element do not starts with the delimeter symbol. It means
-                // that this element do not contain double delimeters and it
+                // Element do not starts with the delimiter symbol. It means
+                // that this element do not contain double delimiters and it
                 // ends at the next separator symbol.
                 // Check if line contains separator symbol.
                 int separatorPos = line.indexOf(separator, pos);
@@ -283,27 +283,27 @@ QStringList ReaderPrivate::splitElements(const QString& line,
         else
         {
             // This line is a continuation of the previous. Last element of the
-            // previous line did not end. It started with delimeter symbol.
+            // previous line did not end. It started with delimiter symbol.
             // It means that this element could contain any number of double
-            // delimeters and separator symbols. This element could:
+            // delimiters and separator symbols. This element could:
             // 1. End somewhere in the middle of the line. Then it should end
-            // with delimeter and the seprator symbols standing next to each
+            // with delimiter and the seprator symbols standing next to each
             // other.
             int midElemEndPos = FindMiddleElementPositioin(
-                                line, pos, separator, textDelimeter);
+                                line, pos, separator, textDelimiter);
             if (midElemEndPos > 0)
             {
                 result << (LF + line.mid(pos, midElemEndPos - pos));
-                pos = midElemEndPos + textDelimeter.size() + separator.size();
+                pos = midElemEndPos + textDelimiter.size() + separator.size();
                 elemInfo.isEnded = true;
                 continue;
             }
 
             // 2. End at the end of the line. Then it should end with
-            // delimeter symbol.
-            if (IsElementLast(line, pos, separator, textDelimeter))
+            // delimiter symbol.
+            if (IsElementLast(line, pos, separator, textDelimiter))
             {
-                int length = line.size() - textDelimeter.size() - pos;
+                int length = line.size() - textDelimiter.size() - pos;
                 result << (LF + line.mid(pos, length));
                 elemInfo.isEnded = true;
                 break;
@@ -315,7 +315,7 @@ QStringList ReaderPrivate::splitElements(const QString& line,
         }
     }
 
-    return removeTextDelimeters(result, textDelimeter);
+    return removeTextDelimiters(result, textDelimiter);
 }
 
 // Try to find end position of first or middle element
@@ -323,7 +323,7 @@ QStringList ReaderPrivate::splitElements(const QString& line,
 // - str - string with data
 // - startPos - start position of the current element in the string
 // - separator - string or character that separate values in a row
-// - textDelimeter - string that used as text delimeter
+// - textDelimiter - string that used as text delimiter
 // @output:
 // - int - end position of the element or -1 if this element is not first
 // or middle
@@ -355,11 +355,11 @@ int ReaderPrivate::FindMiddleElementPositioin(const QString& str,
         }
 
         // Check that this is really the end symbols of the
-        // element and we don't mix up it with double delimeter
-        // and separator. Calc number of delimeter symbols from elemEndPos
+        // element and we don't mix up it with double delimiter
+        // and separator. Calc number of delimiter symbols from elemEndPos
         // to startPos that stands together.
-        int numOfDelimeters = 0;
-        for (int pos = elemEndPos; startPos <= pos; --pos, ++numOfDelimeters)
+        int numOfDelimiters = 0;
+        for (int pos = elemEndPos; startPos <= pos; --pos, ++numOfDelimiters)
         {
             QStringRef strRef = str.midRef(pos, txtDelim.size());
             if (QStringRef::compare(strRef, txtDelim) != 0)
@@ -368,11 +368,11 @@ int ReaderPrivate::FindMiddleElementPositioin(const QString& str,
             }
         }
 
-        // If we have odd number of delimeter symbols that stand together,
-        // then this is the even number of double delimeter symbols + last
-        // delimeter symbol. That means that we have found end position of
+        // If we have odd number of delimiter symbols that stand together,
+        // then this is the even number of double delimiter symbols + last
+        // delimiter symbol. That means that we have found end position of
         // the middle element.
-        if (numOfDelimeters % 2 == 1)
+        if (numOfDelimiters % 2 == 1)
         {
             return elemEndPos;
         }
@@ -392,7 +392,7 @@ int ReaderPrivate::FindMiddleElementPositioin(const QString& str,
 // - str - string with data
 // - startPos - start position of the current element in the string
 // - separator - string or character that separate values in a row
-// - textDelimeter - string that used as text delimeter
+// - textDelimiter - string that used as text delimiter
 // @output:
 // - bool - True if the current element is the last element of the string,
 // False otherwise
@@ -409,7 +409,7 @@ bool ReaderPrivate::IsElementLast(const QString& str,
         return false;
     }
 
-    // Check if string ends with text delimeter. If not, then this element
+    // Check if string ends with text delimiter. If not, then this element
     // do not ends on this line
     if (false == str.endsWith(txtDelim))
     {
@@ -417,11 +417,11 @@ bool ReaderPrivate::IsElementLast(const QString& str,
     }
 
     // Check that this is really the end symbols of the
-    // element and we don't mix up it with double delimeter.
-    // Calc number of delimeter symbols from end
+    // element and we don't mix up it with double delimiter.
+    // Calc number of delimiter symbols from end
     // to startPos that stands together.
-    int numOfDelimeters = 0;
-    for (int pos = str.size() - 1; startPos <= pos; --pos, ++numOfDelimeters)
+    int numOfDelimiters = 0;
+    for (int pos = str.size() - 1; startPos <= pos; --pos, ++numOfDelimiters)
     {
         QStringRef strRef = str.midRef(pos, txtDelim.size());
         if (QStringRef::compare(strRef, txtDelim) != 0)
@@ -430,10 +430,10 @@ bool ReaderPrivate::IsElementLast(const QString& str,
         }
     }
 
-    // If we have odd number of delimeter symbols that stand together,
-    // then this is the even number of double delimeter symbols + last
-    // delimeter symbol. That means that this element is the last on the line.
-    if (numOfDelimeters % 2 == 1)
+    // If we have odd number of delimiter symbols that stand together,
+    // then this is the even number of double delimiter symbols + last
+    // delimiter symbol. That means that this element is the last on the line.
+    if (numOfDelimiters % 2 == 1)
     {
         return true;
     }
@@ -441,37 +441,37 @@ bool ReaderPrivate::IsElementLast(const QString& str,
     return false;
 }
 
-// Remove text delimeter symbols
+// Remove text delimiter symbols
 // @input:
 // - elements - list of string elements
-// - textDelimeter - string that delimeter text parts from each other
+// - textDelimiter - string that delimiter text parts from each other
 // @output:
 // - QStringList - list of elements
-QStringList ReaderPrivate::removeTextDelimeters(const QStringList& elements,
-                                                const QString& textDelimeter)
+QStringList ReaderPrivate::removeTextDelimiters(const QStringList& elements,
+                                                const QString& textDelimiter)
 {
-    if (elements.isEmpty() || textDelimeter.isEmpty())
+    if (elements.isEmpty() || textDelimiter.isEmpty())
     {
         return elements;
     }
 
     QStringList result;
-    const QString doubleTextDelim = textDelimeter + textDelimeter;
+    const QString doubleTextDelim = textDelimiter + textDelimiter;
     for (int i = 0; i < elements.size(); ++i)
     {
         QString str = elements.at(i);
-        if (str.startsWith(textDelimeter))
+        if (str.startsWith(textDelimiter))
         {
-            str.remove(0, textDelimeter.size());
+            str.remove(0, textDelimiter.size());
         }
 
-        if (str.endsWith(textDelimeter))
+        if (str.endsWith(textDelimiter))
         {
-            str.chop(textDelimeter.size());
+            str.chop(textDelimiter.size());
         }
 
         // Also replace double text delimiter with one text delimiter symbol
-        str.replace(doubleTextDelim, textDelimeter);
+        str.replace(doubleTextDelim, textDelimiter);
         result << str;
     }
 
@@ -482,18 +482,18 @@ QStringList ReaderPrivate::removeTextDelimeters(const QStringList& elements,
 // @input:
 // - filePath - string with absolute path to csv-file
 // - separator - string or character that separate values in a row
-// - textDelimeter - string or character that enclose each element in a row
+// - textDelimiter - string or character that enclose each element in a row
 // - codec - pointer to codec object that would be used for file reading
 // @output:
 // - QList<QStringList> - list of values (as strings) from csv-file. If case of
 // error will return empty QList<QStringList>.
 QList<QStringList> Reader::readToList(const QString& filePath,
                                       const QString& separator,
-                                      const QString& textDelimeter,
+                                      const QString& textDelimiter,
                                       QTextCodec* codec)
 {
     QList<QStringList> data;
-    ReaderPrivate::read(filePath, data, separator, textDelimeter, codec);
+    ReaderPrivate::read(filePath, data, separator, textDelimiter, codec);
 
     return data;
 }
@@ -504,18 +504,18 @@ QList<QStringList> Reader::readToList(const QString& filePath,
 // - filePath - string with absolute path to csv-file
 // - data - AbstractData object where all file content will be saved
 // - separator - string or character that separate values in a row
-// - textDelimeter - string or character that enclose each element in a row
+// - textDelimiter - string or character that enclose each element in a row
 // - codec - pointer to codec object that would be used for file reading
 // @output:
 // - bool - True if file was successfully read, otherwise False
 bool Reader::readToData(const QString& filePath,
                         AbstractData& data,
                         const QString& separator,
-                        const QString& textDelimeter,
+                        const QString& textDelimiter,
                         QTextCodec* codec)
 {
     QList<QStringList> list;
-    if (false == ReaderPrivate::read(filePath, list, separator, textDelimeter,
+    if (false == ReaderPrivate::read(filePath, list, separator, textDelimiter,
                                      codec))
     {
         return false;
