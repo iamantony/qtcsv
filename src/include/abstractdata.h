@@ -34,7 +34,7 @@ namespace QtCSV
     // Note, that AbstractData is just interface for container class, not a
     // container class. So you are free to decide how to store
     // information in derived classes.
-    class QTCSVSHARED_EXPORT AbstractData
+    class AbstractData
     {
     public:
         explicit AbstractData() {}

@@ -13,7 +13,7 @@ namespace QtCSV
     // AbstractData class and uses strings to store information. Also it
     // provide basic functions such as addRow(), insertRow(), removeRow(),
     // replaceRow() and so on.
-    class QTCSVSHARED_EXPORT StringData : public AbstractData
+    class StringData : public AbstractData
     {
     public:
         explicit StringData();

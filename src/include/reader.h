@@ -25,7 +25,7 @@ namespace QtCSV
     // - QList<QStringList>, where each QStringList contains values of one row.
     // - AbstractData-based container class, using virtual function
     // addRow(QStringList&).
-    class QTCSVSHARED_EXPORT Reader
+    class Reader
     {
     public:
         // Read csv-file and save it's data as strings to QList<QStringList>

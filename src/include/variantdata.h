@@ -18,7 +18,7 @@ namespace QtCSV
     // obviously, if we want to save information to CSV file, we would need to
     // convert it to plain-text form). So don't forget to see docs of QVariant
     // before you start using this class.
-    class QTCSVSHARED_EXPORT VariantData : public AbstractData
+    class VariantData : public AbstractData
     {
     public:
         explicit VariantData();
