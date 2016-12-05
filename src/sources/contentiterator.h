@@ -22,7 +22,7 @@ namespace QtCSV
     public:
         explicit ContentIterator(const AbstractData& data,
                                  const QString& separator,
-                                 const QString& textDelimeter,
+                                 const QString& textDelimiter,
                                  const QStringList& header,
                                  const QStringList& footer,
                                  int chunkSize = 1000);
@@ -43,7 +43,7 @@ namespace QtCSV
     private:
         const AbstractData& m_data;
         const QString& m_separator;
-        const QString& m_textDelimeter;
+        const QString& m_textDelimiter;
         const QStringList& m_header;
         const QStringList& m_footer;
         const int m_chunkSize;

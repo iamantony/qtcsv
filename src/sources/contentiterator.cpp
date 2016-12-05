@@ -10,11 +10,11 @@ using namespace QtCSV;
 
 ContentIterator::ContentIterator(const AbstractData& data,
                                  const QString& separator,
-                                 const QString& textDelimeter,
+                                 const QString& textDelimiter,
                                  const QStringList& header,
                                  const QStringList& footer,
                                  int chunkSize) :
-    m_data(data), m_separator(separator), m_textDelimeter(textDelimeter),
+    m_data(data), m_separator(separator), m_textDelimiter(textDelimiter),
     m_header(header), m_footer(footer), m_chunkSize(chunkSize), m_dataRow(-1),
     atEnd(false)
 {
@@ -104,22 +104,22 @@ QString ContentIterator::getNext()
 QString ContentIterator::composeRow(const QStringList& values) const
 {
     QStringList rowValues = values;
-    const QString twoDelimeters = m_textDelimeter + m_textDelimeter;
+    const QString twoDelimiters = m_textDelimiter + m_textDelimiter;
     for (int i = 0; i < rowValues.size(); ++i)
     {
-        rowValues[i].replace(m_textDelimeter, twoDelimeters);
+        rowValues[i].replace(m_textDelimiter, twoDelimiters);
 
-        QString delimeter = m_textDelimeter;
-        if (delimeter.isEmpty() &&
+        QString delimiter = m_textDelimiter;
+        if (delimiter.isEmpty() &&
                 (rowValues.at(i).contains(m_separator) ||
                  rowValues.at(i).contains(CR) ||
                  rowValues.at(i).contains(LF)))
         {
-            delimeter = DOUBLE_QUOTE;
+            delimiter = DOUBLE_QUOTE;
         }
 
-        rowValues[i].prepend(delimeter);
-        rowValues[i].append(delimeter);
+        rowValues[i].prepend(delimiter);
+        rowValues[i].append(delimiter);
     }
 
     QString result = rowValues.join(m_separator);

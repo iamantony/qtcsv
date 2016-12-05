@@ -33,7 +33,7 @@ namespace QtCSV
         static bool write(const QString& filePath,
                         const AbstractData& data,
                         const QString& separator = QString(","),
-                        const QString& textDelimeter = QString("\""),
+                        const QString& textDelimiter = QString("\""),
                         const WriteMode& mode = REWRITE,
                         const QStringList& header = QStringList(),
                         const QStringList& footer = QStringList(),
