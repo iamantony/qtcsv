@@ -20,7 +20,7 @@ namespace QtCSV
     // - WriteMode::APPEND - if file exist, new information will be appended
     // to the end of file.
     // Also it can add header and footer to a file.
-    class QTCSVSHARED_EXPORT Writer
+    class Writer
     {
     public:
         enum WriteMode
