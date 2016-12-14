@@ -7,9 +7,9 @@
 #include <QTime>
 #include <QDebug>
 
-#include "writer.h"
-#include "reader.h"
-#include "variantdata.h"
+#include "qtcsv/writer.h"
+#include "qtcsv/reader.h"
+#include "qtcsv/variantdata.h"
 
 TestWriter::TestWriter()
 {
@@ -318,6 +318,7 @@ void TestWriter::testWriteDifferentDataAmount()
             }
             catch (std::exception &e)
             {
+                Q_UNUSED(e);
                 QFAIL("No enough memory to create data object");
             }
 
@@ -332,6 +333,7 @@ void TestWriter::testWriteDifferentDataAmount()
             }
             catch (std::exception &e)
             {
+                Q_UNUSED(e);
                 QFAIL("No enough memory to write data to the file");
             }
 

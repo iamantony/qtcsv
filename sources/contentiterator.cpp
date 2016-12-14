@@ -3,7 +3,7 @@
 #include <QString>
 #include <QStringList>
 
-#include "include/abstractdata.h"
+#include "qtcsv/abstractdata.h"
 #include "sources/symbols.h"
 
 using namespace QtCSV;

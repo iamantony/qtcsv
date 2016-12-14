@@ -1,17 +1,17 @@
-#include "include/reader.h"
+#include "qtcsv/reader.h"
 
 #include <QStringList>
 #include <QFile>
 #include <QTextStream>
 #include <QDebug>
 
-#include "include/abstractdata.h"
+#include "qtcsv/abstractdata.h"
 #include "sources/filechecker.h"
 #include "sources/symbols.h"
 
 using namespace QtCSV;
 
-class ElementInfo;
+struct ElementInfo;
 
 class ReaderPrivate
 {

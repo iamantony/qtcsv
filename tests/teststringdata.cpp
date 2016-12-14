@@ -3,7 +3,7 @@
 #include <QDebug>
 #include <QTest>
 
-#include "stringdata.h"
+#include "qtcsv/stringdata.h"
 
 TestStringData::TestStringData()
 {

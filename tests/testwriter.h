@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QtTest>
 
-#include "stringdata.h"
+#include "qtcsv/stringdata.h"
 
 class TestWriter : public QObject
 {

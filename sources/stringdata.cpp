@@ -1,4 +1,4 @@
-#include "include/stringdata.h"
+#include "qtcsv/stringdata.h"
 
 #include <QList>
 #include <QStringList>
