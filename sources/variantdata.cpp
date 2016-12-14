@@ -1,4 +1,4 @@
-#include "include/variantdata.h"
+#include "qtcsv/variantdata.h"
 
 #include <QVariant>
 #include <QStringList>

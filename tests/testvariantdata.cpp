@@ -1,5 +1,5 @@
 #include "testvariantdata.h"
-#include "variantdata.h"
+#include "qtcsv/variantdata.h"
 
 const double EPSILON = 0.000001;
 

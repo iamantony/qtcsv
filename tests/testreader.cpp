@@ -2,9 +2,9 @@
 
 #include <QDir>
 
-#include "reader.h"
-#include "stringdata.h"
-#include "variantdata.h"
+#include "qtcsv/reader.h"
+#include "qtcsv/stringdata.h"
+#include "qtcsv/variantdata.h"
 
 TestReader::TestReader()
 {
