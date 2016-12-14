@@ -37,9 +37,9 @@ Tested on:
 #include <QDir>
 #include <QDebug>
 
-#include "stringdata.h"
-#include "reader.h"
-#include "writer.h"
+#include "qtcsv/stringdata.h"
+#include "qtcsv/reader.h"
+#include "qtcsv/writer.h"
 
 int main()
 {
