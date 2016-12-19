@@ -1,4 +1,4 @@
-#include "qtcsv/writer.h"
+#include "include/qtcsv/writer.h"
 
 #include <limits>
 
@@ -8,8 +8,8 @@
 #include <QCoreApplication>
 #include <QDebug>
 
-#include "qtcsv/abstractdata.h"
-#include "filechecker.h"
+#include "include/qtcsv/abstractdata.h"
+#include "sources/filechecker.h"
 #include "sources/contentiterator.h"
 
 using namespace QtCSV;

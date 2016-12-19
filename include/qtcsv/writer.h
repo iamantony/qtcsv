@@ -5,7 +5,7 @@
 #include <QStringList>
 #include <QTextCodec>
 
-#include "qtcsv_global.h"
+#include "include/qtcsv/qtcsv_global.h"
 
 namespace QtCSV
 {

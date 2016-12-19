@@ -1,4 +1,4 @@
-#include "qtcsv/variantdata.h"
+#include "include/qtcsv/variantdata.h"
 
 #include <QVariant>
 #include <QStringList>
@@ -7,15 +7,12 @@ using namespace QtCSV;
 
 class VariantData::VariantDataPrivate
 {
-    // == METHODS ==
 public:
     // Check if all values are convertable to strings
     bool isConvertableToString(const QList<QVariant>& values) const;
     // Transform QStringList to QList<QVariant>
     QList<QVariant> toListOfVariants(const QStringList& values) const;
 
-    // == DATA ==
-public:
     QList< QList<QVariant> > m_values;
 };
 
