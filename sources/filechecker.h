@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QFileInfo>
+#include <QDebug>
 
 namespace QtCSV
 {
@@ -14,8 +15,14 @@ namespace QtCSV
     inline bool CheckFile(const QString& filePath)
     {
         QFileInfo fileInfo(filePath);
-        if ( fileInfo.isAbsolute() && "csv" == fileInfo.suffix() )
+        if ( fileInfo.isAbsolute() && fileInfo.isFile() )
         {
+            if ( "csv" != fileInfo.suffix() )
+            {
+                qDebug() << __FUNCTION__  <<
+                            "Warning - file suffix is not .csv";
+            }
+
             return true;
         }
 
