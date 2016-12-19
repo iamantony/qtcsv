@@ -41,7 +41,7 @@ script:
   - qmake -r
   - make
   # run tests
-  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/src
+  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD
   - make check
   # install library
   - sudo make install
