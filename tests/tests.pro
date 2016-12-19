@@ -1,16 +1,17 @@
 QT += testlib
 QT -= gui
 
-TARGET = tst_tests
-CONFIG   += console testcase
-CONFIG   -= app_bundle
+TARGET = qtcsv_tests
+CONFIG += console testcase
+CONFIG -= app_bundle
 
 TEMPLATE = app
 
-unix|win32: {
-    CONFIG(release, debug|release): LIBS += -L$$PWD/../libs/release -lqtcsv
-    CONFIG(debug, debug|release): LIBS += -L$$PWD/../libs/debug -lqtcsv
-}
+CONFIG(release, debug|release): LIBS += -L$$PWD/../ -lqtcsv
+CONFIG(debug, debug|release): LIBS += -L$$PWD/../ -lqtcsv
+
+CONFIG(release, debug|release): DESTDIR = $$PWD/../
+CONFIG(debug, debug|release): DESTDIR = $$PWD/../
 
 INCLUDEPATH += $$PWD/../include
 
