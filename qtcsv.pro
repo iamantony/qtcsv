@@ -3,6 +3,7 @@ TARGET = qtcsv
 TEMPLATE = lib
 
 !msvc {
+    # flags for gcc-like compiler
     CONFIG += warn_on
     QMAKE_CXXFLAGS_WARN_ON += -Werror -Wformat=2 -Wuninitialized -Winit-self \
             -Wmissing-include-dirs -Wswitch-enum -Wundef -Wpointer-arith \
@@ -11,8 +12,10 @@ TEMPLATE = lib
 
 DEFINES += QTCSV_LIBRARY
 INCLUDEPATH += $$PWD/include/
-CONFIG(release, debug|release): DESTDIR = $$PWD/libs/release
-CONFIG(debug, debug|release): DESTDIR = $$PWD/libs/debug
+
+# DESTDIR specifies where to put the library file
+CONFIG(release, debug|release): DESTDIR = $$PWD
+CONFIG(debug, debug|release): DESTDIR = $$PWD
 
 SOURCES += \
     sources/writer.cpp \
@@ -33,6 +36,7 @@ HEADERS += \
     sources/symbols.h
 
 unix {
+    # settings for command "make install"
     libheaders.path = /usr/local/include/qtcsv/
     libheaders.files = $$PWD/include/*.h
 
