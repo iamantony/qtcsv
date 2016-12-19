@@ -3,8 +3,8 @@
 
 #include <QList>
 
-#include "include/qtcsv/abstractdata.h"
-#include "include/qtcsv/qtcsv_global.h"
+#include "qtcsv/abstractdata.h"
+#include "qtcsv/qtcsv_global.h"
 
 class QVariant;
 class QStringList;
