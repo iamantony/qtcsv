@@ -4,7 +4,7 @@
 #include <QList>
 #include <QTextCodec>
 
-#include "qtcsv_global.h"
+#include "include/qtcsv/qtcsv_global.h"
 
 class QStringList;
 
@@ -16,15 +16,14 @@ namespace QtCSV
     // absolute path to the csv-file that you are going to read.
     // Additionally you cant specify:
     // - a separator character (or string) that is used as values
-    // separator in this csv-file. Usually comma (",") is used as separator.
+    // separator in this csv-file. Comma (",") is usually used as separator.
     // - text delimiter character (or string) that enclose each element in a
-    // row. Usually uses the following symbols: empty string (""), quote ("'")
+    // row. Typical delimiter characters: none (""), quote ("'")
     // and double quotes ("\"").
     // - text codec.
     // Reader can save information to:
-    // - QList<QStringList>, where each QStringList contains values of one row.
-    // - AbstractData-based container class, using virtual function
-    // addRow(QStringList&).
+    // - QList<QStringList>, where each QStringList contains values of one row;
+    // - AbstractData-based container class.
     class QTCSVSHARED_EXPORT Reader
     {
     public:
