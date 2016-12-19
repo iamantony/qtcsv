@@ -60,8 +60,8 @@ void TestWriter::testWriteInvalidArgs()
     QVERIFY2(false == QtCSV::Writer::write("./some/path.csv", strData),
              "Relative path to csv-file was accepted");
 
-    QVERIFY2(false == QtCSV::Writer::write(getFilePath() + ".xls", strData),
-             "Absolute path to xls-file was accepted");
+//    QVERIFY2(false == QtCSV::Writer::write(getFilePath() + ".xls", strData),
+//             "Absolute path to xls-file was accepted");
 }
 
 void TestWriter::testWriteFromStringData()
