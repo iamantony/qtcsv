@@ -38,11 +38,23 @@ install:
   - if [ "$QT_BASE" = "57" ]; then sudo apt-get install -qq qt57base; source /opt/qt57/bin/qt57-env.sh; fi
 
 script:
+  - qmake -v
+
+  # build library
   - qmake -r
   - make
+
+  # build tests
+  - cd tests
+  - qmake -r
+  - make
+
   # run tests
-  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD
-  - make check
+  # - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD
+  - cd ../
+  - chmod 777 qtcsv_tests
+  - ./qtcsv_tests
+
   # install library
   - sudo make install
 
