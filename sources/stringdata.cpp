@@ -60,7 +60,7 @@ void StringData::clear()
 // Insert new row at index position 'row'.
 // @input:
 // - row - index of row. If 'row' is 0, the value will be set as first row.
-// If 'row' is rowCount(), the value will be added as new last row.
+// If 'row' is >= rowCount(), the value will be added as new last row.
 // - value - value that is supposed to be written to the new row
 void StringData::insertRow(const int& row,
                            const QString& value)
@@ -71,7 +71,7 @@ void StringData::insertRow(const int& row,
 // Insert new row at index position 'row'.
 // @input:
 // - row - index of row. If 'row' is 0, the values will be set as first row.
-// If 'row' is rowCount(), the values will be added as new last row.
+// If 'row' is >= rowCount(), the values will be added as new last row.
 // - values - list of strings
 void StringData::insertRow(const int& row,
                            const QStringList& values)
@@ -87,7 +87,7 @@ bool StringData::isEmpty() const
     return d_ptr->m_values.isEmpty();
 }
 
-// Removes the row at index position 'row'.
+// Remove the row at index position 'row'.
 // @input:
 // - row - index of row to remove. 'row' must be a valid index position
 // (i.e., 0 <= row < rowCount()). Otherwise function will do nothing.
@@ -96,7 +96,7 @@ void StringData::removeRow(const int& row)
     d_ptr->m_values.removeAt(row);
 }
 
-// Replaces the row at index position 'row' with new row.
+// Replace the row at index position 'row' with new row.
 // @input:
 // - row - index of row that should be replaced. 'row' must be
 // a valid index position (i.e., 0 <= row < rowCount()).
@@ -107,7 +107,7 @@ void StringData::replaceRow(const int& row,
     replaceRow(row, (QStringList() << value));
 }
 
-// Replaces the row at index position 'row' with new row.
+// Replace the row at index position 'row' with new row.
 // @input:
 // - row - index of row that should be replaced. 'row' must be
 // a valid index position (i.e., 0 <= row < rowCount()).
@@ -122,7 +122,7 @@ void StringData::replaceRow(const int& row,
 // Reserve space for 'size' rows.
 // @input:
 // - size - number of rows to reserve in memory. If 'size' is smaller than the
-// current number of rows, nothing will happen.
+// current number of rows, function will do nothing.
 void StringData::reserve(const int& size)
 {
     d_ptr->m_values.reserve(size);

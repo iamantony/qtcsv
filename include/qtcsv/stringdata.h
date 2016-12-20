@@ -11,8 +11,7 @@ namespace QtCSV
 {
     // StringData is a simple container class. It implements interface of
     // AbstractData class and uses strings to store information. Also it
-    // provide basic functions such as addRow(), insertRow(), removeRow(),
-    // replaceRow() and so on.
+    // provides basic functions for working with rows.
     class QTCSVSHARED_EXPORT StringData : public AbstractData
     {
     public:
@@ -37,9 +36,9 @@ namespace QtCSV
 
         // Check if there are any data
         virtual bool isEmpty() const;
-        // Removes the row at index position 'row'
+        // Remove the row at index position 'row'
         void removeRow(const int& row);
-        // Replaces the row at index position 'row' with new row
+        // Replace the row at index position 'row' with new row
         void replaceRow(const int& row,
                         const QString& value);
 
