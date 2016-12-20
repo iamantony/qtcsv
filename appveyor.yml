@@ -24,10 +24,10 @@ before_build:
 
 build_script:
 - qmake -v
-- qmake -r
+- qmake
 - mingw32-make
 - cd ./tests
-- qmake -r
+- qmake
 - mingw32-make
 - cd ../
 - qtcsv_tests.exe
