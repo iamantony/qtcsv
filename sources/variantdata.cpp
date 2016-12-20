@@ -20,7 +20,7 @@ public:
 // @input:
 // - values - list of values
 // @output:
-// - bool - True is all values are convertable to strings, False otherwise
+// - bool - True if all values are convertable to strings, False otherwise
 bool VariantData::VariantDataPrivate::isConvertableToString(
         const QList<QVariant>& values) const
 {
@@ -129,7 +129,7 @@ void VariantData::clear()
 // Insert new row at index position 'row'.
 // @input:
 // - row - index of row. If 'row' is 0, the value will be set as first row.
-// If 'row' is rowCount(), the value will be added as new last row.
+// If 'row' is >= rowCount(), the value will be added as new last row.
 // - value - value that is supposed to be written to the new row. Value must be
 // convertable to a QString!
 // @output:
@@ -143,7 +143,7 @@ bool VariantData::insertRow(const int& row,
 // Insert new row at index position 'row'.
 // @input:
 // - row - index of row. If 'row' is 0, the value will be set as first row.
-// If 'row' is rowCount(), the value will be added as new last row.
+// If 'row' is >= rowCount(), the values will be added as new last row.
 // - values - list of strings that are supposed to be written to the new row
 // @output:
 // - bool - True if row was inserted, False otherwise
@@ -156,7 +156,7 @@ bool VariantData::insertRow(const int& row,
 // Insert new row at index position 'row'.
 // @input:
 // - row - index of row. If 'row' is 0, the value will be set as first row.
-// If 'row' is rowCount(), the value will be added as new last row.
+// If 'row' is >= rowCount(), the values will be added as new last row.
 // - values - list of values that are supposed to be written to the new row.
 // Values must be convertable to a QString!
 // @output:
@@ -181,7 +181,7 @@ bool VariantData::isEmpty() const
     return d_ptr->m_values.isEmpty();
 }
 
-// Removes the row at index position 'row'
+// Remove the row at index position 'row'
 // @input:
 // - row - index of row to remove. 'row' must be a valid index position
 // (i.e., 0 <= row < rowCount()). Otherwise function will do nothing.
@@ -190,7 +190,7 @@ void VariantData::removeRow(const int& row)
     d_ptr->m_values.removeAt(row);
 }
 
-// Replaces the row at index position 'row' with new row.
+// Replace the row at index position 'row' with new row.
 // @input:
 // - row - index of row that should be replaced. 'row' must be
 // a valid index position (i.e., 0 <= row < rowCount()).
@@ -204,7 +204,7 @@ bool VariantData::replaceRow(const int& row,
     return replaceRow(row, (QList<QVariant>() << value));
 }
 
-// Replaces the row at index position 'row' with new row.
+// Replace the row at index position 'row' with new row.
 // @input:
 // - row - index of row that should be replaced. 'row' must be
 // a valid index position (i.e., 0 <= row < rowCount()).
@@ -218,13 +218,12 @@ bool VariantData::replaceRow(const int& row,
     return replaceRow(row, d_ptr->toListOfVariants(values));
 }
 
-// Replaces the row at index position 'row' with new row.
+// Replace the row at index position 'row' with new row.
 // @input:
 // - row - index of row that should be replaced. 'row' must be
 // a valid index position (i.e., 0 <= row < rowCount()).
 // - values - values that are supposed to be written instead of the 'old'
-// values.
-// Values must be convertable to a QString!
+// values. Values must be convertable to a QString!
 // @output:
 // - bool - True if row was replaced, else False
 bool VariantData::replaceRow(const int& row,
@@ -242,7 +241,7 @@ bool VariantData::replaceRow(const int& row,
 // Reserve space for 'size' rows.
 // @input:
 // - size - number of rows to reserve in memory. If 'size' is smaller than the
-// current number of rows, nothing will happen.
+// current number of rows, function will do nothing.
 void VariantData::reserve(const int& size)
 {
     d_ptr->m_values.reserve(size);
@@ -258,9 +257,9 @@ int VariantData::rowCount() const
 
 // Get values (as list of strings) of specified row
 // @input:
-// - row - valid number of row
+// - row - valid number of the row
 // @output:
-// - QStringList - values of row. If row have invalid value, function will
+// - QStringList - values of the row. If row have invalid value, function will
 // return empty QStringList.
 QStringList VariantData::rowValues(const int& row) const
 {

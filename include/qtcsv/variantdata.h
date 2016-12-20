@@ -12,8 +12,8 @@ class QStringList;
 namespace QtCSV
 {
     // VariantData is a simple container class. It implements interface of
-    // AbstractData class. It use QVariant to hold information, so data could be
-    // of almost any type - integral, strings and so on. There is only one
+    // AbstractData class. It uses QVariant to hold information, so data could
+    // be of almost any type - integral, strings and so on. There is only one
     // limitation - QVariant must be convertible to string (because,
     // obviously, if we want to save information to CSV file, we would need to
     // convert it to plain-text form). So don't forget to see docs of QVariant
@@ -47,9 +47,9 @@ namespace QtCSV
 
         // Check if there are any data
         virtual bool isEmpty() const;
-        // Removes the row at index position 'row'
+        // Remove the row at index position 'row'
         void removeRow(const int& row);
-        // Replaces the row at index position 'row' with new row
+        // Replace the row at index position 'row' with new row
         bool replaceRow(const int& row,
                         const QVariant& value);
 
