@@ -24,7 +24,7 @@ before_install:
   - if [ "$QT_BASE" = "54" ]; then sudo add-apt-repository ppa:beineri/opt-qt542-trusty -y; fi
   - if [ "$QT_BASE" = "55" ]; then sudo add-apt-repository ppa:beineri/opt-qt551-trusty -y; fi
   - if [ "$QT_BASE" = "56" ]; then sudo add-apt-repository ppa:beineri/opt-qt562-trusty -y; fi
-  - if [ "$QT_BASE" = "57" ]; then sudo add-apt-repository ppa:beineri/opt-qt57-trusty -y; fi
+  - if [ "$QT_BASE" = "57" ]; then sudo add-apt-repository ppa:beineri/opt-qt571-trusty -y; fi
   - sudo apt-get update -qq
 
 install:
@@ -41,16 +41,15 @@ script:
   - qmake -v
 
   # build library
-  - qmake -r
+  - qmake
   - make
 
   # build tests
-  - cd tests
-  - qmake -r
+  - cd ./tests
+  - qmake
   - make
 
   # run tests
-  # - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD
   - cd ../
   - chmod 777 qtcsv_tests
   - ./qtcsv_tests
