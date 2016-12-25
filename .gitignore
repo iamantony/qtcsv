@@ -31,4 +31,4 @@ build-*
 *.qmlproject.user.*
 
 # Project
-*tst_*
+*qtcsv_tests
