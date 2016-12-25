@@ -8,6 +8,14 @@
 
 using namespace QtCSV;
 
+// Constructor of ContentIterator
+// @input:
+// - data - AbstractData object
+// - separator - string or character that would separate values in a row (line)
+// - textDelimiter - string or character that enclose each element in a row
+// - header - strings that will be placed on the first line
+// - footer - strings that will be placed on the last line
+// - chunkSize - size (in rows) of chunk of data
 ContentIterator::ContentIterator(const AbstractData& data,
                                  const QString& separator,
                                  const QString& textDelimiter,
@@ -37,9 +45,9 @@ bool ContentIterator::hasNext() const
 }
 
 // Get next chunk of information
-// @input:
+// @output:
 // - QString - next chunk of information. If there is no more information to
-// return, will return empty string
+// return, function will return empty string
 QString ContentIterator::getNext()
 {
     // Check if we have already get to the end of the content
@@ -51,10 +59,10 @@ QString ContentIterator::getNext()
     QString content;
     int rowsNumber = 0;
 
-    // Initially m_dataRow have negative value. It indicates, that clien called
-    // this function first time. In this case at the beginning of the chunk
-    // we should place header information. And than set m_dataRow to the index
-    // of the first row in main data container.
+    // Initially m_dataRow have negative value. Negative value indicates that
+    // client have called this function first time. In this case at the
+    // beginning of the chunk we should place header information. And then
+    // set m_dataRow to the index of the first row in main data container.
     if ( m_dataRow < 0 )
     {
         if ( false == m_header.isEmpty() )
@@ -67,8 +75,8 @@ QString ContentIterator::getNext()
     }
 
     // Check if m_dataRow is less than number of rows in m_data. If this is
-    // true, add to the chunk information from the m_data. Otherwise, this means
-    // that we already have passed all the rows in the m_data.
+    // true, add information from the m_data to the chunk. Otherwise, this means
+    // that we already have passed all information from the m_data.
     if ( m_dataRow < m_data.rowCount() )
     {
         int endRow = qMin(m_dataRow + m_chunkSize - rowsNumber,
@@ -88,7 +96,7 @@ QString ContentIterator::getNext()
             ++rowsNumber;
         }
 
-        // At this point chunk contains the last information - footer. That
+        // At this point chunk contains the last row - footer. That
         // means that we get to the end of content.
         atEnd = true;
     }

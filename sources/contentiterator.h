@@ -12,8 +12,8 @@ namespace QtCSV
     // information. Its main purpose:
     // - to separate information into a chunks and
     // - to return these chunks one by one to the client.
-    // You can use this class as forward-iterator that can go from the beginning
-    // of the data to the end of it only once.
+    // You can use this class as forward-iterator that can go (only once) from
+    // the beginning to the end of the data.
     // You can use this class with csv-writer class. ContentIterator will join
     // elements of one row with separator symbol and then join rows with
     // new line symbol.
