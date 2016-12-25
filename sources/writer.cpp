@@ -181,9 +181,15 @@ bool Writer::write(const QString& filePath,
                    const QStringList& footer,
                    QTextCodec* codec)
 {
-    if ( filePath.isEmpty() || data.isEmpty() )
+    if ( filePath.isEmpty() )
     {
-        qDebug() << __FUNCTION__ << "Error - invalid arguments";
+        qDebug() << __FUNCTION__ << "Error - empty path to file";
+        return false;
+    }
+
+    if ( data.isEmpty() )
+    {
+        qDebug() << __FUNCTION__ << "Error - empty data";
         return false;
     }
 

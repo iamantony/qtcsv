@@ -166,7 +166,7 @@ bool ReaderPrivate::checkParams(const QString& filePath,
         return false;
     }
 
-    if ( false == CheckFile(filePath) )
+    if ( false == CheckFile(filePath, true) )
     {
         qDebug() << __FUNCTION__ << "Error - wrong file path:" << filePath;
         return false;
