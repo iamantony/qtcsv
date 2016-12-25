@@ -23,6 +23,12 @@ void TestWriter::cleanup()
         qDebug() << "Can't remove file:" << getFilePath();
     }
 
+    if ( QFile::exists(getFilePathXLS()) &&
+         false == QFile::remove(getFilePathXLS()) )
+    {
+        qDebug() << "Can't remove file:" << getFilePathXLS();
+    }
+
     if ( QFile::exists(getFilePathWithDotsInName()) &&
          false == QFile::remove(getFilePathWithDotsInName()) )
     {
@@ -33,6 +39,11 @@ void TestWriter::cleanup()
 QString TestWriter::getFilePath() const
 {
     return QDir::currentPath() + "/test-file.csv";
+}
+
+QString TestWriter::getFilePathXLS() const
+{
+    return QDir::currentPath() + "/test-file.xls";
 }
 
 QString TestWriter::getFilePathWithDotsInName() const
@@ -54,14 +65,11 @@ void TestWriter::testWriteInvalidArgs()
     QVERIFY2(false == QtCSV::Writer::write(QString(), strData),
              "Empty path was accepted");
 
-    QVERIFY2(false == QtCSV::Writer::write("./some/path.exe", strData),
-             "Relative path to exe-file was accepted");
-
     QVERIFY2(false == QtCSV::Writer::write("./some/path.csv", strData),
              "Relative path to csv-file was accepted");
 
-//    QVERIFY2(false == QtCSV::Writer::write(getFilePath() + ".xls", strData),
-//             "Absolute path to xls-file was accepted");
+    QVERIFY2(QtCSV::Writer::write(getFilePathXLS(), strData),
+             "Absolute path to xls-file was not accepted");
 }
 
 void TestWriter::testWriteFromStringData()
