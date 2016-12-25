@@ -2,9 +2,6 @@
 
 [![Build Status](https://travis-ci.org/iamantony/qtcsv.svg?branch=master)](https://travis-ci.org/iamantony/qtcsv) [![Build status](https://ci.appveyor.com/api/projects/status/7uv7ghs9uexf08bv/branch/master?svg=true)](https://ci.appveyor.com/project/iamantony/qtcsv/branch/master)
 
-Author: [Antony Cherepanov][mypage]  
-E-mail: antony.cherepanov@gmail.com
-
 Small easy-to-use library for reading and writing [csv-files][csvwiki]
 in Qt.
 
@@ -29,6 +26,7 @@ Tested on:
 * [Installation](#installation)
 * [Examples](#examples)
 * [Other](#other)
+* [Creators](#creators)
 
 ## Quick Example
 ```cpp
@@ -219,7 +217,14 @@ If you going to build *qtcsv* library on Windows, first of all [check that your 
 
 ```bash
 cd /path/to/folder/with/qtcsv
-qmake -r
+
+# Build library
+qmake
+make
+
+# Build tests
+cd ./tests
+qmake
 make
 ```
 
@@ -228,15 +233,15 @@ If you want to run tests, then use this commands after build of *qtcsv*:
 
 ### Linux
 ```bash
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/src
-make check
+cd /path/to/folder/with/qtcsv
+chmod 777 qtcsv_tests
+./qtcsv_tests
 ```
 
 ### Windows
 ```bash
-cp ./src/qtcsv.dll ./tests
-cd ./tests
-tst_tests.exe
+cd /path/to/folder/with/qtcsv
+qtcsv_tests.exe
 ```
 
 ## Installation
@@ -266,7 +271,10 @@ If you want to know more about csv-file format, read [RFC 4180][rfc] standard.
 Also on [this page][csvlint] you can find useful tips about how should look
 proper csv-file.
 
-[mypage]: https://github.com/iamantony
+## Creators
+Author: [Antony Cherepanov][mypage] (antony.cherepanov@gmail.com)  
+Contributors: [Patrizio "pbek" Bekerle][pbek], [Furkan "Furkanzmc" Üzümcü][Furkanzmc]
+
 [csvwiki]: http://en.wikipedia.org/wiki/Comma-separated_values
 [reader]: https://github.com/iamantony/qtcsv/blob/master/src/include/reader.h
 [writer]: https://github.com/iamantony/qtcsv/blob/master/src/include/writer.h
@@ -279,3 +287,6 @@ proper csv-file.
 [rfc]: http://tools.ietf.org/pdf/rfc4180.pdf
 [path_var]: http://superuser.com/questions/284342/what-are-path-and-other-environment-variables-and-how-can-i-set-or-use-them
 [csvlint]: http://csvlint.io/about
+[mypage]: https://github.com/iamantony
+[pbek]: https://github.com/pbek
+[Furkanzmc]: https://github.com/Furkanzmc
