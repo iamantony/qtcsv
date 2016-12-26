@@ -1,6 +1,8 @@
 #include "testreader.h"
 
 #include <QDir>
+#include <QFile>
+#include <QTime>
 
 #include "qtcsv/reader.h"
 #include "qtcsv/stringdata.h"
@@ -322,7 +324,7 @@ void TestReader::testReadFieldEndTripleQuotes()
     }
 }
 
-void TestReader::testReadFieldCorrectness()
+void TestReader::testReadFileDataCorrectness()
 {
     const QString path = getPathToFileTestDataCorrectness();
     QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
@@ -347,6 +349,26 @@ void TestReader::testReadFieldCorrectness()
     {
         QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
     }
+}
+
+void TestReader::testReadFileWorldCitiesPop()
+{
+    const QString path = getPathToFileWorldCitiesPop();
+    if (false == QFile::exists(path))
+    {
+        qDebug() << "Skip testReadFileWorldCitiesPop() because file" << path <<
+            "do not exist. If you want to run this test, download file "
+            "from http://www.maxmind.com/download/worldcities/worldcitiespop.txt.gz";
+        return;
+    }
+
+    QTime timer;
+    timer.start();
+    QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
+    qDebug() << "Elapsed time:" << timer.elapsed() << "ms";
+
+    QVERIFY2(false == data.isEmpty(), "Failed to read file content");
+    QVERIFY2(3173959 == data.size(), "Wrong number of rows");
 }
 
 QString TestReader::getPathToFolderWithTestFiles() const
@@ -403,4 +425,9 @@ QString TestReader::getPathToFileTestFieldEndTripleQuotes() const
 QString TestReader::getPathToFileTestDataCorrectness() const
 {
     return getPathToFolderWithTestFiles() + "test-data-correctness.csv";
+}
+
+QString TestReader::getPathToFileWorldCitiesPop() const
+{
+    return getPathToFolderWithTestFiles() + "worldcitiespop.txt";
 }
