@@ -322,6 +322,33 @@ void TestReader::testReadFieldEndTripleQuotes()
     }
 }
 
+void TestReader::testReadFieldCorrectness()
+{
+    const QString path = getPathToFileTestDataCorrectness();
+    QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
+    QVERIFY2(false == data.isEmpty(), "Failed to read file content");
+
+    QList<QStringList> expected;
+    expected << (QStringList() << "Year" << "Make" << "Model" <<
+                 "Description" << "Price");
+    expected << (QStringList() <<  "1997" << "Ford" << "E350" <<
+                 "ac, abs, moon" << "3000.00");
+    expected << (QStringList() << "1999" << "Chevy" <<
+                 "Venture \"Extended Edition\"" << "" << "4900.00");
+    expected << (QStringList() << "1996" << "Jeep" << "Grand Cherokee" <<
+                 "MUST SELL!\nair, moon roof, loaded" << "4799.00");
+    expected << (QStringList() << "1999" << "Chevy" <<
+                 "Venture \"Extended Edition, Very Large\"" << "" << "5000.00");
+    expected << (QStringList() << "" << "" << "Venture \"Extended Edition\"" <<
+                 "" << "4900.00");
+
+    QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
+    for (int i = 0; i < data.size(); ++i)
+    {
+        QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
+    }
+}
+
 QString TestReader::getPathToFolderWithTestFiles() const
 {
     return QDir::currentPath() + "/tests/data/";
@@ -371,4 +398,9 @@ QString TestReader::getPathToFileTestFieldWithCRLFLong() const
 QString TestReader::getPathToFileTestFieldEndTripleQuotes() const
 {
     return getPathToFolderWithTestFiles() + "test-field-end-triple-quotes.csv";
+}
+
+QString TestReader::getPathToFileTestDataCorrectness() const
+{
+    return getPathToFolderWithTestFiles() + "test-data-correctness.csv";
 }
