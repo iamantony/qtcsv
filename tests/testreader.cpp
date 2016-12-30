@@ -1,6 +1,8 @@
 #include "testreader.h"
 
 #include <QDir>
+#include <QFile>
+#include <QTime>
 
 #include "qtcsv/reader.h"
 #include "qtcsv/stringdata.h"
@@ -322,6 +324,53 @@ void TestReader::testReadFieldEndTripleQuotes()
     }
 }
 
+void TestReader::testReadFileDataCorrectness()
+{
+    const QString path = getPathToFileTestDataCorrectness();
+    QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
+    QVERIFY2(false == data.isEmpty(), "Failed to read file content");
+
+    QList<QStringList> expected;
+    expected << (QStringList() << "Year" << "Make" << "Model" <<
+                 "Description" << "Price");
+    expected << (QStringList() <<  "1997" << "Ford" << "E350" <<
+                 "ac, abs, moon" << "3000.00");
+    expected << (QStringList() << "1999" << "Chevy" <<
+                 "Venture \"Extended Edition\"" << "" << "4900.00");
+    expected << (QStringList() << "1996" << "Jeep" << "Grand Cherokee" <<
+                 "MUST SELL!\nair, moon roof, loaded" << "4799.00");
+    expected << (QStringList() << "1999" << "Chevy" <<
+                 "Venture \"Extended Edition, Very Large\"" << "" << "5000.00");
+    expected << (QStringList() << "" << "" << "Venture \"Extended Edition\"" <<
+                 "" << "4900.00");
+
+    QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
+    for (int i = 0; i < data.size(); ++i)
+    {
+        QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
+    }
+}
+
+void TestReader::testReadFileWorldCitiesPop()
+{
+    const QString path = getPathToFileWorldCitiesPop();
+    if (false == QFile::exists(path))
+    {
+        qDebug() << "Skip testReadFileWorldCitiesPop() because file" << path <<
+            "do not exist. If you want to run this test, download file "
+            "from http://www.maxmind.com/download/worldcities/worldcitiespop.txt.gz";
+        return;
+    }
+
+    QTime timer;
+    timer.start();
+    QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
+    qDebug() << "Elapsed time:" << timer.elapsed() << "ms";
+
+    QVERIFY2(false == data.isEmpty(), "Failed to read file content");
+    QVERIFY2(3173959 == data.size(), "Wrong number of rows");
+}
+
 QString TestReader::getPathToFolderWithTestFiles() const
 {
     return QDir::currentPath() + "/tests/data/";
@@ -371,4 +420,14 @@ QString TestReader::getPathToFileTestFieldWithCRLFLong() const
 QString TestReader::getPathToFileTestFieldEndTripleQuotes() const
 {
     return getPathToFolderWithTestFiles() + "test-field-end-triple-quotes.csv";
+}
+
+QString TestReader::getPathToFileTestDataCorrectness() const
+{
+    return getPathToFolderWithTestFiles() + "test-data-correctness.csv";
+}
+
+QString TestReader::getPathToFileWorldCitiesPop() const
+{
+    return getPathToFolderWithTestFiles() + "worldcitiespop.txt";
 }

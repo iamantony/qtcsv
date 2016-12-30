@@ -121,6 +121,11 @@ script:
   - qmake
   - make
 
+  # download test file
+  - wget http://www.maxmind.com/download/worldcities/worldcitiespop.txt.gz
+  - gunzip worldcitiespop.txt.gz
+  - mv ./worldcitiespop.txt ./data
+
   # run tests
   - cd ../
   - chmod 777 qtcsv_tests

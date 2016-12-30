@@ -28,6 +28,8 @@ private Q_SLOTS:
     void testReadFieldWithCRLF();
     void testReadFieldWithCRLFLong();
     void testReadFieldEndTripleQuotes();
+    void testReadFileDataCorrectness();
+    void testReadFileWorldCitiesPop();
 
 private:
     QString getPathToFolderWithTestFiles() const;
@@ -40,6 +42,8 @@ private:
     QString getPathToFileTestFieldWithCRLF() const;
     QString getPathToFileTestFieldWithCRLFLong() const;
     QString getPathToFileTestFieldEndTripleQuotes() const;
+    QString getPathToFileTestDataCorrectness() const;
+    QString getPathToFileWorldCitiesPop() const;
 };
 
 #endif // TESTREADER_H
