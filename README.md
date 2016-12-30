@@ -22,7 +22,7 @@ Tested on:
 * [Build](#build)
   * [Prebuild step on Windows](#prebuild-step-on-windows)
 * [Run tests](#run-tests)
-  * [Linux, OS X](#linux,-os-x)
+  * [Linux, OS X](#linux-os-x)
   * [Windows](#windows)
 * [Installation](#installation)
 * [Examples](#examples)
