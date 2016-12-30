@@ -8,6 +8,7 @@ in Qt.
 Tested on:
 - Ubuntu 14.04 with gcc 4.8.4, Qt 4.8 and higher
 - Windows with MinGW, Qt 5.3 and higher
+- OS X with clang, Qt 4.8, 5.5 and 5.7
 
 ## Table of contents
 * [Quick Example](#quick-example)
@@ -21,7 +22,7 @@ Tested on:
 * [Build](#build)
   * [Prebuild step on Windows](#prebuild-step-on-windows)
 * [Run tests](#run-tests)
-  * [Linux](#linux)
+  * [Linux, OS X](#linux,-os-x)
   * [Windows](#windows)
 * [Installation](#installation)
 * [Examples](#examples)
@@ -231,7 +232,7 @@ make
 ## Run tests
 If you want to run tests, then use this commands after build of *qtcsv*:
 
-### Linux
+### Linux, OS X
 ```bash
 cd /path/to/folder/with/qtcsv
 chmod 777 qtcsv_tests
