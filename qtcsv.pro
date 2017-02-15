@@ -38,7 +38,7 @@ HEADERS += \
 unix {
     # settings for command "make install"
     libheaders.path = /usr/local/include/qtcsv/
-    libheaders.files = $$PWD/include/*.h
+    libheaders.files = $$PWD/include/qtcsv/*.h
 
     target.path = /usr/local/lib
     INSTALLS += target libheaders
