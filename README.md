@@ -256,7 +256,7 @@ This command will copy all compiled files (libqtcsv.so\*) from *"./src"*
 folder to *"/usr/local/lib"*. Also all headers files will be copied
 from *"./src/include"* folder to *"/usr/local/include/qtcsv"*.
 
-All installation settings are defined in [*./src/src.pro*][src-pro] file.
+All installation settings are defined in [*qtcsv.pro*][qtcsv-pro] file.
 See *libheaders* and *target* variables.
 
 For additional information, see [Qt documentation][install-files] about
@@ -274,15 +274,15 @@ proper csv-file.
 
 ## Creators
 Author: [Antony Cherepanov][mypage] (antony.cherepanov@gmail.com)  
-Contributors: [Patrizio "pbek" Bekerle][pbek], [Furkan "Furkanzmc" Üzümcü][Furkanzmc]
+Contributors: [Patrizio "pbek" Bekerle][pbek], [Furkan "Furkanzmc" Üzümcü][Furkanzmc], [Martin "schulmar" Schulze][schulmar]
 
 [csvwiki]: http://en.wikipedia.org/wiki/Comma-separated_values
-[reader]: https://github.com/iamantony/qtcsv/blob/master/src/include/reader.h
-[writer]: https://github.com/iamantony/qtcsv/blob/master/src/include/writer.h
-[absdata]: https://github.com/iamantony/qtcsv/blob/master/src/include/abstractdata.h
-[strdata]: https://github.com/iamantony/qtcsv/blob/master/src/include/stringdata.h
-[vardata]: https://github.com/iamantony/qtcsv/blob/master/src/include/variantdata.h
-[src-pro]: https://github.com/iamantony/qtcsv/blob/master/src/src.pro
+[reader]: https://github.com/iamantony/qtcsv/blob/master/include/qtcsv/reader.h
+[writer]: https://github.com/iamantony/qtcsv/blob/master/include/qtcsv/writer.h
+[absdata]: https://github.com/iamantony/qtcsv/blob/master/include/qtcsv/abstractdata.h
+[strdata]: https://github.com/iamantony/qtcsv/blob/master/include/qtcsv/stringdata.h
+[vardata]: https://github.com/iamantony/qtcsv/blob/master/include/qtcsv/variantdata.h
+[qtcsv-pro]: https://github.com/iamantony/qtcsv/blob/master/qtcsv.pro
 [install-files]: http://doc.qt.io/qt-5/qmake-advanced-usage.html#installing-files
 [qtcsv-example]: https://github.com/iamantony/qtcsv-example
 [rfc]: http://tools.ietf.org/pdf/rfc4180.pdf
@@ -291,3 +291,4 @@ Contributors: [Patrizio "pbek" Bekerle][pbek], [Furkan "Furkanzmc" Üzümcü][Fu
 [mypage]: https://github.com/iamantony
 [pbek]: https://github.com/pbek
 [Furkanzmc]: https://github.com/Furkanzmc
+[schulmar]: https://github.com/schulmar
