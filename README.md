@@ -8,7 +8,7 @@ in Qt.
 Tested on:
 - Ubuntu 14.04 with gcc 4.8.4, Qt 4.8 and higher
 - Windows with MinGW, Qt 5.3 and higher
-- OS X with clang, Qt 4.8, 5.5 and 5.7
+- OS X with clang, Qt 4.8, 5.5, 5.7 and higher
 
 ## Table of contents
 * [Quick Example](#quick-example)
