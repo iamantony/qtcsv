@@ -1,6 +1,7 @@
 QT -= gui
 TARGET = qtcsv
 TEMPLATE = lib
+VERSION = 1.3.0
 
 !msvc {
     # flags for gcc-like compiler
