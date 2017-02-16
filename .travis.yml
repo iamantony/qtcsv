@@ -115,8 +115,8 @@ install:
       if [ "$TRAVIS_OS_NAME" = "linux" ]; then 
         sudo apt-get install -qq qt57base; source /opt/qt57/bin/qt57-env.sh; 
       else
-        brew install qt57;
-        brew link --force qt57;
+        brew install qt@5.7;
+        brew link --force qt@5.7;
       fi
     fi
   - if [ "$QT_BASE" = "58" ]; then
