@@ -2,6 +2,7 @@ QT -= gui
 TARGET = qtcsv
 TEMPLATE = lib
 VERSION = 1.3.0
+win32:TARGET_EXT = .dll
 
 !msvc {
     # flags for gcc-like compiler
