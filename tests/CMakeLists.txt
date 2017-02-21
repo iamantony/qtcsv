@@ -15,7 +15,11 @@ file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT
 
 add_executable(${BINARY_NAME} ${SOURCE_FILES} )
 
-TARGET_LINK_LIBRARIES(${BINARY_NAME} PRIVATE Qt5::Test qtcsv)
+if(SHARED_LIB)
+  TARGET_LINK_LIBRARIES(${BINARY_NAME} PRIVATE Qt5::Test qtcsv)
+else()
+  TARGET_LINK_LIBRARIES(${BINARY_NAME} PRIVATE Qt5::Test qtcsv_static)
+endif(SHARED_LIB)
 
 #provide current project dir for projects header search path
 target_include_directories(${BINARY_NAME} PRIVATE .)
