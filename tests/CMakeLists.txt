@@ -2,7 +2,14 @@ cmake_minimum_required(VERSION 3.1)
 
 project (qtcsv_tests)
 
-find_package(Qt5Test REQUIRED)
+if(USE_QT4)
+	find_package(Qt4 REQUIRED)
+	set(QT_TEST_TARGET Qt4::QtTest)
+else()
+	find_package(Qt5Test REQUIRED)
+	set(QT_TEST_TARGET Qt5::Test)
+endif(USE_QT4)
+
 
 #define names
 set(BINARY_NAME ${PROJECT_NAME})
@@ -16,9 +23,9 @@ file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT
 add_executable(${BINARY_NAME} ${SOURCE_FILES} )
 
 if(SHARED_LIB)
-  TARGET_LINK_LIBRARIES(${BINARY_NAME} PRIVATE Qt5::Test qtcsv)
+  TARGET_LINK_LIBRARIES(${BINARY_NAME} PRIVATE ${QT_TEST_TARGET} qtcsv)
 else()
-  TARGET_LINK_LIBRARIES(${BINARY_NAME} PRIVATE Qt5::Test qtcsv_static)
+  TARGET_LINK_LIBRARIES(${BINARY_NAME} PRIVATE ${QT_TEST_TARGET} qtcsv_static)
 endif(SHARED_LIB)
 
 #provide current project dir for projects header search path
@@ -30,4 +37,9 @@ add_custom_command(TARGET ${BINARY_NAME} POST_BUILD
                    ${CMAKE_CURRENT_SOURCE_DIR}/data ${CMAKE_CURRENT_BINARY_DIR}/data)
 
 #run tests after build; they assume to be runned from top level bin-dir
-add_custom_command(TARGET ${BINARY_NAME} POST_BUILD WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./tests/${BINARY_NAME})
+# add_custom_command(TARGET ${BINARY_NAME} POST_BUILD WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./tests/${BINARY_NAME})
+
+#install the test environment
+install(TARGETS ${BINARY_NAME}
+        RUNTIME DESTINATION bin/tests)
+install(DIRECTORY data DESTINATION bin/tests/)
