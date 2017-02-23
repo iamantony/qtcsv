@@ -4,6 +4,9 @@ TEMPLATE = lib
 VERSION = 1.3.1
 win32:TARGET_EXT = .dll
 
+# If you want to build static library, uncomment this:
+#CONFIG += staticlib
+
 !msvc {
     # flags for gcc-like compiler
     CONFIG += warn_on
