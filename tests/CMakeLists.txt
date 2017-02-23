@@ -6,6 +6,9 @@ if(USE_QT4)
     find_package(Qt4 REQUIRED)
     set(QT_TEST_TARGET Qt4::QtTest)
 else()
+    # if cmake failed to find Qt5Test configuration file, set path manually:
+    set(Qt5Test_DIR "/opt/Qt/5.5/gcc_64/lib/cmake/Qt5Test/")
+
     find_package(Qt5Test REQUIRED)
     set(QT_TEST_TARGET Qt5::Test)
 endif(USE_QT4)
@@ -35,11 +38,3 @@ target_include_directories(${BINARY_NAME} PRIVATE .)
 add_custom_command(TARGET ${BINARY_NAME} POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                    ${CMAKE_CURRENT_SOURCE_DIR}/data ${CMAKE_CURRENT_BINARY_DIR}/data)
-
-# run tests after build; they assume to be runned from top level bin-dir
-add_custom_command(TARGET ${BINARY_NAME} POST_BUILD WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./tests/${BINARY_NAME})
-
-# install the test environment
-#install(TARGETS ${BINARY_NAME}
-#        RUNTIME DESTINATION bin/tests)
-#install(DIRECTORY data DESTINATION bin/tests/)

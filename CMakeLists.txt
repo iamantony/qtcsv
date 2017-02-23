@@ -9,6 +9,9 @@ set(LIB_REVISION_VERSION 1)
 set(LIB_VERSION ${LIB_MAJOR_VERSION}.${LIB_MINOR_VERSION}.${LIB_REVISION_VERSION})
 set(LIBRARY_NAME ${PROJECT_NAME})
 
+# instruct CMake to run moc automatically when needed.
+set(CMAKE_AUTOMOC ON)
+
 # set options
 option(STATIC_LIB "build as static lib if ON, otherwise build shared lib" OFF)
 option(USE_QT4 "builds against Qt4 if ON, otherwise builds against Qt5" OFF)
@@ -18,9 +21,14 @@ if(USE_QT4)
     find_package(Qt4 REQUIRED)
     set(QT_CORE_TARGET Qt4::QtGui)
 else()
+    # if cmake failed to find Qt5Core configuration file, set path manually:
+    set(Qt5Core_DIR "/opt/Qt/5.5/gcc_64/lib/cmake/Qt5Core/")
+
     find_package(Qt5Core REQUIRED)
     set(QT_CORE_TARGET Qt5::Core)
 endif(USE_QT4)
+
+# TODO: Debug - Release mode, compiler flags
 
 # set list of source files
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/sources/*.cpp)
