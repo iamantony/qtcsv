@@ -137,6 +137,7 @@ install:
 script:
   # build library
   - if [ "$USE_CMAKE" = "true" ]; then
+      cmake --version;
       mkdir ./build;
       cd ./build;
       if [ "$QT_BASE" = "48" ]; then
@@ -173,9 +174,18 @@ script:
       fi
 
       sudo make install;
+    fi
 
-      ls -la /usr/local/lib | grep qtcsv;
-      ls -la /usr/local/include | grep qtcsv;
+  # check installation
+  - echo ""
+  - echo "Check installation"
+  - ls -la /usr/local/lib | grep qtcsv
+
+  - if [ -d /usr/local/include/qtcsv ]; then
+      ls -la /usr/local/include/qtcsv;
+    else
+      echo "Dir '/usr/local/include/qtcsv' do not exist";
+      exit 1;
     fi
 
 notifications:
