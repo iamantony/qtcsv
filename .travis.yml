@@ -13,8 +13,7 @@ matrix:
     sudo: required
     compiler: gcc
     env:
-     - QT_BASE=48
-     - USE_CMAKE=true
+     - QT_BASE=48 USE_CMAKE=true
 #  - os: osx
 #    compiler: clang
 #    env:
@@ -138,7 +137,6 @@ install:
 script:
   # build library
   - if [ "$USE_CMAKE" = "true" ]; then
-      # build with cmake
       mkdir ./build;
       cd ./build;
       if [ "$QT_BASE" = "48" ]; then
@@ -148,16 +146,11 @@ script:
       fi
 
       make;
-
-      # go to tests dir for download step
       cd ../tests;
     else
-      # build with qmake
       qmake -v;
       qmake;
       make;
-
-      # build tests
       cd ./tests;
       qmake;
       make;
@@ -181,7 +174,6 @@ script:
 
       sudo make install;
 
-      # check that files were copied to /usr/local
       ls -la /usr/local/lib | grep qtcsv;
       ls -la /usr/local/include | grep qtcsv;
     fi
