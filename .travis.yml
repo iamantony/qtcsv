@@ -8,70 +8,77 @@ matrix:
     compiler: gcc
     env:
      - QT_BASE=48
-  - os: osx
-    compiler: clang
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
     env:
      - QT_BASE=48
-  - os: linux
-    dist: trusty
-    sudo: required
-    compiler: gcc
-    env:
-     - QT_BASE=51
-  - os: linux
-    dist: trusty
-    sudo: required
-    compiler: gcc
-    env:
-     - QT_BASE=52
-  - os: linux
-    dist: trusty
-    sudo: required
-    compiler: gcc
-    env:
-     - QT_BASE=53
-  - os: linux
-    dist: trusty
-    sudo: required
-    compiler: gcc
-    env:
-     - QT_BASE=54
-  - os: linux
-    dist: trusty
-    sudo: required
-    compiler: gcc
-    env:
-     - QT_BASE=55
-  - os: osx
-    compiler: clang
-    env:
-     - QT_BASE=55
-  - os: linux
-    dist: trusty
-    sudo: required
-    compiler: gcc
-    env:
-     - QT_BASE=56
-  - os: linux
-    dist: trusty
-    sudo: required
-    compiler: gcc
-    env:
-     - QT_BASE=57
-  - os: osx
-    compiler: clang
-    env:
-     - QT_BASE=57
-  - os: linux
-    dist: trusty
-    sudo: required
-    compiler: gcc
-    env:
-     - QT_BASE=58
-  - os: osx
-    compiler: clang
-    env:
-     - QT_BASE=58
+     - USE_CMAKE=true
+#  - os: osx
+#    compiler: clang
+#    env:
+#     - QT_BASE=48
+#  - os: linux
+#    dist: trusty
+#    sudo: required
+#    compiler: gcc
+#    env:
+#     - QT_BASE=51
+#  - os: linux
+#    dist: trusty
+#    sudo: required
+#    compiler: gcc
+#    env:
+#     - QT_BASE=52
+#  - os: linux
+#    dist: trusty
+#    sudo: required
+#    compiler: gcc
+#    env:
+#     - QT_BASE=53
+#  - os: linux
+#    dist: trusty
+#    sudo: required
+#    compiler: gcc
+#    env:
+#     - QT_BASE=54
+#  - os: linux
+#    dist: trusty
+#    sudo: required
+#    compiler: gcc
+#    env:
+#     - QT_BASE=55
+#  - os: osx
+#    compiler: clang
+#    env:
+#     - QT_BASE=55
+#  - os: linux
+#    dist: trusty
+#    sudo: required
+#    compiler: gcc
+#    env:
+#     - QT_BASE=56
+#  - os: linux
+#    dist: trusty
+#    sudo: required
+#    compiler: gcc
+#    env:
+#     - QT_BASE=57
+#  - os: osx
+#    compiler: clang
+#    env:
+#     - QT_BASE=57
+#  - os: linux
+#    dist: trusty
+#    sudo: required
+#    compiler: gcc
+#    env:
+#     - QT_BASE=58
+#  - os: osx
+#    compiler: clang
+#    env:
+#     - QT_BASE=58
 
 before_install:
   - if [[ "$QT_BASE" = "48" && "$TRAVIS_OS_NAME" = "linux" ]]; then sudo add-apt-repository ppa:beineri/opt-qt487-trusty -y; fi
@@ -129,16 +136,32 @@ install:
     fi
 
 script:
-  - qmake -v
-
   # build library
-  - qmake
-  - make
+  - if [ "$USE_CMAKE" = "true" ]; then
+      # build with cmake
+      mkdir ./build;
+      cd ./build;
+      if [ "$QT_BASE" = "48" ]; then
+        cmake -DCMAKE_BUILD_TYPE=Debug -DUSE_QT4=ON ..;
+      else
+        cmake -DCMAKE_BUILD_TYPE=Debug ..;
+      fi
 
-  # build tests
-  - cd ./tests
-  - qmake
-  - make
+      make;
+
+      # go to tests dir for download step
+      cd ../tests;
+    else
+      # build with qmake
+      qmake -v;
+      qmake;
+      make;
+
+      # build tests
+      cd ./tests;
+      qmake;
+      make;
+    fi
 
   # download test file
   - wget http://www.maxmind.com/download/worldcities/worldcitiespop.txt.gz
@@ -151,7 +174,17 @@ script:
   - ./qtcsv_tests
 
   # install library
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo make install; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then 
+      if [ "$USE_CMAKE" = "true" ]; then
+        cd ./build;
+      fi
+
+      sudo make install;
+
+      # check that files were copied to /usr/local
+      ls -la /usr/local/lib | grep qtcsv;
+      ls -la /usr/local/include | grep qtcsv;
+    fi
 
 notifications:
   email: false

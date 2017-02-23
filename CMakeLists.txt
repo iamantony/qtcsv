@@ -20,7 +20,7 @@ if(USE_QT4)
     set(QT_CORE_TARGET Qt4::QtGui)
 else()
     # if cmake failed to find Qt5Core configuration file, set path manually:
-    set(Qt5Core_DIR "/opt/Qt/5.5/gcc_64/lib/cmake/Qt5Core/")
+    #set(Qt5Core_DIR "/opt/Qt/5.5/gcc_64/lib/cmake/Qt5Core/")
 
     find_package(Qt5Core REQUIRED)
     set(QT_CORE_TARGET Qt5::Core)

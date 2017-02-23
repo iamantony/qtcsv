@@ -7,7 +7,7 @@ if(USE_QT4)
     set(QT_TEST_TARGET Qt4::QtTest)
 else()
     # if cmake failed to find Qt5Test configuration file, set path manually:
-    set(Qt5Test_DIR "/opt/Qt/5.5/gcc_64/lib/cmake/Qt5Test/")
+    #set(Qt5Test_DIR "/opt/Qt/5.5/gcc_64/lib/cmake/Qt5Test/")
 
     find_package(Qt5Test REQUIRED)
     set(QT_TEST_TARGET Qt5::Test)
