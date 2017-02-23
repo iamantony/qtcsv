@@ -28,15 +28,15 @@ file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/sources/*.cpp)
 if(STATIC_LIB)
     set(LIBRARY_NAME_STATIC ${LIBRARY_NAME}_static)
     add_library(${LIBRARY_NAME_STATIC} STATIC ${SOURCE_FILES})
-    #include root project folder as private, because the source headers are included with source/*.h
+    # include root project folder as private, because the source headers are included with source/*.h
     target_include_directories(${LIBRARY_NAME_STATIC} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include> PRIVATE .)
-    #set static lib name to the same of shared lib
+    # set static lib name to the same of shared lib
     set_target_properties(${LIBRARY_NAME_STATIC} PROPERTIES OUTPUT_NAME ${LIBRARY_NAME})
     TARGET_LINK_LIBRARIES(${LIBRARY_NAME_STATIC} PRIVATE ${QT_CORE_TARGET})
 else()
     set(LIBRARY_NAME_SHARED ${LIBRARY_NAME})
     add_library(${LIBRARY_NAME_SHARED} SHARED ${SOURCE_FILES})
-    #include root project folder as private, because the source headers are included with source/*.h
+    # include root project folder as private, because the source headers are included with source/*.h
     target_include_directories(${LIBRARY_NAME_SHARED} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include> PRIVATE .)
     set_target_properties(${LIBRARY_NAME_SHARED} PROPERTIES VERSION ${LIB_VERSION} SOVERSION ${LIB_MAJOR_VERSION}.${LIB_MINOR_VERSION})
     TARGET_LINK_LIBRARIES(${LIBRARY_NAME_SHARED} PRIVATE ${QT_CORE_TARGET})
@@ -47,7 +47,7 @@ install(TARGETS ${LIBRARY_NAME_SHARED} ${LIBRARY_NAME_STATIC} EXPORT ${LIBRARY_N
                 ARCHIVE DESTINATION lib)
 install(DIRECTORY include DESTINATION .)
 
-#create and install cmake package files
+# create and install cmake package files
 install(EXPORT ${LIBRARY_NAME}Config DESTINATION share/${LIBRARY_NAME}/cmake)
 export(TARGETS ${LIBRARY_NAME_SHARED} ${LIBRARY_NAME_STATIC} FILE ${LIBRARY_NAME}Config.cmake)
 

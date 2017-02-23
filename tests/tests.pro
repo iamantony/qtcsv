@@ -27,3 +27,6 @@ HEADERS += \
     testvariantdata.h \
     testreader.h \
     testwriter.h
+
+DISTFILES += \
+    CMakeLists.txt
