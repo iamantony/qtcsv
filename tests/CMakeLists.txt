@@ -13,7 +13,6 @@ else()
     set(QT_TEST_TARGET Qt5::Test)
 endif(USE_QT4)
 
-
 # define names
 set(BINARY_NAME ${PROJECT_NAME})
 
