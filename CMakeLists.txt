@@ -17,7 +17,7 @@ option(BUILD_TESTS "build tests" ON)
 # find qt package
 if(USE_QT4)
     find_package(Qt4 REQUIRED)
-    set(QT_CORE_TARGET Qt4::QtGui)
+    set(QT_CORE_TARGET Qt4::QtCore)
 else()
     # if cmake failed to find Qt5Core configuration file, set path manually:
     #LIST(APPEND CMAKE_PREFIX_PATH "/path/to/Qt/lib/cmake/Qt5Core/")
