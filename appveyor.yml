@@ -26,10 +26,22 @@ before_build:
 
 build_script:
 - qmake -v
+
+# build library
 - qmake
 - mingw32-make
+
+# build tests
 - cd ./tests
 - qmake
 - mingw32-make
+
+# download test file
+- curl -fsS -o worldcitiespop.txt.gz http://www.maxmind.com/download/worldcities/worldcitiespop.txt.gz
+- 7z e worldcitiespop.txt.gz
+- dir /s
+- move worldcitiespop.txt data\
 - cd ../
+
+# run tests
 - qtcsv_tests.exe
