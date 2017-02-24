@@ -20,7 +20,7 @@ if(USE_QT4)
     set(QT_CORE_TARGET Qt4::QtCore)
 else()
     # if cmake failed to find Qt5Core configuration file, set path manually:
-    #LIST(APPEND CMAKE_PREFIX_PATH "/path/to/Qt/lib/cmake/Qt5Core/")
+    #list(APPEND CMAKE_PREFIX_PATH "/path/to/Qt/lib/cmake/Qt5Core/")
 
     find_package(Qt5Core REQUIRED)
     set(QT_CORE_TARGET Qt5::Core)
@@ -31,23 +31,10 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # set compiler flags and build type
-if (WIN32)
-    set(CMAKE_CXX_FLAGS "")
-else()
-    set(CMAKE_CXX_FLAGS "-fPIC -Wall -Werror -Wformat=2 -Wuninitialized \
+if (CMAKE_COMPILER_IS_GNUCXX)
+    list(APPEND CMAKE_CXX_FLAGS "-Wall -Werror -Wformat=2 -Wuninitialized \
         -Winit-self -Wmissing-include-dirs -Wswitch-enum -Wundef \
         -Wpointer-arith -Wdisabled-optimization -Wcast-align -Wcast-qual")
-endif()
-
-string(TOLOWER "${CMAKE_BUILD_TYPE}" QTCSV_BUILD_TYPE)
-if(QTCSV_BUILD_TYPE MATCHES release OR QTCSV_BUILD_TYPE STREQUAL "")
-  set(CMAKE_BUILD_TYPE Release)
-  set(CMAKE_CXX_FLAGS "-O3 ${CMAKE_CXX_FLAGS}")
-elseif(QTCSV_BUILD_TYPE MATCHES debug)
-  set(CMAKE_BUILD_TYPE Debug)
-  set(CMAKE_CXX_FLAGS "-g ${CMAKE_CXX_FLAGS}")
-else()
-  message(FATAL_ERROR "Build " ${CMAKE_BUILD_TYPE} " is not supported!")
 endif()
 
 # set list of source files
