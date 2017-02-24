@@ -49,8 +49,7 @@ if(STATIC_LIB)
 
     # set static lib name to the same of shared lib
     set_target_properties(${LIBRARY_NAME_STATIC} PROPERTIES
-        OUTPUT_NAME ${LIBRARY_NAME}
-        LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+        OUTPUT_NAME ${LIBRARY_NAME})
 
     target_link_libraries(${LIBRARY_NAME_STATIC} PRIVATE ${QT_CORE_TARGET})
 else()
@@ -62,8 +61,7 @@ else()
 
     set_target_properties(${LIBRARY_NAME_SHARED} PROPERTIES
         VERSION ${LIB_VERSION}
-        SOVERSION ${LIB_MAJOR_VERSION}.${LIB_MINOR_VERSION}
-        LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+        SOVERSION ${LIB_MAJOR_VERSION}.${LIB_MINOR_VERSION})
 
     target_link_libraries(${LIBRARY_NAME_SHARED} PRIVATE ${QT_CORE_TARGET})
 endif(STATIC_LIB)
