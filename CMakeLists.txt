@@ -40,6 +40,10 @@ endif()
 # set list of source files
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/sources/*.cpp)
 
+# for QtCreator: see all files in project
+file(GLOB_RECURSE QTCSV_ALL_FILES "*")
+add_custom_target(show_all_files_in_${PROJECT_NAME} SOURCES ${QTCSV_ALL_FILES})
+
 if(STATIC_LIB)
     set(LIBRARY_NAME_STATIC ${LIBRARY_NAME}_static)
     add_library(${LIBRARY_NAME_STATIC} STATIC ${SOURCE_FILES})
