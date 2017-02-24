@@ -144,16 +144,14 @@ script:
   # build library
   - if [ "$USE_CMAKE" = "true" ]; then
       cmake --version;
-      mkdir ./build;
-      cd ./build;
       if [ "$QT_BASE" = "48" ]; then
-        cmake -DCMAKE_BUILD_TYPE=Debug -DUSE_QT4=ON ..;
+        cmake -DCMAKE_BUILD_TYPE=Debug -DUSE_QT4=ON .;
       else
-        cmake -DCMAKE_BUILD_TYPE=Debug ..;
+        cmake -DCMAKE_BUILD_TYPE=Debug .;
       fi
 
       make;
-      cd ../tests;
+      cd ./tests;
     else
       qmake -v;
       qmake;
@@ -175,18 +173,12 @@ script:
 
   # install library
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then 
-      if [ "$USE_CMAKE" = "true" ]; then
-        cd ./build;
-      fi
-
       sudo make install;
     fi
 
   # check installation
-  - echo ""
   - echo "Check installation"
   - ls -la /usr/local/lib | grep qtcsv
-
   - if [ -d /usr/local/include/qtcsv ]; then
       ls -la /usr/local/include/qtcsv;
     else
