@@ -95,7 +95,7 @@ before_install:
   - if [ "$QT_BASE" = "56" ]; then sudo add-apt-repository ppa:beineri/opt-qt562-trusty -y; fi
   - if [[ "$QT_BASE" = "57" && "$TRAVIS_OS_NAME" = "linux" ]]; then sudo add-apt-repository ppa:beineri/opt-qt571-trusty -y; fi
   - if [[ "$QT_BASE" = "58" && "$TRAVIS_OS_NAME" = "linux" ]]; then sudo add-apt-repository ppa:beineri/opt-qt58-trusty -y; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then 
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then
       sudo apt-get update -qq;
     else
       brew update;
@@ -103,7 +103,7 @@ before_install:
 
 install:
   - if [ "$QT_BASE" = "48" ]; then
-      if [ "$TRAVIS_OS_NAME" = "linux" ]; then 
+      if [ "$TRAVIS_OS_NAME" = "linux" ]; then
         sudo apt-get install -qq opt-qt4-qmake opt-qt4-dev-tools; source /opt/qt-4.8/bin/qt-4.8-env.sh;
       else
         brew install qt;
@@ -115,8 +115,8 @@ install:
   - if [ "$QT_BASE" = "53" ]; then sudo apt-get install -qq qt53base; source /opt/qt53/bin/qt53-env.sh; fi
   - if [ "$QT_BASE" = "54" ]; then sudo apt-get install -qq qt54base; source /opt/qt54/bin/qt54-env.sh; fi
   - if [ "$QT_BASE" = "55" ]; then
-      if [ "$TRAVIS_OS_NAME" = "linux" ]; then 
-        sudo apt-get install -qq qt55base; source /opt/qt55/bin/qt55-env.sh; 
+      if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+        sudo apt-get install -qq qt55base; source /opt/qt55/bin/qt55-env.sh;
       else
         brew install qt55;
         brew link --force qt55;
@@ -124,16 +124,16 @@ install:
     fi
   - if [ "$QT_BASE" = "56" ]; then sudo apt-get install -qq qt56base; source /opt/qt56/bin/qt56-env.sh; fi
   - if [ "$QT_BASE" = "57" ]; then
-      if [ "$TRAVIS_OS_NAME" = "linux" ]; then 
-        sudo apt-get install -qq qt57base; source /opt/qt57/bin/qt57-env.sh; 
+      if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+        sudo apt-get install -qq qt57base; source /opt/qt57/bin/qt57-env.sh;
       else
         brew install qt@5.7;
         brew link --force qt@5.7;
       fi
     fi
   - if [ "$QT_BASE" = "58" ]; then
-      if [ "$TRAVIS_OS_NAME" = "linux" ]; then 
-        sudo apt-get install -qq qt58base; source /opt/qt58/bin/qt58-env.sh; 
+      if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+        sudo apt-get install -qq qt58base; source /opt/qt58/bin/qt58-env.sh;
       else
         brew install qt5;
         brew link --force qt5;
@@ -172,18 +172,17 @@ script:
   - ./qtcsv_tests
 
   # install library
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then 
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then
       sudo make install;
-    fi
 
-  # check installation
-  - echo "Check installation"
-  - ls -la /usr/local/lib | grep qtcsv
-  - if [ -d /usr/local/include/qtcsv ]; then
-      ls -la /usr/local/include/qtcsv;
-    else
-      echo "Dir '/usr/local/include/qtcsv' do not exist";
-      exit 1;
+      echo "Check installation";
+      ls -la /usr/local/lib | grep qtcsv;
+      if [ -d /usr/local/include/qtcsv ]; then
+        ls -la /usr/local/include/qtcsv;
+      else
+        echo "Dir '/usr/local/include/qtcsv' do not exist";
+        exit 1;
+      fi
     fi
 
 notifications:
