@@ -39,7 +39,6 @@ build_script:
 # download test file
 - curl -fsS -o worldcitiespop.txt.gz http://www.maxmind.com/download/worldcities/worldcitiespop.txt.gz
 - 7z e worldcitiespop.txt.gz
-- dir /s
 - move worldcitiespop.txt data\
 - cd ../
 
