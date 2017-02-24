@@ -106,6 +106,8 @@ install:
       if [ "$TRAVIS_OS_NAME" = "linux" ]; then
         sudo apt-get install -qq opt-qt4-qmake opt-qt4-dev-tools; source /opt/qt-4.8/bin/qt-4.8-env.sh;
       else
+        brew tap cartr/qt4;
+        brew tap-pin cartr/qt4;
         brew install qt;
         brew link --force qt;
       fi
