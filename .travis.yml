@@ -68,12 +68,18 @@ matrix:
 #    compiler: clang
 #    env:
 #     - QT_BASE=57
-#  - os: linux
-#    dist: trusty
-#    sudo: required
-#    compiler: gcc
-#    env:
-#     - QT_BASE=58
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=58
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=58 USE_CMAKE=true
 #  - os: osx
 #    compiler: clang
 #    env:
