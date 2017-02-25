@@ -373,7 +373,7 @@ void TestReader::testReadFileWorldCitiesPop()
 
 QString TestReader::getPathToFolderWithTestFiles() const
 {
-    return QDir::currentPath() + "/tests/data/";
+    return QDir::currentPath() + "/data/";
 }
 
 QString TestReader::getPathToFileTestComma() const
