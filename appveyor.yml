@@ -25,22 +25,21 @@ before_build:
 - set PATH=%MINGW%\bin;%QT5%\bin;%PATH%
 
 build_script:
-- qmake -v
-
 # build library
-- qmake
+- mkdir .\build
+- cd .\build
+- qmake -v
+- qmake ..\qtcsv.pro CONFIG+=release
 - mingw32-make
 
 # build tests
-- cd ./tests
-- qmake
+- qmake ..\tests\tests.pro CONFIG+=release
 - mingw32-make
 
 # download test file
 - curl -fsS -o worldcitiespop.txt.gz http://www.maxmind.com/download/worldcities/worldcitiespop.txt.gz
 - 7z e worldcitiespop.txt.gz
 - move worldcitiespop.txt data\
-- cd ../
 
 # run tests
 - qtcsv_tests.exe

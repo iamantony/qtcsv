@@ -209,7 +209,7 @@ install:
     fi
 
 script:
-  # build library
+  # build library and tests
   - mkdir ./build && cd ./build
   - if [ "$USE_CMAKE" = "true" ]; then
       cmake --version;
