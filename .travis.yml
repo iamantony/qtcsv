@@ -2,96 +2,146 @@ language: cpp
 
 matrix:
  include:
-#  - os: linux
-#    dist: trusty
-#    sudo: required
-#    compiler: gcc
-#    env:
-#     - QT_BASE=48
-#  - os: linux
-#    dist: trusty
-#    sudo: required
-#    compiler: gcc
-#    env:
-#     - QT_BASE=48 USE_CMAKE=true
-#  - os: osx
-#    compiler: clang
-#    env:
-#     - QT_BASE=48
-   - os: osx
-     compiler: clang
-     env:
-      - QT_BASE=48 USE_CMAKE=true
-#  - os: linux
-#    dist: trusty
-#    sudo: required
-#    compiler: gcc
-#    env:
-#     - QT_BASE=51
-#  - os: linux
-#    dist: trusty
-#    sudo: required
-#    compiler: gcc
-#    env:
-#     - QT_BASE=52
-#  - os: linux
-#    dist: trusty
-#    sudo: required
-#    compiler: gcc
-#    env:
-#     - QT_BASE=53
-#  - os: linux
-#    dist: trusty
-#    sudo: required
-#    compiler: gcc
-#    env:
-#     - QT_BASE=54
-#  - os: linux
-#    dist: trusty
-#    sudo: required
-#    compiler: gcc
-#    env:
-#     - QT_BASE=55
-#  - os: osx
-#    compiler: clang
-#    env:
-#     - QT_BASE=55
-#  - os: linux
-#    dist: trusty
-#    sudo: required
-#    compiler: gcc
-#    env:
-#     - QT_BASE=56
-#  - os: linux
-#    dist: trusty
-#    sudo: required
-#    compiler: gcc
-#    env:
-#     - QT_BASE=57
-#  - os: osx
-#    compiler: clang
-#    env:
-#     - QT_BASE=57
-#  - os: linux
-#    dist: trusty
-#    sudo: required
-#    compiler: gcc
-#    env:
-#     - QT_BASE=58
-#  - os: linux
-#    dist: trusty
-#    sudo: required
-#    compiler: gcc
-#    env:
-#     - QT_BASE=58 USE_CMAKE=true
-#  - os: osx
-#    compiler: clang
-#    env:
-#     - QT_BASE=58
-   - os: osx
-     compiler: clang
-     env:
-      - QT_BASE=58 USE_CMAKE=true
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=48
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=48 USE_CMAKE=true
+  - os: osx
+    compiler: clang
+    env:
+     - QT_BASE=48
+  - os: osx
+    compiler: clang
+    env:
+     - QT_BASE=48 USE_CMAKE=true
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=51
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=51 USE_CMAKE=true
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=52
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=52 USE_CMAKE=true
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=53
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=53 USE_CMAKE=true
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=54
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=54 USE_CMAKE=true
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=55
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=55 USE_CMAKE=true
+  - os: osx
+    compiler: clang
+    env:
+     - QT_BASE=55
+  - os: osx
+    compiler: clang
+    env:
+     - QT_BASE=55 USE_CMAKE=true
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=56
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=56 USE_CMAKE=true
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=57
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=57 USE_CMAKE=true
+  - os: osx
+    compiler: clang
+    env:
+     - QT_BASE=57
+  - os: osx
+    compiler: clang
+    env:
+     - QT_BASE=57 USE_CMAKE=true
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=58
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=58 USE_CMAKE=true
+  - os: osx
+    compiler: clang
+    env:
+     - QT_BASE=58
+  - os: osx
+    compiler: clang
+    env:
+     - QT_BASE=58 USE_CMAKE=true
 
 before_install:
   - if [[ "$QT_BASE" = "48" && "$TRAVIS_OS_NAME" = "linux" ]]; then sudo add-apt-repository ppa:beineri/opt-qt487-trusty -y; fi
