@@ -147,6 +147,8 @@ install:
       else
         brew install qt5;
         brew link --force qt5;
+        export HOMEBREW_QT5_VERSION=$(brew list --versions qt5 | rev | cut -d' ' -f1 | rev);
+        ln -s /usr/local/Cellar/qt5/$HOMEBREW_QT5_VERSION/mkspecs /usr/local/mkspecs;
       fi
     fi
 
