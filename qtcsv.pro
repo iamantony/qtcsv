@@ -4,7 +4,7 @@ TEMPLATE = lib
 VERSION = 1.3.1
 win32:TARGET_EXT = .dll
 
-# If you want to build static library, uncomment this:
+# Uncomment this setting if you want to build static library
 #CONFIG += staticlib
 
 !msvc {
@@ -18,9 +18,10 @@ win32:TARGET_EXT = .dll
 DEFINES += QTCSV_LIBRARY
 INCLUDEPATH += $$PWD/include/
 
-# DESTDIR specifies where to put the library file
-CONFIG(release, debug|release): DESTDIR = $$PWD
-CONFIG(debug, debug|release): DESTDIR = $$PWD
+# Uncomment this settings if you want to manually set destination directory for
+# compiled library
+#CONFIG(release, debug|release): DESTDIR = $$PWD
+#CONFIG(debug, debug|release): DESTDIR = $$PWD
 
 SOURCES += \
     sources/writer.cpp \
@@ -40,14 +41,23 @@ HEADERS += \
     sources/contentiterator.h \
     sources/symbols.h
 
-unix {
-    # settings for command "make install"
-    libheaders.path = /usr/local/include/qtcsv/
-    libheaders.files = $$PWD/include/qtcsv/*.h
-
-    target.path = /usr/local/lib
-    INSTALLS += target libheaders
-}
-
 DISTFILES += \
     CMakeLists.txt
+
+message(=== Configuration of qtcsv ===)
+message(Qt version: $$[QT_VERSION])
+message(Library version: $$VERSION)
+message(Library files will be created in folder: $$OUT_PWD)
+
+unix {
+    # settings for command "make install"
+    copy_lib_headers.path = /usr/local/include/qtcsv/
+    copy_lib_headers.files = $$PWD/include/qtcsv/*.h
+
+    copy_library.path = /usr/local/lib
+    INSTALLS += copy_library copy_lib_headers
+
+    message(--- Settings for command \"make install\")
+    message(Library files will be copied to folder: $$copy_library.path)
+    message(Library headers will be copied to folder: $$copy_lib_headers.path)
+}
