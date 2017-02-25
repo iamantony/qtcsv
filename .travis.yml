@@ -210,6 +210,7 @@ install:
 
 script:
   # build library
+  - mkdir ./build && cd ./build
   - if [ "$USE_CMAKE" = "true" ]; then
       cmake --version;
       if [ "$QT_BASE" = "48" ]; then
@@ -219,13 +220,11 @@ script:
       fi
 
       make;
-      cd ./tests;
     else
       qmake -v;
-      qmake;
+      qmake ../qtcsv.pro CONFIG+=release;
       make;
-      cd ./tests;
-      qmake;
+      qmake ../tests/tests.pro CONFIG+=release;
       make;
     fi
 
@@ -235,7 +234,7 @@ script:
   - mv ./worldcitiespop.txt ./data
 
   # run tests
-  - cd ../
+  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD
   - chmod 777 qtcsv_tests
   - ./qtcsv_tests
 
