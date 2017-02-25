@@ -180,7 +180,7 @@ install:
       else
         brew install qt55;
         brew link --force qt55;
-        export QT_NAME="qt@5.5"
+        export QT_NAME="qt@5.5";
         export HOMEBREW_QT5_VERSION=$(brew list --versions $QT_NAME | rev | cut -d' ' -f1 | rev);
         ln -s /usr/local/Cellar/$QT_NAME/$HOMEBREW_QT5_VERSION/mkspecs /usr/local/mkspecs;
       fi
@@ -192,7 +192,7 @@ install:
       else
         brew install qt@5.7;
         brew link --force qt@5.7;
-        export QT_NAME="qt@5.7"
+        export QT_NAME="qt@5.7";
         export HOMEBREW_QT5_VERSION=$(brew list --versions $QT_NAME | rev | cut -d' ' -f1 | rev);
         ln -s /usr/local/Cellar/$QT_NAME/$HOMEBREW_QT5_VERSION/mkspecs /usr/local/mkspecs;
       fi
