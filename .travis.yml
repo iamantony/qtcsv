@@ -180,8 +180,9 @@ install:
       else
         brew install qt55;
         brew link --force qt55;
-        export HOMEBREW_QT5_VERSION=$(brew list --versions qt55 | rev | cut -d' ' -f1 | rev);
-        ln -s /usr/local/Cellar/qt5/$HOMEBREW_QT5_VERSION/mkspecs /usr/local/mkspecs;
+        export QT_NAME="qt@5.5"
+        export HOMEBREW_QT5_VERSION=$(brew list --versions $QT_NAME | rev | cut -d' ' -f1 | rev);
+        ln -s /usr/local/Cellar/$QT_NAME/$HOMEBREW_QT5_VERSION/mkspecs /usr/local/mkspecs;
       fi
     fi
   - if [ "$QT_BASE" = "56" ]; then sudo apt-get install -qq qt56base; source /opt/qt56/bin/qt56-env.sh; fi
@@ -191,8 +192,9 @@ install:
       else
         brew install qt@5.7;
         brew link --force qt@5.7;
-        export HOMEBREW_QT5_VERSION=$(brew list --versions qt@5.7 | rev | cut -d' ' -f1 | rev);
-        ln -s /usr/local/Cellar/qt5/$HOMEBREW_QT5_VERSION/mkspecs /usr/local/mkspecs;
+        export QT_NAME="qt@5.7"
+        export HOMEBREW_QT5_VERSION=$(brew list --versions $QT_NAME | rev | cut -d' ' -f1 | rev);
+        ln -s /usr/local/Cellar/$QT_NAME/$HOMEBREW_QT5_VERSION/mkspecs /usr/local/mkspecs;
       fi
     fi
   - if [ "$QT_BASE" = "58" ]; then
