@@ -31,10 +31,12 @@ build_script:
 - qmake -v
 - qmake ..\qtcsv.pro CONFIG+=release
 - mingw32-make
+- dir /s
 
 # build tests
 - qmake ..\tests\tests.pro CONFIG+=release
 - mingw32-make
+- dir /s
 
 # download test file
 - curl -fsS -o worldcitiespop.txt.gz http://www.maxmind.com/download/worldcities/worldcitiespop.txt.gz
