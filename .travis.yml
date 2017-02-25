@@ -214,9 +214,9 @@ script:
   - if [ "$USE_CMAKE" = "true" ]; then
       cmake --version;
       if [ "$QT_BASE" = "48" ]; then
-        cmake -DCMAKE_BUILD_TYPE=Release -DUSE_QT4=ON .;
+        cmake -DCMAKE_BUILD_TYPE=Release -DUSE_QT4=ON ..;
       else
-        cmake -DCMAKE_BUILD_TYPE=Release .;
+        cmake -DCMAKE_BUILD_TYPE=Release ..;
       fi
 
       make;
