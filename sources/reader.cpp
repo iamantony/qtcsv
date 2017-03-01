@@ -269,6 +269,15 @@ QStringList ReaderPrivate::splitElements(const QString& line,
                     // position. Copy it into result list and move
                     // current position over the separator position.
                     result << line.mid(pos, separatorPos - pos);
+
+                    // Special case: if line ends with separator symbol,
+                    // then at the end of the line we have empty element.
+                    if (separatorPos == line.size() - separator.size())
+                    {
+                        result << QString();
+                    }
+
+                    // Move the current position on to the next element
                     pos = separatorPos + separator.size();
                 }
                 else
