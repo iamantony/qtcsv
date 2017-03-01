@@ -45,33 +45,22 @@ file(GLOB_RECURSE QTCSV_ALL_FILES "*")
 add_custom_target(show_all_files_in_${PROJECT_NAME} SOURCES ${QTCSV_ALL_FILES})
 
 if(STATIC_LIB)
-    set(LIBRARY_NAME_STATIC ${LIBRARY_NAME}_static)
-    add_library(${LIBRARY_NAME_STATIC} STATIC ${SOURCE_FILES})
-    # include root project folder as private, because the source headers are included with source/*.h
-    target_include_directories(${LIBRARY_NAME_STATIC}
-        PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include> PRIVATE .)
-
-    # set static lib name to the same of shared lib
-    set_target_properties(${LIBRARY_NAME_STATIC} PROPERTIES
-        OUTPUT_NAME ${LIBRARY_NAME})
-
-    target_link_libraries(${LIBRARY_NAME_STATIC} PRIVATE ${QT_CORE_TARGET})
-    add_library(${LIBRARY_NAME} ALIAS ${LIBRARY_NAME_STATIC})
+    add_library(${LIBRARY_NAME} STATIC ${SOURCE_FILES})
 else()
-    set(LIBRARY_NAME_SHARED ${LIBRARY_NAME})
-    add_library(${LIBRARY_NAME_SHARED} SHARED ${SOURCE_FILES})
-    # include root project folder as private, because the source headers are included with source/*.h
-    target_include_directories(${LIBRARY_NAME_SHARED}
-        PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include> PRIVATE .)
+    add_library(${LIBRARY_NAME} SHARED ${SOURCE_FILES})
 
     set_target_properties(${LIBRARY_NAME_SHARED} PROPERTIES
         VERSION ${LIB_VERSION}
         SOVERSION ${LIB_MAJOR_VERSION}.${LIB_MINOR_VERSION})
-
-    target_link_libraries(${LIBRARY_NAME_SHARED} PRIVATE ${QT_CORE_TARGET})
 endif(STATIC_LIB)
+# include root project folder as private, because the source headers are included with source/*.h
+target_include_directories(${LIBRARY_NAME}
+	PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include> PRIVATE .)
 
-install(TARGETS ${LIBRARY_NAME_SHARED} ${LIBRARY_NAME_STATIC} EXPORT ${LIBRARY_NAME}Config
+target_link_libraries(${LIBRARY_NAME} PRIVATE ${QT_CORE_TARGET})
+
+
+install(TARGETS ${LIBRARY_NAME} EXPORT ${LIBRARY_NAME}Config
         LIBRARY DESTINATION lib
                 ARCHIVE DESTINATION lib)
 
@@ -79,7 +68,7 @@ install(DIRECTORY include DESTINATION .)
 
 # create and install cmake package files
 install(EXPORT ${LIBRARY_NAME}Config DESTINATION share/${LIBRARY_NAME}/cmake)
-export(TARGETS ${LIBRARY_NAME_SHARED} ${LIBRARY_NAME_STATIC} FILE ${LIBRARY_NAME}Config.cmake)
+export(TARGETS ${LIBRARY_NAME} FILE ${LIBRARY_NAME}Config.cmake)
 
 if(BUILD_TESTS)
     add_subdirectory(tests)
