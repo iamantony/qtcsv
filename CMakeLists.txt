@@ -30,7 +30,7 @@ endif(USE_QT4)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-# set compiler flags and build type
+# set compiler flags
 if (CMAKE_COMPILER_IS_GNUCXX)
     list(APPEND CMAKE_CXX_FLAGS "-Wall -Werror -Wformat=2 -Wuninitialized \
         -Winit-self -Wmissing-include-dirs -Wswitch-enum -Wundef \
@@ -53,16 +53,16 @@ else()
         VERSION ${LIB_VERSION}
         SOVERSION ${LIB_MAJOR_VERSION}.${LIB_MINOR_VERSION})
 endif(STATIC_LIB)
+
 # include root project folder as private, because the source headers are included with source/*.h
 target_include_directories(${LIBRARY_NAME}
-	PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include> PRIVATE .)
+    PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include> PRIVATE .)
 
 target_link_libraries(${LIBRARY_NAME} PRIVATE ${QT_CORE_TARGET})
 
-
 install(TARGETS ${LIBRARY_NAME} EXPORT ${LIBRARY_NAME}Config
         LIBRARY DESTINATION lib
-                ARCHIVE DESTINATION lib)
+        ARCHIVE DESTINATION lib)
 
 install(DIRECTORY include DESTINATION .)
 
