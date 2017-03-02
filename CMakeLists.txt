@@ -49,7 +49,7 @@ if(STATIC_LIB)
 else()
     add_library(${LIBRARY_NAME} SHARED ${SOURCE_FILES})
 
-    set_target_properties(${LIBRARY_NAME_SHARED} PROPERTIES
+    set_target_properties(${LIBRARY_NAME} PROPERTIES
         VERSION ${LIB_VERSION}
         SOVERSION ${LIB_MAJOR_VERSION}.${LIB_MINOR_VERSION})
 endif(STATIC_LIB)
