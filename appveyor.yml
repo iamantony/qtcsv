@@ -31,7 +31,6 @@ build_script:
 - qmake -v
 - qmake ..\qtcsv.pro CONFIG+=release DESTDIR=%cd%
 - mingw32-make
-- dir /s
 
 # build tests
 - mkdir .\tests
@@ -39,7 +38,6 @@ build_script:
 - copy ..\qtcsv.dll .\
 - qmake ..\..\tests\tests.pro CONFIG+=release DESTDIR=%cd%
 - mingw32-make
-- dir /s
 
 # download test file
 - curl -fsS -o worldcitiespop.txt.gz http://www.maxmind.com/download/worldcities/worldcitiespop.txt.gz
