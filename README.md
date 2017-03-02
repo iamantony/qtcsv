@@ -20,7 +20,11 @@ Tested on:
   * [Writer](#writer)
 * [Requirements](#requirements)
 * [Build](#build)
-  * [Prebuild step on Windows](#prebuild-step-on-windows)
+  * [Building on Linux](#building-on-linux)
+    * [Using qmake](#using-qmake)
+    * [Using cmake](#using-cmake)
+  * [Building on Windows](#building-on-windows)
+    * [Prebuild step on Windows](#prebuild-step-on-windows)
 * [Run tests](#run-tests)
   * [Linux, OS X](#linux-os-x)
   * [Windows](#windows)
@@ -30,6 +34,7 @@ Tested on:
 * [Creators](#creators)
 
 ## Quick Example
+
 ```cpp
 #include <QList>
 #include <QStringList>
@@ -213,51 +218,108 @@ versions (4.7, 4.6, ...).
 
 ## Build
 
-### Prebuild step on Windows
-If you going to build *qtcsv* library on Windows, first of all [check that your PATH variable][path_var] contains paths to _Qt_ and _MinGW_ toolsets. For example, you have installed Qt 5.3 into _C:\Qt_. Then Qt binaries and libraries will be in folder _C:\Qt\5.3\mingw482_32\bin_ and MinGW binaries will be in _C:\Qt\Tools\mingw482_32\bin_. Add these paths to the PATH variable so that Windows would know where to look for _qmake_ and _make_ binaries.
+### Building on Linux
+
+#### Using qmake
 
 ```bash
 cd /path/to/folder/with/qtcsv
 
-# Build library
-qmake
+# Create build directory
+mkdir ./build
+cd ./build
+
+# Build library. You can choose build type: release or debug
+qmake ../qtcsv.pro CONFIG+=[release|debug]
 make
 
-# Build tests
+# Set LD_LIBRARY_PATH variable so test binary will know where to search library file
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD
+
+# Create build directory for tests
+mkdir ./tests
 cd ./tests
-qmake
+
+# Build tests
+qmake ../../tests/tests.pro CONFIG+=[release|debug]
 make
 ```
 
+#### Using cmake
+
+```bash
+cd /path/to/folder/with/qtcsv
+
+# Create build directory
+mkdir ./build
+cd ./build
+
+# Build library and tests. See CMakeLists.txt for list of additional options that you can set.
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON ..
+make
+```
+
+### Building on Windows
+
+#### Prebuild step on Windows
+If you going to build *qtcsv* library on Windows, first of all [check that your PATH variable][path_var] contains paths to _Qt_ and _MinGW_ toolsets. For example, you have installed Qt 5.3 into _C:\Qt_. Then Qt binaries and libraries will be in folder _C:\Qt\5.3\mingw482_32\bin_ and MinGW binaries will be in _C:\Qt\Tools\mingw482_32\bin_. Add these paths to the PATH variable so that Windows would know where to look for _qmake_ and _make_ binaries.
+
+```bash
+cd C:\path\to\folder\with\qtcsv
+
+# Create build directory
+mkdir .\build
+cd .\build
+
+# Build library. You can choose build type: release or debug. Set DESTDIR to current directory.
+qmake ..\qtcsv.pro CONFIG+=[release|debug] DESTDIR=%cd%
+mingw32-make
+
+# Create build directory for tests
+mkdir .\tests
+cd .\tests
+
+# Copy library file into 'tests' directory
+copy ..\qtcsv.dll .\
+
+# Build tests
+qmake ..\..\tests\tests.pro CONFIG+=[release|debug] DESTDIR=%cd%
+mingw32-make
+```
+
 ## Run tests
+
 If you want to run tests, then use this commands after build of *qtcsv*:
 
 ### Linux, OS X
+
 ```bash
-cd /path/to/folder/with/qtcsv
+cd /path/to/folder/with/qtcsv/build/tests
 chmod 777 qtcsv_tests
 ./qtcsv_tests
 ```
 
 ### Windows
+
 ```bash
-cd /path/to/folder/with/qtcsv
+cd /path/to/folder/with/qtcsv/build/tests
 qtcsv_tests.exe
 ```
 
 ## Installation
 On Unix-like OS you can install *qtcsv* library using this command:
+
 ```bash
 sudo make install
 sudo ldconfig -n -v /usr/local/lib
 ```
 
-This command will copy all compiled files (libqtcsv.so\*) from *"./src"*
+This command will copy all compiled files (libqtcsv.so\*) from build
 folder to *"/usr/local/lib"*. Also all headers files will be copied
-from *"./src/include"* folder to *"/usr/local/include/qtcsv"*.
+from *"./include"* folder to *"/usr/local/include/"*.
 
 All installation settings are defined in [*qtcsv.pro*][qtcsv-pro] file.
-See *libheaders* and *target* variables.
+See *copy_lib_headers* and *target* variables.
 
 For additional information, see [Qt documentation][install-files] about
 files installation.
