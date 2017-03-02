@@ -46,16 +46,19 @@ DISTFILES += \
 !equals(PWD, $$OUT_PWD){
     # Copy 'data' folder with test files to the destination directory
     win32 {
+        COPY_FROM_PATH=$$shell_path($$PWD/data)
+        COPY_TO_PATH=$$shell_path($$OUT_PWD/data)
+
         # on windows we should create "/data" directory before coping of files
-        COPY_TO_PATH=$$OUT_PWD/data
-        createdir.commands = $(MKDIR) $$shell_path($$COPY_TO_PATH)
+        createdir.commands = $(MKDIR) $$COPY_TO_PATH
         first.depends = $(first) createdir
     }
     else {
+        COPY_FROM_PATH=$$PWD/data
         COPY_TO_PATH=$$OUT_PWD
     }
 
-    copydata.commands = $(COPY_DIR) $$shell_path($$PWD/data) $$shell_path($$COPY_TO_PATH)
+    copydata.commands = $(COPY_DIR) $$COPY_FROM_PATH $$COPY_TO_PATH
     first.depends = $(first) copydata
 
     export(first.depends)
