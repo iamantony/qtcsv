@@ -45,11 +45,25 @@ DISTFILES += \
 
 !equals(PWD, $$OUT_PWD){
     # Copy 'data' folder with test files to the destination directory
-    copydata.commands = $(COPY_DIR) $$PWD/data $$OUT_PWD
+    win32 {
+        # on windows we should create "/data" directory before coping of files
+        COPY_TO_PATH=$$OUT_PWD/data
+        createdir.commands = $(MKDIR) $$shell_path($$COPY_TO_PATH)
+        first.depends = $(first) createdir
+    }
+    else {
+        COPY_TO_PATH=$$OUT_PWD
+    }
+
+    copydata.commands = $(COPY_DIR) $$shell_path($$PWD/data) $$shell_path($$COPY_TO_PATH)
     first.depends = $(first) copydata
+
     export(first.depends)
+    win32: export(createdir.commands)
     export(copydata.commands)
-    QMAKE_EXTRA_TARGETS += first copydata
+
+    win32: QMAKE_EXTRA_TARGETS += first createdir copydata
+    else: QMAKE_EXTRA_TARGETS += first copydata
 }
 
 message(=== Configuration of qtcsv_tests ===)

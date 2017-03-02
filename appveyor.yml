@@ -29,12 +29,15 @@ build_script:
 - mkdir .\build
 - cd .\build
 - qmake -v
-- qmake ..\qtcsv.pro CONFIG+=release
+- qmake ..\qtcsv.pro CONFIG+=release DESTDIR=%cd%
 - mingw32-make
 - dir /s
 
 # build tests
-- qmake ..\tests\tests.pro CONFIG+=release
+- mkdir .\tests
+- cd .\tests
+- copy ..\qtscv.dll .\
+- qmake ..\..\tests\tests.pro CONFIG+=release DESTDIR=%cd%
 - mingw32-make
 - dir /s
 
