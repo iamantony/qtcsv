@@ -224,10 +224,12 @@ script:
     else
       qmake -v;
       qmake ../qtcsv.pro CONFIG+=release;
+      make;
       sudo make install;
 
-      make;
-      qmake ../tests/tests.pro CONFIG+=release;
+      mkdir ./tests && cd ./tests;
+      cp ../libqtcsv* ./;
+      qmake ../../tests/tests.pro CONFIG+=release;
       make;
     fi
 
