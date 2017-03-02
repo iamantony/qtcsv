@@ -221,6 +221,8 @@ script:
 
       make;
       sudo make install;
+
+      cd ./tests;
     else
       qmake -v;
       qmake ../qtcsv.pro CONFIG+=release;
@@ -246,7 +248,13 @@ script:
   # check if library was properly installed
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then
       echo "Check installation";
-      ls -la /usr/local/lib | grep qtcsv;
+      if [ -f /usr/local/lib/libqtcsv.so ]; then
+          ls -la /usr/local/lib | grep qtcsv;
+      else
+        echo "File '/usr/local/lib/libqtcsv.so' do not exist";
+        exit 1;
+      fi
+
       if [ -d /usr/local/include/qtcsv ]; then
         ls -la /usr/local/include/qtcsv;
       else

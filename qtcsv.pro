@@ -54,10 +54,10 @@ unix {
     copy_lib_headers.path = /usr/local/include/qtcsv/
     copy_lib_headers.files = $$PWD/include/qtcsv/*.h
 
-    copy_library.path = /usr/local/lib
-    INSTALLS += copy_library copy_lib_headers
+    target.path = /usr/local/lib
+    INSTALLS += target copy_lib_headers
 
     message(--- Settings for command \"make install\")
-    message(Library files will be copied to folder: $$copy_library.path)
+    message(Library files will be copied to folder: $$target.path)
     message(Library headers will be copied to folder: $$copy_lib_headers.path)
 }
