@@ -47,7 +47,7 @@ int main()
     strList << "one" << "two" << "three";
 
     QtCSV::StringData strData;
-    strData.addRowValues(strList);
+    strData.addRow(strList);
     strData.addEmptyRow();
     strData << strList << "this is the last row";
 

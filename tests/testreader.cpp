@@ -371,6 +371,40 @@ void TestReader::testReadFileWorldCitiesPop()
     QVERIFY2(3173959 == data.size(), "Wrong number of rows");
 }
 
+void TestReader::testReadFileWithEmptyFields()
+{
+    const QString path = getPathToFileWithEmptyFields();
+    QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
+    QVERIFY2(false == data.isEmpty(), "Failed to read file content");
+
+    QList<QStringList> expected;
+    expected << (QStringList() << QString() << "0" << QString() << QString());
+
+    QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
+    for (int i = 0; i < data.size(); ++i)
+    {
+        QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
+    }
+}
+
+void TestReader::testReadFileWithEmptyFieldsComplexSeparator()
+{
+    const QString path = getPathToFileWithEmptyFieldsComplexSeparator();
+    QList<QStringList> data = QtCSV::Reader::readToList(path, ";-;", "\"");
+    QVERIFY2(false == data.isEmpty(), "Failed to read file content");
+
+    QList<QStringList> expected;
+    expected << (QStringList() << "0" << "1" << QString() << QString());
+    expected << (QStringList() << QString() << "Question" << "158" << QString()
+                 << QString());
+
+    QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
+    for (int i = 0; i < data.size(); ++i)
+    {
+        QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
+    }
+}
+
 QString TestReader::getPathToFolderWithTestFiles() const
 {
     return QDir::currentPath() + "/data/";
@@ -430,4 +464,15 @@ QString TestReader::getPathToFileTestDataCorrectness() const
 QString TestReader::getPathToFileWorldCitiesPop() const
 {
     return getPathToFolderWithTestFiles() + "worldcitiespop.txt";
+}
+
+QString TestReader::getPathToFileWithEmptyFields() const
+{
+    return getPathToFolderWithTestFiles() + "test-empty-fields.csv";
+}
+
+QString TestReader::getPathToFileWithEmptyFieldsComplexSeparator() const
+{
+    return getPathToFolderWithTestFiles() +
+            "test-empty-fields-complex-separator.csv";
 }
