@@ -30,13 +30,6 @@ endif(USE_QT4)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-# set compiler flags
-if (CMAKE_COMPILER_IS_GNUCXX)
-    list(APPEND CMAKE_CXX_FLAGS "-Wall -Werror -Wformat=2 -Wuninitialized \
-        -Winit-self -Wmissing-include-dirs -Wswitch-enum -Wundef \
-        -Wpointer-arith -Wdisabled-optimization -Wcast-align -Wcast-qual")
-endif()
-
 # set list of source files
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/sources/*.cpp)
 
@@ -57,6 +50,13 @@ endif(STATIC_LIB)
 # include root project folder as private, because the source headers are included with source/*.h
 target_include_directories(${LIBRARY_NAME}
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include> PRIVATE .)
+
+# set compiler flags for the library target
+if (CMAKE_COMPILER_IS_GNUCXX)
+    target_compile_options(${LIBRARY_NAME} PRIVATE -Wall -Werror -Wformat=2 -Wuninitialized 
+        -Winit-self -Wmissing-include-dirs -Wswitch-enum -Wundef
+        -Wpointer-arith -Wdisabled-optimization -Wcast-align -Wcast-qual)
+endif()
 
 target_link_libraries(${LIBRARY_NAME} PRIVATE ${QT_CORE_TARGET})
 
