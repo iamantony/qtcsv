@@ -336,7 +336,7 @@ proper csv-file.
 
 ## Creators
 Author: [Antony Cherepanov][mypage] (antony.cherepanov@gmail.com)  
-Contributors: [Patrizio "pbek" Bekerle][pbek], [Furkan "Furkanzmc" Üzümcü][Furkanzmc], [Martin "schulmar" Schulze][schulmar]
+Contributors: [Patrizio "pbek" Bekerle][pbek], [Furkan "Furkanzmc" Üzümcü][Furkanzmc], [Martin "schulmar" Schulze][schulmar], [cguentherTUChemnitz][cguentherTUChemnitz]
 
 [csvwiki]: http://en.wikipedia.org/wiki/Comma-separated_values
 [reader]: https://github.com/iamantony/qtcsv/blob/master/include/qtcsv/reader.h
@@ -354,3 +354,4 @@ Contributors: [Patrizio "pbek" Bekerle][pbek], [Furkan "Furkanzmc" Üzümcü][Fu
 [pbek]: https://github.com/pbek
 [Furkanzmc]: https://github.com/Furkanzmc
 [schulmar]: https://github.com/schulmar
+[cguentherTUChemnitz]: https://github.com/cguentherTUChemnitz
