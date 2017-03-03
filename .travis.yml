@@ -230,8 +230,7 @@ script:
       sudo make install;
 
       mkdir ./tests && cd ./tests;
-      cp ../libqtcsv* ./;
-      qmake ../../tests/tests.pro CONFIG+=release;
+      qmake ../../tests/tests.pro CONFIG+=release LIBS+=-L../;
       make;
     fi
 
@@ -241,7 +240,7 @@ script:
   - mv ./worldcitiespop.txt ./data
 
   # run tests
-  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD
+  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/../
   - chmod 777 qtcsv_tests
   - ./qtcsv_tests
 
