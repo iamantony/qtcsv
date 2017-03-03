@@ -26,6 +26,7 @@ Tested on:
   * [4.2 Building on Windows](#42-building-on-windows)
     * [4.2.1 Prebuild step on Windows](#421-prebuild-step-on-windows)
     * [4.2.2 Using qmake](#422-using-qmake)
+    * [4.2.3 Using cmake](#423-using-cmake)
 * [5. Run tests](#5-run-tests)
   * [5.1 Linux, OS X](#51-linux-os-x)
   * [5.2 Windows](#52-windows)
@@ -295,6 +296,20 @@ qmake ..\..\tests\tests.pro CONFIG+=[release|debug] DESTDIR=%cd%
 mingw32-make
 ```
 
+#### 4.2.3 Using cmake
+
+```bash
+cd C:\path\to\folder\with\qtcsv
+
+# Create build directory
+mkdir .\build
+cd .\build
+
+# Build library and tests. See CMakeLists.txt for list of additional options that you can set.
+cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON ..
+mingw32-make
+```
+
 ## 5. Run tests
 
 If you want to run tests, then use this commands after build of *qtcsv*:
@@ -316,6 +331,10 @@ chmod 777 qtcsv_tests
 
 ```bash
 cd /path/to/folder/with/qtcsv/build/tests
+
+# Copy library file into "tests" directory
+copy ..\*qtcsv.dll .\
+
 qtcsv_tests.exe
 ```
 
