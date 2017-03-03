@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required (VERSION 2.8.11)
 
 project (qtcsv)
 
@@ -41,11 +41,12 @@ if(STATIC_LIB)
     add_library(${LIBRARY_NAME} STATIC ${SOURCE_FILES})
 else()
     add_library(${LIBRARY_NAME} SHARED ${SOURCE_FILES})
-
     set_target_properties(${LIBRARY_NAME} PROPERTIES
         VERSION ${LIB_VERSION}
         SOVERSION ${LIB_MAJOR_VERSION}.${LIB_MINOR_VERSION})
 endif(STATIC_LIB)
+
+add_definitions(-DQTCSV_LIBRARY)
 
 # include root project folder as private, because the source headers are included with source/*.h
 target_include_directories(${LIBRARY_NAME}
@@ -53,7 +54,7 @@ target_include_directories(${LIBRARY_NAME}
 
 # set compiler flags for the library target
 if (CMAKE_COMPILER_IS_GNUCXX)
-    target_compile_options(${LIBRARY_NAME} PRIVATE -Wall -Werror -Wformat=2 -Wuninitialized 
+    target_compile_options(${LIBRARY_NAME} PRIVATE -Wall -Werror -Wformat=2 -Wuninitialized
         -Winit-self -Wmissing-include-dirs -Wswitch-enum -Wundef
         -Wpointer-arith -Wdisabled-optimization -Wcast-align -Wcast-qual)
 endif()
