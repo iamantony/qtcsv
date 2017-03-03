@@ -11,29 +11,30 @@ Tested on:
 - OS X with clang, Qt 4.8, 5.5, 5.7 and higher
 
 ## Table of contents
-* [Quick Example](#quick-example)
-* [Usage](#usage)
-  * [AbstractData](#abstractdata)
-  * [StringData](#stringdata)
-  * [VariantData](#variantdata)
-  * [Reader](#reader)
-  * [Writer](#writer)
-* [Requirements](#requirements)
-* [Build](#build)
-  * [Building on Linux](#building-on-linux)
-    * [Using qmake](#using-qmake)
-    * [Using cmake](#using-cmake)
-  * [Building on Windows](#building-on-windows)
-    * [Prebuild step on Windows](#prebuild-step-on-windows)
-* [Run tests](#run-tests)
-  * [Linux, OS X](#linux-os-x)
-  * [Windows](#windows)
-* [Installation](#installation)
-* [Examples](#examples)
-* [Other](#other)
-* [Creators](#creators)
+* [1. Quick Example](#1-quick-example)
+* [2. Usage](#2-usage)
+  * [2.1 AbstractData](#21-abstractdata)
+  * [2.2 StringData](#22-stringdata)
+  * [2.3 VariantData](#23-variantdata)
+  * [2.4 Reader](#24-reader)
+  * [2.5 Writer](#25-writer)
+* [3. Requirements](#3-requirements)
+* [4. Build](#4-build)
+  * [4.1 Building on Linux, OS X](#41-building-on-linux-os-x)
+    * [4.1.1 Using qmake](#411-using-qmake)
+    * [4.1.2 Using cmake](#412-using-cmake)
+  * [4.2 Building on Windows](#42-building-on-windows)
+    * [4.2.1 Prebuild step on Windows](#421-prebuild-step-on-windows)
+    * [4.2.2 Using qmake](#422-using-qmake)
+* [5. Run tests](#5-run-tests)
+  * [5.1 Linux, OS X](#51-linux-os-x)
+  * [5.2 Windows](#52-windows)
+* [6. Installation](#6-installation)
+* [7. Examples](#7-examples)
+* [8. Other](#8-other)
+* [9. Creators](#9-creators)
 
-## Quick Example
+## 1. Quick Example
 
 ```cpp
 #include <QList>
@@ -71,11 +72,13 @@ int main()
 }
 ```
 
-## Usage
+## 2. Usage
+
 There are three main classes: **[_Reader_][reader]**,
 **[_Writer_][writer]** and **[_AbstractData_][absdata]**.
 
-#### AbstractData
+### 2.1 AbstractData
+
 **[_AbstractData_][absdata]** is a pure abstract class that provide
 interface for a container class. Here is how it looks:
 
@@ -102,20 +105,23 @@ container class.
 If you have said *Pure Abstract Class*, you must also say *Implementation*.
 Don't worry, we have some:
 
-#### StringData
+### 2.2 StringData
+
 **[_StringData_][strdata]** have the same interface as **_AbstractData_** (plus
 some useful functions for inserting rows, removing rows and so on) and stores
 all data as strings. It's useful when information that you want to save
 in csv-file is represented as strings.
 
-#### VariantData
+### 2.3 VariantData
+
 If you store information in different types - integers, floating point
 values, strings or (almost) anything else (example: [1, 3.14, "check"]) -
 and you don't want to manually transform each element to string, then you
 can use **_QVariant_** magic. Wrap your data into **_QVariants_** and pass it to
 **[_VariantData_][vardata]** class.
 
-#### Reader
+### 2.4 Reader
+
 Use **[_Reader_][reader]** class to read csv-files. It's very simple.
 It has only two functions:
 
@@ -173,7 +179,8 @@ It has only two functions:
   to int, second - to double and save all three elements to some
   internal container (or do with them whatever you want).
 
-#### Writer
+### 2.5 Writer
+
 Use **[_Writer_][writer]** class to write to csv-files. It has only one function:
 
 ```cpp
@@ -211,16 +218,17 @@ If element of the row contains separator symbol or line ending symbols, such
 element will be enclosed by text delimiter symbols (or double quoute if you have set
 empty string as text delimiter symbol).
 
-## Requirements
+## 3. Requirements
+
 Qt 4.8 and higher.
 It is quite possible, that library will be successfully built with older Qt
 versions (4.7, 4.6, ...).
 
-## Build
+## 4. Build
 
-### Building on Linux
+### 4.1 Building on Linux, OS X
 
-#### Using qmake
+#### 4.1.1 Using qmake
 
 ```bash
 cd /path/to/folder/with/qtcsv
@@ -233,19 +241,16 @@ cd ./build
 qmake ../qtcsv.pro CONFIG+=[release|debug]
 make
 
-# Set LD_LIBRARY_PATH variable so test binary will know where to search library file
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD
-
 # Create build directory for tests
 mkdir ./tests
 cd ./tests
 
-# Build tests
-qmake ../../tests/tests.pro CONFIG+=[release|debug]
+# Build tests. Besides of setting build type, we set path where linker could find compiled library file.
+qmake ../../tests/tests.pro CONFIG+=[release|debug] LIBS+=-L../
 make
 ```
 
-#### Using cmake
+#### 4.1.2 Using cmake
 
 ```bash
 cd /path/to/folder/with/qtcsv
@@ -259,10 +264,13 @@ cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON ..
 make
 ```
 
-### Building on Windows
+### 4.2 Building on Windows
 
-#### Prebuild step on Windows
+#### 4.2.1 Prebuild step on Windows
+
 If you going to build *qtcsv* library on Windows, first of all [check that your PATH variable][path_var] contains paths to _Qt_ and _MinGW_ toolsets. For example, you have installed Qt 5.3 into _C:\Qt_. Then Qt binaries and libraries will be in folder _C:\Qt\5.3\mingw482_32\bin_ and MinGW binaries will be in _C:\Qt\Tools\mingw482_32\bin_. Add these paths to the PATH variable so that Windows would know where to look for _qmake_ and _make_ binaries.
+
+#### 4.2.2 Using qmake
 
 ```bash
 cd C:\path\to\folder\with\qtcsv
@@ -287,26 +295,32 @@ qmake ..\..\tests\tests.pro CONFIG+=[release|debug] DESTDIR=%cd%
 mingw32-make
 ```
 
-## Run tests
+## 5. Run tests
 
 If you want to run tests, then use this commands after build of *qtcsv*:
 
-### Linux, OS X
+### 5.1 Linux, OS X
 
 ```bash
 cd /path/to/folder/with/qtcsv/build/tests
+
+# Set LD_LIBRARY_PATH variable so test binary will know where to search library file.
+# Suppose, that library file is located in "build" directory, up a level from current directory.
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/../
+
 chmod 777 qtcsv_tests
 ./qtcsv_tests
 ```
 
-### Windows
+### 5.2 Windows
 
 ```bash
 cd /path/to/folder/with/qtcsv/build/tests
 qtcsv_tests.exe
 ```
 
-## Installation
+## 6. Installation
+
 On Unix-like OS you can install *qtcsv* library using this command:
 
 ```bash
@@ -324,17 +338,20 @@ See *copy_lib_headers* and *target* variables.
 For additional information, see [Qt documentation][install-files] about
 files installation.
 
-## Examples
+## 7. Examples
+
 If you want to try *qtcsv*, you can download [qtcsv-example project][qtcsv-example].
 Don't forget to read README file!
 
-## Other
+## 8. Other
+
 If you want to know more about csv-file format, read [RFC 4180][rfc] standard.
 
 Also on [this page][csvlint] you can find useful tips about how should look
 proper csv-file.
 
-## Creators
+## 9. Creators
+
 Author: [Antony Cherepanov][mypage] (antony.cherepanov@gmail.com)  
 Contributors: [Patrizio "pbek" Bekerle][pbek], [Furkan "Furkanzmc" Üzümcü][Furkanzmc], [Martin "schulmar" Schulze][schulmar], [cguentherTUChemnitz][cguentherTUChemnitz]
 
