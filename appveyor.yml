@@ -56,4 +56,5 @@ build_script:
 - move worldcitiespop.txt data\
 
 # run tests
+- dir /s
 - qtcsv_tests.exe
