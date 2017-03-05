@@ -37,16 +37,18 @@ build_script:
         cmake --version;
         cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release ..;
         mingw32-make;
+        dir /s;
         cd .\tests;
       }
       else {
         qmake -v;
         qmake ..\qtcsv.pro CONFIG+=release DESTDIR=%cd%;
         mingw32-make;
+        dir /s;
 
         mkdir .\tests;
         cd .\tests;
-        copy ..\qtcsv.dll .\;
+        copy ..\*qtcsv.dll .\;
         qmake ..\..\tests\tests.pro CONFIG+=release DESTDIR=%cd%;
         mingw32-make;
       }
