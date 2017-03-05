@@ -33,25 +33,22 @@ build_script:
 - cd .\build
 
 # build library and tests
-- ps: if($env:use_cmake -eq 'true') {
-        cmake --version;
-        cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release ..;
-        mingw32-make;
-        dir /s;
-        cd .\tests;
-      }
-      else {
-        qmake -v;
-        qmake ..\qtcsv.pro CONFIG+=release DESTDIR=%cd%;
-        mingw32-make;
-        dir /s;
-
-        mkdir .\tests;
-        cd .\tests;
-        copy ..\*qtcsv.dll .\;
-        qmake ..\..\tests\tests.pro CONFIG+=release DESTDIR=%cd%;
-        mingw32-make;
-      }
+- if [%use_cmake%]==[true] (
+    cmake --version &&
+    cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release .. &&
+    mingw32-make &&
+    dir /s &&
+    cd .\tests)
+  else (
+    qmake -v &&
+    qmake ..\qtcsv.pro CONFIG+=release DESTDIR=%cd% &&
+    mingw32-make &&
+    dir /s &&
+    mkdir .\tests &&
+    cd .\tests &&
+    copy ..\*qtcsv.dll .\ &&
+    qmake ..\..\tests\tests.pro CONFIG+=release DESTDIR=%cd% &&
+    mingw32-make)
 
 # download test file
 - curl -fsS -o worldcitiespop.txt.gz http://www.maxmind.com/download/worldcities/worldcitiespop.txt.gz
