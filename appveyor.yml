@@ -7,16 +7,20 @@ environment:
   matrix:
   - QT5: C:\Qt\5.3\mingw482_32
     MINGW: C:\Qt\Tools\mingw482_32
-  - QT5: C:\Qt\5.4\mingw491_32
-    MINGW: C:\Qt\Tools\mingw491_32
-  - QT5: C:\Qt\5.5\mingw492_32
-    MINGW: C:\Qt\Tools\mingw492_32
-  - QT5: C:\Qt\5.6\mingw49_32
-    MINGW: C:\Qt\Tools\mingw492_32
-  - QT5: C:\Qt\5.7\mingw53_32
-    MINGW: C:\Qt\Tools\mingw530_32
-  - QT5: C:\Qt\5.8\mingw53_32
-    MINGW: C:\Qt\Tools\mingw530_32
+    use_cmake: "false"
+  - QT5: C:\Qt\5.3\mingw482_32
+    MINGW: C:\Qt\Tools\mingw482_32
+    use_cmake: "true"
+  #- QT5: C:\Qt\5.4\mingw491_32
+  #  MINGW: C:\Qt\Tools\mingw491_32
+  #- QT5: C:\Qt\5.5\mingw492_32
+  #  MINGW: C:\Qt\Tools\mingw492_32
+  #- QT5: C:\Qt\5.6\mingw49_32
+  #  MINGW: C:\Qt\Tools\mingw492_32
+  #- QT5: C:\Qt\5.7\mingw53_32
+  #  MINGW: C:\Qt\Tools\mingw530_32
+  #- QT5: C:\Qt\5.8\mingw53_32
+  #  MINGW: C:\Qt\Tools\mingw530_32
 
 matrix:
   fast_finish: true
@@ -25,19 +29,27 @@ before_build:
 - set PATH=%MINGW%\bin;%QT5%\bin;%PATH%
 
 build_script:
-# build library
 - mkdir .\build
 - cd .\build
-- qmake -v
-- qmake ..\qtcsv.pro CONFIG+=release DESTDIR=%cd%
-- mingw32-make
 
-# build tests
-- mkdir .\tests
-- cd .\tests
-- copy ..\qtcsv.dll .\
-- qmake ..\..\tests\tests.pro CONFIG+=release DESTDIR=%cd%
-- mingw32-make
+# build library and tests
+- ps: if($env:use_cmake -eq 'true') {
+        cmake --version;
+        cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release ..;
+        mingw32-make;
+        cd .\tests;
+      }
+      else {
+        qmake -v;
+        qmake ..\qtcsv.pro CONFIG+=release DESTDIR=%cd%;
+        mingw32-make;
+
+        mkdir .\tests;
+        cd .\tests;
+        copy ..\qtcsv.dll .\;
+        qmake ..\..\tests\tests.pro CONFIG+=release DESTDIR=%cd%;
+        mingw32-make;
+      }
 
 # download test file
 - curl -fsS -o worldcitiespop.txt.gz http://www.maxmind.com/download/worldcities/worldcitiespop.txt.gz
