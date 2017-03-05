@@ -47,6 +47,7 @@ build_script:
     mkdir .\tests &&
     cd .\tests &&
     copy ..\*qtcsv.dll .\ &&
+    echo %cd% &&
     qmake ..\..\tests\tests.pro CONFIG+=release DESTDIR=%cd% &&
     mingw32-make)
 
