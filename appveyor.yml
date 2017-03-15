@@ -8,19 +8,24 @@ environment:
   - QT5: C:\Qt\5.3\mingw482_32
     MINGW: C:\Qt\Tools\mingw482_32
     use_cmake: "false"
-  - QT5: C:\Qt\5.3\mingw482_32
-    MINGW: C:\Qt\Tools\mingw482_32
-    use_cmake: "true"
-  #- QT5: C:\Qt\5.4\mingw491_32
-  #  MINGW: C:\Qt\Tools\mingw491_32
-  #- QT5: C:\Qt\5.5\mingw492_32
-  #  MINGW: C:\Qt\Tools\mingw492_32
-  #- QT5: C:\Qt\5.6\mingw49_32
-  #  MINGW: C:\Qt\Tools\mingw492_32
-  #- QT5: C:\Qt\5.7\mingw53_32
-  #  MINGW: C:\Qt\Tools\mingw530_32
-  #- QT5: C:\Qt\5.8\mingw53_32
-  #  MINGW: C:\Qt\Tools\mingw530_32
+  #- QT5: C:\Qt\5.3\mingw482_32
+  #  MINGW: C:\Qt\Tools\mingw482_32
+  #  use_cmake: "true"
+  - QT5: C:\Qt\5.4\mingw491_32
+    MINGW: C:\Qt\Tools\mingw491_32
+    use_cmake: "false"
+  - QT5: C:\Qt\5.5\mingw492_32
+    MINGW: C:\Qt\Tools\mingw492_32
+    use_cmake: "false"
+  - QT5: C:\Qt\5.6\mingw49_32
+    MINGW: C:\Qt\Tools\mingw492_32
+    use_cmake: "false"
+  - QT5: C:\Qt\5.7\mingw53_32
+    MINGW: C:\Qt\Tools\mingw530_32
+    use_cmake: "false"
+  - QT5: C:\Qt\5.8\mingw53_32
+    MINGW: C:\Qt\Tools\mingw530_32
+    use_cmake: "false"
 
 matrix:
   fast_finish: true
@@ -35,7 +40,7 @@ build_script:
 # build library and tests
 - if [%use_cmake%]==[true] (
     cmake --version &&
-    cmake -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release .. &&
+    cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release .. &&
     make &&
     dir /s &&
     cd .\tests)
