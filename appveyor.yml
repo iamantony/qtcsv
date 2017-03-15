@@ -35,8 +35,8 @@ build_script:
 # build library and tests
 - if [%use_cmake%]==[true] (
     cmake --version &&
-    cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release .. &&
-    mingw32-make &&
+    cmake -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release .. &&
+    make &&
     dir /s &&
     cd .\tests)
   else (
