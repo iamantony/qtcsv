@@ -1,7 +1,7 @@
 QT -= gui
 TARGET = qtcsv
 TEMPLATE = lib
-VERSION = 1.3.1
+VERSION = 1.4.0
 win32:TARGET_EXT = .dll
 
 # Uncomment this setting if you want to build static library
