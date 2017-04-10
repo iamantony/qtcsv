@@ -32,6 +32,7 @@ private Q_SLOTS:
     void testReadFileWorldCitiesPop();
     void testReadFileWithEmptyFields();
     void testReadFileWithEmptyFieldsComplexSeparator();
+    void testReadFileWithMultirowData();
 
 private:
     QString getPathToFolderWithTestFiles() const;
@@ -48,6 +49,7 @@ private:
     QString getPathToFileWorldCitiesPop() const;
     QString getPathToFileWithEmptyFields() const;
     QString getPathToFileWithEmptyFieldsComplexSeparator() const;
+    QString getPathToFileMultirowData() const;
 };
 
 #endif // TESTREADER_H

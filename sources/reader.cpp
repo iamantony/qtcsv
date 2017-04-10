@@ -301,7 +301,7 @@ QStringList ReaderPrivate::splitElements(const QString& line,
             // other.
             int midElemEndPos = FindMiddleElementPositioin(
                                 line, pos, separator, textDelimiter);
-            if (midElemEndPos > 0)
+            if (midElemEndPos >= 0)
             {
                 result << (LF + line.mid(pos, midElemEndPos - pos));
                 pos = midElemEndPos + textDelimiter.size() + separator.size();

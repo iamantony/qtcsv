@@ -405,6 +405,25 @@ void TestReader::testReadFileWithEmptyFieldsComplexSeparator()
     }
 }
 
+void TestReader::testReadFileWithMultirowData()
+{
+    const QString path = getPathToFileMultirowData();
+    QList<QStringList> data = QtCSV::Reader::readToList(path);
+    QVERIFY2(false == data.isEmpty(), "Failed to read file content");
+
+    QList<QStringList> expected;
+    expected << (QStringList() << "A" << "B" << "C" << "D");
+    expected << (QStringList() << "a" << "b" << "c" << "d");
+    expected << (QStringList() << "a" << "b field" << "c field\n" << "d field");
+    expected << (QStringList() << "aa" << "bb" << "cc" << "dd");
+
+    QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
+    for (int i = 0; i < data.size(); ++i)
+    {
+        QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
+    }
+}
+
 QString TestReader::getPathToFolderWithTestFiles() const
 {
     return QDir::currentPath() + "/data/";
@@ -475,4 +494,9 @@ QString TestReader::getPathToFileWithEmptyFieldsComplexSeparator() const
 {
     return getPathToFolderWithTestFiles() +
             "test-empty-fields-complex-separator.csv";
+}
+
+QString TestReader::getPathToFileMultirowData() const
+{
+    return getPathToFolderWithTestFiles() + "test-multirow-data.csv";
 }
