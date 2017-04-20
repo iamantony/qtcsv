@@ -27,6 +27,14 @@ namespace QtCSV
     class QTCSVSHARED_EXPORT Reader
     {
     public:
+
+        // Class used to process files one line at a time.
+        class AbstractProcessor {
+        public:
+            // Process one line worth of elements.
+            virtual bool operator()(const QStringList & elements) = 0;
+        };
+
         // Read csv-file and save it's data as strings to QList<QStringList>
         static QList<QStringList> readToList(const QString& filePath,
                         const QString& separator = QString(","),
@@ -37,6 +45,13 @@ namespace QtCSV
         // class
         static bool readToData(const QString& filePath,
                         AbstractData& data,
+                        const QString& separator = QString(","),
+                        const QString& textDelimiter = QString("\""),
+                        QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
+
+        static bool readToProcessor(
+                        const QString& filePath,
+                        AbstractProcessor& proc,
                         const QString& separator = QString(","),
                         const QString& textDelimiter = QString("\""),
                         QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
