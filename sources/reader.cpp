@@ -24,7 +24,7 @@ public:
     // Function that really reads csv-file and save it's data as strings to
     // QList<QStringList>
     static bool read(const QString& filePath,
-                     QList<QStringList>& list,
+                     QtCSV::Reader::AbstractProcessor& proc,
                      const QString& separator,
                      const QString& textDelimiter,
                      QTextCodec* codec);
@@ -68,7 +68,7 @@ private:
 // @output:
 // - bool - result of read operation
 bool ReaderPrivate::read(const QString& filePath,
-                            QList<QStringList>& list,
+                            QtCSV::Reader::AbstractProcessor& proc,
                             const QString& separator,
                             const QString& textDelimiter,
                             QTextCodec* codec)
@@ -93,7 +93,8 @@ bool ReaderPrivate::read(const QString& filePath,
     QStringList row;
 
     ElementInfo elemInfo;
-    while ( false == stream.atEnd() )
+    bool b_result = true;
+    for (; false == stream.atEnd(); )
     {
         QString line = stream.readLine();
         QStringList elements = ReaderPrivate::splitElements(
@@ -105,7 +106,10 @@ bool ReaderPrivate::read(const QString& filePath,
             if (row.isEmpty())
             {
                 // No, these elements constitute the entire row
-                list << elements;
+                if (!proc (elements)) {
+                    b_result = false;
+                    break;
+                }
             }
             else
             {
@@ -116,7 +120,11 @@ bool ReaderPrivate::read(const QString& filePath,
                     row << elements;
                 }
 
-                list << row;
+                if (!proc (row)) {
+                    b_result = false;
+                    break;
+                }
+
                 row.clear();
             }
         }
@@ -139,10 +147,10 @@ bool ReaderPrivate::read(const QString& filePath,
 
     if (false == elemInfo.isEnded && false == row.isEmpty())
     {
-        list << row;
+        b_result = proc (row);
     }
 
-    return true;
+    return b_result;
 }
 
 // Check if file path and separator are valid
@@ -488,6 +496,16 @@ QStringList ReaderPrivate::removeTextDelimiters(const QStringList& elements,
     return result;
 }
 
+// Helper for Reader::readToList and readToData.
+class ReadToListProcessor : public QtCSV::Reader::AbstractProcessor {
+public:
+    QList<QStringList> data;
+    bool operator()(const QStringList & elements) {
+        data << elements;
+        return true;
+    }
+};
+
 // Read csv-file and save it's data as strings to QList<QStringList>
 // @input:
 // - filePath - string with absolute path to csv-file
@@ -502,10 +520,9 @@ QList<QStringList> Reader::readToList(const QString& filePath,
                                       const QString& textDelimiter,
                                       QTextCodec* codec)
 {
-    QList<QStringList> data;
-    ReaderPrivate::read(filePath, data, separator, textDelimiter, codec);
-
-    return data;
+    ReadToListProcessor proc;
+    ReaderPrivate::read(filePath, proc, separator, textDelimiter, codec);
+    return proc.data;
 }
 
 // Read csv-file and save it's data to AbstractData-based container class
@@ -523,17 +540,36 @@ bool Reader::readToData(const QString& filePath,
                         const QString& textDelimiter,
                         QTextCodec* codec)
 {
-    QList<QStringList> list;
-    if (false == ReaderPrivate::read(filePath, list, separator, textDelimiter,
+    ReadToListProcessor proc;
+    if (false == ReaderPrivate::read(filePath, proc, separator, textDelimiter,
                                      codec))
     {
         return false;
     }
 
-    for (int i = 0; i < list.size(); ++i)
+    for (int i = 0; i < proc.data.size(); ++i)
     {
-        data.addRow( list.at(i) );
+        data.addRow( proc.data.at(i) );
     }
 
     return true;
+}
+
+// Read csv-file and process it line-by-line.
+// @input:
+// - filePath - string with absolute path to csv-file
+// - proc - AbstractProcessor object that receives one line at a time
+// - separator - string or character that separate elements in a row
+// - textDelimiter - string or character that enclose each element in a row
+// - codec - pointer to codec object that would be used for file reading
+// @output:
+// - bool - True if file was successfully read, otherwise False
+bool Reader::readToProcessor(const QString &filePath,
+                             Reader::AbstractProcessor &proc,
+                             const QString &separator,
+                             const QString &textDelimiter,
+                             QTextCodec *codec)
+{
+    return ReaderPrivate::read(filePath, proc, separator, textDelimiter,
+                                         codec);
 }
