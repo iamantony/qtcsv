@@ -14,25 +14,37 @@ namespace QtCSV
 
     // Reader class is a file reader that work with csv-files. It needs an
     // absolute path to the csv-file that you are going to read.
+    //
     // Additionally you cant specify:
-    // - a separator character (or string) that is used as values
-    // separator in this csv-file. Comma (",") is usually used as separator.
+    // - a separator character (or string) that is used as separator of row
+    // values in this csv-file. Default separator is comma (",");
     // - text delimiter character (or string) that enclose each element in a
     // row. Typical delimiter characters: none (""), quote ("'")
-    // and double quotes ("\"").
+    // and double quotes ("\"");
     // - text codec.
-    // Reader can save information to:
+    //
+    // Reader can save (or transfer) information to:
     // - QList<QStringList>, where each QStringList contains values of one row;
-    // - AbstractData-based container class.
+    // - AbstractData-based container class;
+    // - AbstractProcessor-based object.
     class QTCSVSHARED_EXPORT Reader
     {
     public:
 
-        // Class used to process files one line at a time.
-        class AbstractProcessor {
+        // AbstractProcessor is a class used to process files one line at a time
+        class QTCSVSHARED_EXPORT AbstractProcessor
+        {
         public:
-            // Process one line worth of elements.
-            virtual bool operator()(const QStringList & elements) = 0;
+            virtual ~AbstractProcessor() {}
+
+            // Process one line worth of elements
+            // @input:
+            // - elements - list of row elements
+            // @output:
+            // bool - True if elements was processed successfully, False in case
+            // of error. If process() return False, the csv-file will be stopped
+            // reading
+            virtual bool process(const QStringList& elements) = 0;
         };
 
         // Read csv-file and save it's data as strings to QList<QStringList>
@@ -49,9 +61,10 @@ namespace QtCSV
                         const QString& textDelimiter = QString("\""),
                         QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
 
+        // Read csv-file and process it line-by-line
         static bool readToProcessor(
                         const QString& filePath,
-                        AbstractProcessor& proc,
+                        AbstractProcessor& processor,
                         const QString& separator = QString(","),
                         const QString& textDelimiter = QString("\""),
                         QTextCodec* codec = QTextCodec::codecForName("UTF-8"));

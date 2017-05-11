@@ -11,20 +11,21 @@
 
 using namespace QtCSV;
 
+// ElementInfo is a helper struct that is used as indicator of row end
 struct ElementInfo
 {
-    bool isEnded;
-
+public:
     ElementInfo() : isEnded(true) {}
+    bool isEnded;
 };
 
 class ReaderPrivate
 {
 public:
-    // Function that really reads csv-file and save it's data as strings to
-    // QList<QStringList>
+    // Function that really reads csv-file and transfer it's data to
+    // AbstractProcessor-based processor
     static bool read(const QString& filePath,
-                     QtCSV::Reader::AbstractProcessor& proc,
+                     Reader::AbstractProcessor& processor,
                      const QString& separator,
                      const QString& textDelimiter,
                      QTextCodec* codec);
@@ -41,13 +42,13 @@ private:
                                      ElementInfo& elemInfo);
 
     // Try to find end position of first or middle element
-    static int FindMiddleElementPositioin(const QString& str,
+    static int findMiddleElementPositioin(const QString& str,
                                           const int& startPos,
                                           const QString& separator,
                                           const QString& txtDelim);
 
     // Check if current element is the last element
-    static bool IsElementLast(const QString& str,
+    static bool isElementLast(const QString& str,
                               const int& startPos,
                               const QString& separator,
                               const QString& txtDelim);
@@ -57,18 +58,18 @@ private:
                                             const QString& textDelimiter);
 };
 
-// Function that really reads csv-file and save it's data as strings to
-// QList<QStringList>
+// Function that really reads csv-file and transfer it's data to
+// AbstractProcessor-based processor
 // @input:
 // - filePath - string with absolute path to csv-file
-// - list - refernce to list container where read data will be saved
+// - processor - refernce to AbstractProcessor-based object
 // - separator - string or character that separate values in a row
 // - textDelimiter - string or character that enclose row elements
 // - codec - pointer to codec object that would be used for file reading
 // @output:
 // - bool - result of read operation
 bool ReaderPrivate::read(const QString& filePath,
-                            QtCSV::Reader::AbstractProcessor& proc,
+                            Reader::AbstractProcessor& processor,
                             const QString& separator,
                             const QString& textDelimiter,
                             QTextCodec* codec)
@@ -93,8 +94,8 @@ bool ReaderPrivate::read(const QString& filePath,
     QStringList row;
 
     ElementInfo elemInfo;
-    bool b_result = true;
-    for (; false == stream.atEnd(); )
+    bool result = true;
+    while (false == stream.atEnd())
     {
         QString line = stream.readLine();
         QStringList elements = ReaderPrivate::splitElements(
@@ -106,8 +107,9 @@ bool ReaderPrivate::read(const QString& filePath,
             if (row.isEmpty())
             {
                 // No, these elements constitute the entire row
-                if (!proc (elements)) {
-                    b_result = false;
+                if (false == processor.process(elements))
+                {
+                    result = false;
                     break;
                 }
             }
@@ -120,8 +122,9 @@ bool ReaderPrivate::read(const QString& filePath,
                     row << elements;
                 }
 
-                if (!proc (row)) {
-                    b_result = false;
+                if (false == processor.process(row))
+                {
+                    result = false;
                     break;
                 }
 
@@ -147,10 +150,10 @@ bool ReaderPrivate::read(const QString& filePath,
 
     if (false == elemInfo.isEnded && false == row.isEmpty())
     {
-        b_result = proc (row);
+        result = processor.process(row);
     }
 
-    return b_result;
+    return result;
 }
 
 // Check if file path and separator are valid
@@ -237,7 +240,7 @@ QStringList ReaderPrivate::splitElements(const QString& line,
                 // 1. Be the first or the middle element. Then it should end
                 // with delimiter and the seprator symbols standing next to each
                 // other.
-                int midElemEndPos = FindMiddleElementPositioin(
+                int midElemEndPos = findMiddleElementPositioin(
                                         line, pos, separator, textDelimiter);
                 if (midElemEndPos > 0)
                 {
@@ -250,7 +253,7 @@ QStringList ReaderPrivate::splitElements(const QString& line,
 
                 // 2. Be The last element on the line. Then it should end with
                 // delimiter symbol.
-                if (IsElementLast(line, pos, separator, textDelimiter))
+                if (isElementLast(line, pos, separator, textDelimiter))
                 {
                     int length = line.size() - textDelimiter.size() - pos;
                     result << line.mid(pos, length);
@@ -307,7 +310,7 @@ QStringList ReaderPrivate::splitElements(const QString& line,
             // 1. Ends somewhere in the middle of the line. Then it should ends
             // with delimiter and the seprator symbols standing next to each
             // other.
-            int midElemEndPos = FindMiddleElementPositioin(
+            int midElemEndPos = findMiddleElementPositioin(
                                 line, pos, separator, textDelimiter);
             if (midElemEndPos >= 0)
             {
@@ -319,7 +322,7 @@ QStringList ReaderPrivate::splitElements(const QString& line,
 
             // 2. Ends at the end of the line. Then it should ends with
             // delimiter symbol.
-            if (IsElementLast(line, pos, separator, textDelimiter))
+            if (isElementLast(line, pos, separator, textDelimiter))
             {
                 int length = line.size() - textDelimiter.size() - pos;
                 result << (LF + line.mid(pos, length));
@@ -345,7 +348,7 @@ QStringList ReaderPrivate::splitElements(const QString& line,
 // @output:
 // - int - end position of the element or -1 if this element is not first
 // or middle
-int ReaderPrivate::FindMiddleElementPositioin(const QString& str,
+int ReaderPrivate::findMiddleElementPositioin(const QString& str,
                                               const int& startPos,
                                               const QString& separator,
                                               const QString& txtDelim)
@@ -414,7 +417,7 @@ int ReaderPrivate::FindMiddleElementPositioin(const QString& str,
 // @output:
 // - bool - True if the current element is the last element of the string,
 // False otherwise
-bool ReaderPrivate::IsElementLast(const QString& str,
+bool ReaderPrivate::isElementLast(const QString& str,
                                   const int& startPos,
                                   const QString& separator,
                                   const QString& txtDelim)
@@ -496,11 +499,13 @@ QStringList ReaderPrivate::removeTextDelimiters(const QStringList& elements,
     return result;
 }
 
-// Helper for Reader::readToList and readToData.
-class ReadToListProcessor : public QtCSV::Reader::AbstractProcessor {
+// ReadToListProcessor - processor that saves rows of elements to list.
+class ReadToListProcessor : public Reader::AbstractProcessor
+{
 public:
     QList<QStringList> data;
-    bool operator()(const QStringList & elements) {
+    virtual bool process(const QStringList& elements)
+    {
         data << elements;
         return true;
     }
@@ -520,9 +525,9 @@ QList<QStringList> Reader::readToList(const QString& filePath,
                                       const QString& textDelimiter,
                                       QTextCodec* codec)
 {
-    ReadToListProcessor proc;
-    ReaderPrivate::read(filePath, proc, separator, textDelimiter, codec);
-    return proc.data;
+    ReadToListProcessor processor;
+    ReaderPrivate::read(filePath, processor, separator, textDelimiter, codec);
+    return processor.data;
 }
 
 // Read csv-file and save it's data to AbstractData-based container class
@@ -540,36 +545,37 @@ bool Reader::readToData(const QString& filePath,
                         const QString& textDelimiter,
                         QTextCodec* codec)
 {
-    ReadToListProcessor proc;
-    if (false == ReaderPrivate::read(filePath, proc, separator, textDelimiter,
-                                     codec))
+    ReadToListProcessor processor;
+    if (false == ReaderPrivate::read(
+                filePath, processor, separator, textDelimiter, codec))
     {
         return false;
     }
 
-    for (int i = 0; i < proc.data.size(); ++i)
+    for (int i = 0; i < processor.data.size(); ++i)
     {
-        data.addRow( proc.data.at(i) );
+        data.addRow(processor.data.at(i));
     }
 
     return true;
 }
 
-// Read csv-file and process it line-by-line.
+// Read csv-file and process it line-by-line
 // @input:
 // - filePath - string with absolute path to csv-file
-// - proc - AbstractProcessor object that receives one line at a time
+// - processor - AbstractProcessor-based object that receives data from
+// csv-file line-by-line
 // - separator - string or character that separate elements in a row
 // - textDelimiter - string or character that enclose each element in a row
 // - codec - pointer to codec object that would be used for file reading
 // @output:
 // - bool - True if file was successfully read, otherwise False
 bool Reader::readToProcessor(const QString &filePath,
-                             Reader::AbstractProcessor &proc,
+                             Reader::AbstractProcessor& processor,
                              const QString &separator,
                              const QString &textDelimiter,
                              QTextCodec *codec)
 {
-    return ReaderPrivate::read(filePath, proc, separator, textDelimiter,
+    return ReaderPrivate::read(filePath, processor, separator, textDelimiter,
                                          codec);
 }
