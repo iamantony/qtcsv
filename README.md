@@ -13,11 +13,14 @@ Tested on:
 ## Table of contents
 * [1. Quick Example](#1-quick-example)
 * [2. Usage](#2-usage)
-  * [2.1 AbstractData](#21-abstractdata)
-  * [2.2 StringData](#22-stringdata)
-  * [2.3 VariantData](#23-variantdata)
-  * [2.4 Reader](#24-reader)
-  * [2.5 Writer](#25-writer)
+  * [2.1 Containers](#21-containers)
+    * [2.1.1 AbstractData](#211-abstractdata)
+    * [2.1.2 StringData](#212-stringdata)
+    * [2.1.3 VariantData](#213-variantdata)
+  * [2.2 Reader](#22-reader)
+    * [2.2.1 Reader functions](#221-reader-functions)
+    * [2.2.2 AbstractProcessor](#222-abstractprocessor)
+  * [2.3 Writer](#23-writer)
 * [3. Requirements](#3-requirements)
 * [4. Build](#4-build)
   * [4.1 Building on Linux, OS X](#41-building-on-linux-os-x)
@@ -75,10 +78,15 @@ int main()
 
 ## 2. Usage
 
-There are three main classes: **[_Reader_][reader]**,
-**[_Writer_][writer]** and **[_AbstractData_][absdata]**.
+Library could be separated into three parts: **_Reader_**,
+**_Writer_** and **_Containers_**.
 
-### 2.1 AbstractData
+### 2.1 Containers
+
+*qtcsv* library can work with standard Qt containers like QList and
+QStringList, but also with special ones.
+
+#### 2.1.1 AbstractData
 
 **[_AbstractData_][absdata]** is a pure abstract class that provide
 interface for a container class. Here is how it looks:
@@ -106,14 +114,14 @@ container class.
 If you have said *Pure Abstract Class*, you must also say *Implementation*.
 Don't worry, we have some:
 
-### 2.2 StringData
+#### 2.1.2 StringData
 
-**[_StringData_][strdata]** have the same interface as **_AbstractData_** (plus
-some useful functions for inserting rows, removing rows and so on) and stores
-all data as strings. It's useful when information that you want to save
-in csv-file is represented as strings.
+**[_StringData_][strdata]** have the same interface as **_AbstractData_**
+class plus some useful functions for inserting rows, removing rows and
+so on. It stores all data as strings. It is most convenient to use it
+when information that you want to save in csv-file is represented as strings.
 
-### 2.3 VariantData
+#### 2.1.3 VariantData
 
 If you store information in different types - integers, floating point
 values, strings or (almost) anything else (example: [1, 3.14, "check"]) -
@@ -121,10 +129,12 @@ and you don't want to manually transform each element to string, then you
 can use **_QVariant_** magic. Wrap your data into **_QVariants_** and pass it to
 **[_VariantData_][vardata]** class.
 
-### 2.4 Reader
+### 2.2 Reader
 
-Use **[_Reader_][reader]** class to read csv-files. It's very simple.
-It has only two functions:
+Use **[_Reader_][reader]** class to read csv-files. Let's see what functions
+it has.
+
+#### 2.2.1 Reader functions
 
 1. Read data to **_QList\<QStringList\>_**
   ```cpp
@@ -180,7 +190,48 @@ It has only two functions:
   to int, second - to double and save all three elements to some
   internal container (or do with them whatever you want).
 
-### 2.5 Writer
+3. Read data and process it line-by-line by **_AbstractProcessor_**-based processor
+  ```cpp
+  bool readToProcessor(const QString& filePath,
+                       AbstractProcessor& processor,
+                       const QString& separator,
+                       const QString& textDelimiter,
+                       QTextCodec* codec);
+  ```
+
+  - *filePath* - string with absolute path to existent csv-file;
+  - *processor* - reference to **_AbstractProcessor_**-based class object;
+  - *separator* (optional) - delimiter symbol;
+  - *textDelimiter* (optional) - text delimiter symbol;
+  - *codec* (optional) - pointer to the codec object.
+
+  This function will read csv-file line-by-line and pass each line to
+  *processor* object via virtual function
+  **_AbstractProcessor::process(QStringList)_**.
+
+#### 2.2.2 AbstractProcessor
+
+**[_AbstractProcessor_][reader]** is a pure virtual class with one
+function - process().
+
+``` cpp
+class AbstractProcessor
+{
+public:
+    explicit AbstractProcessor() {}
+    virtual ~AbstractProcessor() {}
+
+    virtual bool process(const QStringList& elements) = 0;
+};
+```
+
+**_Reader_** pass row elements to **_AbstractProcessor_**-based class via
+process() function. What to do with these elements - the processor
+itself decides. Processor can save elements, filter them, edit and so on.
+As an example we can consider class **ReadToListProcessor** (defined in
+[reader.cpp][reader-cpp]) which simply saves elements into QList.
+
+### 2.3 Writer
 
 Use **[_Writer_][writer]** class to write to csv-files. It has only one function:
 
@@ -376,6 +427,7 @@ Contributors: [Patrizio "pbek" Bekerle][pbek], [Furkan "Furkanzmc" Üzümcü][Fu
 
 [csvwiki]: http://en.wikipedia.org/wiki/Comma-separated_values
 [reader]: https://github.com/iamantony/qtcsv/blob/master/include/qtcsv/reader.h
+[reader-cpp]: https://github.com/iamantony/qtcsv/blob/master/sources/reader.cpp
 [writer]: https://github.com/iamantony/qtcsv/blob/master/include/qtcsv/writer.h
 [absdata]: https://github.com/iamantony/qtcsv/blob/master/include/qtcsv/abstractdata.h
 [strdata]: https://github.com/iamantony/qtcsv/blob/master/include/qtcsv/stringdata.h
