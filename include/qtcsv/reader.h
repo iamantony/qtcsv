@@ -35,6 +35,7 @@ namespace QtCSV
         class QTCSVSHARED_EXPORT AbstractProcessor
         {
         public:
+            explicit AbstractProcessor() {}
             virtual ~AbstractProcessor() {}
 
             // Process one line worth of elements
