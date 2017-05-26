@@ -212,7 +212,7 @@ it has.
 #### 2.2.2 AbstractProcessor
 
 **[_AbstractProcessor_][reader]** is a pure virtual class with one
-function - process().
+function - **_process(QStringList)_**.
 
 ``` cpp
 class AbstractProcessor
@@ -226,10 +226,11 @@ public:
 ```
 
 **_Reader_** pass row elements to **_AbstractProcessor_**-based class via
-process() function. What to do with these elements - the processor
-itself decides. Processor can save elements, filter them, edit and so on.
-As an example we can consider class **ReadToListProcessor** (defined in
-[reader.cpp][reader-cpp]) which simply saves elements into QList.
+**_process(QStringList)_** function. What to do with these elements -
+the processor itself decides. Processor can save elements, filter them,
+edit and so on. As an example we can consider class **_ReadToListProcessor_**
+(defined in [reader.cpp][reader-cpp]) which simply saves elements into
+**_QList_**.
 
 ### 2.3 Writer
 
@@ -423,7 +424,7 @@ proper csv-file.
 ## 9. Creators
 
 Author: [Antony Cherepanov][mypage] (antony.cherepanov@gmail.com)  
-Contributors: [Patrizio "pbek" Bekerle][pbek], [Furkan "Furkanzmc" Üzümcü][Furkanzmc], [Martin "schulmar" Schulze][schulmar], [cguentherTUChemnitz][cguentherTUChemnitz]
+Contributors: [Patrizio "pbek" Bekerle][pbek], [Furkan "Furkanzmc" Üzümcü][Furkanzmc], [Martin "schulmar" Schulze][schulmar], [cguentherTUChemnitz][cguentherTUChemnitz], [David Jung][David_Jung], [Nicu Tofan][TNick]
 
 [csvwiki]: http://en.wikipedia.org/wiki/Comma-separated_values
 [reader]: https://github.com/iamantony/qtcsv/blob/master/include/qtcsv/reader.h
@@ -443,3 +444,5 @@ Contributors: [Patrizio "pbek" Bekerle][pbek], [Furkan "Furkanzmc" Üzümcü][Fu
 [Furkanzmc]: https://github.com/Furkanzmc
 [schulmar]: https://github.com/schulmar
 [cguentherTUChemnitz]: https://github.com/cguentherTUChemnitz
+[David_Jung]: https://github.com/davidljung
+[TNick]: https://github.com/TNick
