@@ -138,10 +138,10 @@ matrix:
     compiler: clang
     env:
      - QT_BASE=58
-  - os: osx
-    compiler: clang
-    env:
-     - QT_BASE=58 USE_CMAKE=true
+#  - os: osx
+#    compiler: clang
+#    env:
+#     - QT_BASE=58 USE_CMAKE=true
 
 before_install:
   - if [[ "$QT_BASE" = "48" && "$TRAVIS_OS_NAME" = "linux" ]]; then sudo add-apt-repository ppa:beineri/opt-qt487-trusty -y; fi
