@@ -62,8 +62,7 @@ namespace QtCSV
                         QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
 
         // Read csv-file and process it line-by-line
-        static bool readToProcessor(
-                        const QString& filePath,
+        static bool readToProcessor(const QString& filePath,
                         AbstractProcessor& processor,
                         const QString& separator = QString(","),
                         const QString& textDelimiter = QString("\""),

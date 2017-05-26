@@ -424,6 +424,47 @@ void TestReader::testReadFileWithMultirowData()
     }
 }
 
+void TestReader::testReadByProcessorWithBreak()
+{
+    class ProcessorWithBreak : public QtCSV::Reader::AbstractProcessor
+    {
+    public:
+        size_t counter;
+        QList<QStringList> data;
+
+        ProcessorWithBreak()
+        {
+            counter = 0;
+        }
+
+        virtual bool process(const QStringList& elements)
+        {
+            if (counter < 2)
+            {
+                data << elements;
+                ++counter;
+            }
+
+            return true;
+        }
+    };
+
+    const QString path = getPathToFileMultirowData();
+    ProcessorWithBreak processor;
+    QVERIFY2(true == QtCSV::Reader::readToProcessor(path, processor),
+             "Failed to read file content");
+
+    QList<QStringList> expected;
+    expected << (QStringList() << "A" << "B" << "C" << "D");
+    expected << (QStringList() << "a" << "b" << "c" << "d");
+
+    QVERIFY2(expected.size() == processor.data.size(), "Wrong number of rows");
+    for (int i = 0; i < processor.data.size(); ++i)
+    {
+        QVERIFY2(expected.at(i) == processor.data.at(i), "Wrong row data");
+    }
+}
+
 QString TestReader::getPathToFolderWithTestFiles() const
 {
     return QDir::currentPath() + "/data/";

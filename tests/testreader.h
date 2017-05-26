@@ -33,6 +33,7 @@ private Q_SLOTS:
     void testReadFileWithEmptyFields();
     void testReadFileWithEmptyFieldsComplexSeparator();
     void testReadFileWithMultirowData();
+    void testReadByProcessorWithBreak();
 
 private:
     QString getPathToFolderWithTestFiles() const;
