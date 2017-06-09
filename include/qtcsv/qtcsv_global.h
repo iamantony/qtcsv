@@ -3,10 +3,14 @@
 
 #include <QtCore/qglobal.h>
 
-#if defined(QTCSV_LIBRARY)
-#  define QTCSVSHARED_EXPORT Q_DECL_EXPORT
+#ifdef QTCSV_STATIC_LIB
+#  define QTCSVSHARED_EXPORT
 #else
-#  define QTCSVSHARED_EXPORT Q_DECL_IMPORT
+#  if defined(QTCSV_LIBRARY)
+#    define QTCSVSHARED_EXPORT Q_DECL_EXPORT
+#  else
+#    define QTCSVSHARED_EXPORT Q_DECL_IMPORT
+#  endif
 #endif
 
 #endif // QTCSV_GLOBAL_H

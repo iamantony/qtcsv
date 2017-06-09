@@ -39,6 +39,9 @@ add_custom_target(show_all_files_in_${PROJECT_NAME} SOURCES ${QTCSV_ALL_FILES})
 
 if(STATIC_LIB)
     add_library(${LIBRARY_NAME} STATIC ${SOURCE_FILES})
+    #propogate the QTCSV_STATIC_LIB define for all qtcsv consuming stuff
+    #necessary for correct QTCSVSHARED_EXPORT handling, espacially for windows (cross compilation) builds
+    target_compile_definitions(${LIBRARY_NAME} PUBLIC -DQTCSV_STATIC_LIB)
 else()
     add_library(${LIBRARY_NAME} SHARED ${SOURCE_FILES})
     set_target_properties(${LIBRARY_NAME} PROPERTIES
@@ -46,7 +49,8 @@ else()
         SOVERSION ${LIB_MAJOR_VERSION})
 endif(STATIC_LIB)
 
-add_definitions(-DQTCSV_LIBRARY)
+#use the QTCSV_LIBRARY define only for qtcsv build time to use export statements instead of import statements
+target_compile_definitions(${LIBRARY_NAME} PRIVATE -DQTCSV_LIBRARY)
 
 # include root project folder as private, because the source headers are included with source/*.h
 target_include_directories(${LIBRARY_NAME}
@@ -55,7 +59,7 @@ target_include_directories(${LIBRARY_NAME}
 # set compiler flags for the library target
 if (CMAKE_COMPILER_IS_GNUCXX)
     target_compile_options(${LIBRARY_NAME} PRIVATE -Wall -Werror -Wformat=2 -Wuninitialized
-        -Winit-self -Wmissing-include-dirs -Wswitch-enum -Wundef
+        -Winit-self -Wswitch-enum -Wundef
         -Wpointer-arith -Wdisabled-optimization -Wcast-align -Wcast-qual)
 endif()
 
