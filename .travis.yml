@@ -142,6 +142,18 @@ matrix:
 #    compiler: clang
 #    env:
 #     - QT_BASE=58 USE_CMAKE=true
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=59
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=59 USE_CMAKE=true
 
 before_install:
   - if [[ "$QT_BASE" = "48" && "$TRAVIS_OS_NAME" = "linux" ]]; then sudo add-apt-repository ppa:beineri/opt-qt487-trusty -y; fi
@@ -153,6 +165,7 @@ before_install:
   - if [ "$QT_BASE" = "56" ]; then sudo add-apt-repository ppa:beineri/opt-qt562-trusty -y; fi
   - if [[ "$QT_BASE" = "57" && "$TRAVIS_OS_NAME" = "linux" ]]; then sudo add-apt-repository ppa:beineri/opt-qt571-trusty -y; fi
   - if [[ "$QT_BASE" = "58" && "$TRAVIS_OS_NAME" = "linux" ]]; then sudo add-apt-repository ppa:beineri/opt-qt58-trusty -y; fi
+  - if [[ "$QT_BASE" = "59" && "$TRAVIS_OS_NAME" = "linux" ]]; then sudo add-apt-repository ppa:beineri/opt-qt59-trusty -y; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then
       sudo apt-get update -qq;
     else
@@ -207,6 +220,7 @@ install:
         ln -s /usr/local/Cellar/qt5/$HOMEBREW_QT5_VERSION/mkspecs /usr/local/mkspecs;
       fi
     fi
+  - if [ "$QT_BASE" = "59" ]; then sudo apt-get install -qq qt59base; source /opt/qt59/bin/qt59-env.sh; fi
 
 script:
   # build library and tests, install library
