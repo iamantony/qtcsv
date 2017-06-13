@@ -134,14 +134,6 @@ matrix:
     compiler: gcc
     env:
      - QT_BASE=58 USE_CMAKE=true
-  - os: osx
-    compiler: clang
-    env:
-     - QT_BASE=58
-#  - os: osx
-#    compiler: clang
-#    env:
-#     - QT_BASE=58 USE_CMAKE=true
   - os: linux
     dist: trusty
     sudo: required
@@ -152,6 +144,14 @@ matrix:
     dist: trusty
     sudo: required
     compiler: gcc
+    env:
+     - QT_BASE=59 USE_CMAKE=true
+  - os: osx
+    compiler: clang
+    env:
+     - QT_BASE=59
+  - os: osx
+    compiler: clang
     env:
      - QT_BASE=59 USE_CMAKE=true
 
@@ -210,9 +210,10 @@ install:
         ln -s /usr/local/Cellar/$QT_NAME/$HOMEBREW_QT5_VERSION/mkspecs /usr/local/mkspecs;
       fi
     fi
-  - if [ "$QT_BASE" = "58" ]; then
+  - if [ "$QT_BASE" = "58" ]; then sudo apt-get install -qq qt58base; source /opt/qt58/bin/qt58-env.sh; fi
+  - if [ "$QT_BASE" = "59" ]; then
       if [ "$TRAVIS_OS_NAME" = "linux" ]; then
-        sudo apt-get install -qq qt58base; source /opt/qt58/bin/qt58-env.sh;
+        sudo apt-get install -qq qt59base; source /opt/qt59/bin/qt59-env.sh;
       else
         brew install qt5;
         brew link --force qt5;
@@ -220,7 +221,6 @@ install:
         ln -s /usr/local/Cellar/qt5/$HOMEBREW_QT5_VERSION/mkspecs /usr/local/mkspecs;
       fi
     fi
-  - if [ "$QT_BASE" = "59" ]; then sudo apt-get install -qq qt59base; source /opt/qt59/bin/qt59-env.sh; fi
 
 script:
   # build library and tests, install library
