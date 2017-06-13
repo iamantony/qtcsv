@@ -1,7 +1,7 @@
 QT -= gui
 TARGET = qtcsv
 TEMPLATE = lib
-VERSION = 1.4.0
+VERSION = 1.4.1
 win32:TARGET_EXT = .dll
 
 # Uncomment this setting if you want to build static library
@@ -11,7 +11,7 @@ win32:TARGET_EXT = .dll
     # flags for gcc-like compiler
     CONFIG += warn_on
     QMAKE_CXXFLAGS_WARN_ON += -Werror -Wformat=2 -Wuninitialized -Winit-self \
-            -Wmissing-include-dirs -Wswitch-enum -Wundef -Wpointer-arith \
+            -Wswitch-enum -Wundef -Wpointer-arith \
             -Wdisabled-optimization -Wcast-align -Wcast-qual
 }
 

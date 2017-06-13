@@ -5,7 +5,7 @@ project (qtcsv)
 # define names
 set(LIB_MAJOR_VERSION 1)
 set(LIB_MINOR_VERSION 4)
-set(LIB_REVISION_VERSION 0)
+set(LIB_REVISION_VERSION 1)
 set(LIB_VERSION ${LIB_MAJOR_VERSION}.${LIB_MINOR_VERSION}.${LIB_REVISION_VERSION})
 set(LIBRARY_NAME ${PROJECT_NAME})
 
@@ -58,8 +58,8 @@ target_include_directories(${LIBRARY_NAME}
 
 # set compiler flags for the library target
 if (CMAKE_COMPILER_IS_GNUCXX)
-    target_compile_options(${LIBRARY_NAME} PRIVATE -Wall -Werror -Wformat=2 -Wuninitialized
-        -Winit-self -Wswitch-enum -Wundef
+    target_compile_options(${LIBRARY_NAME} PRIVATE -Wall -Werror -Wformat=2
+        -Wuninitialized -Winit-self -Wswitch-enum -Wundef
         -Wpointer-arith -Wdisabled-optimization -Wcast-align -Wcast-qual)
 endif()
 
