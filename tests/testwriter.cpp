@@ -424,7 +424,8 @@ void TestWriter::testWriteDataContainCRLF()
     QStringList firstLine = QStringList() << "one" << "two" <<
                                              "three\nfour,five";
 
-    QStringList secondLine = QStringList() << "six" << "seven,eight";
+    QStringList secondLine = QStringList() << "six" << "seven,eight" <<
+                                              "nine,\rten";
 
     QtCSV::StringData strData;
     strData.addRow(firstLine);
