@@ -83,7 +83,7 @@ bool ReaderPrivate::read(const QString& filePath,
     }
 
     QFile csvFile(filePath);
-    if ( false == csvFile.open(QIODevice::ReadOnly | QIODevice::Text) )
+    if ( false == csvFile.open(QIODevice::ReadOnly) )
     {
         qDebug() << __FUNCTION__ << "Error - can't open file:" << filePath;
         return false;
