@@ -262,8 +262,25 @@ void TestReader::testReadLongWithDQuotes()
 
     QList<QStringList> expected;
     expected << (QStringList() << "one" << "two" << "three");
-    expected << (QStringList() << "four" << "very \"long\" field" << " five");
-    expected << (QStringList() << "six" << " seven");
+    expected << (QStringList() << "four" << "very \"long\" field" << "five");
+    expected << (QStringList() << "six" << "seven");
+
+    QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
+    for (int i = 0; i < data.size(); ++i)
+    {
+        QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
+    }
+}
+
+void TestReader::testReadFieldWithCR()
+{
+    const QString path = getPathToFileTestFieldWithCR();
+    QList<QStringList> data = QtCSV::Reader::readToList(path, ";", "\"");
+    QVERIFY2(false == data.isEmpty(), "Failed to read file content");
+
+    QList<QStringList> expected;
+    expected << (QStringList() << "Column1, Column2" << "Column3");
+    expected << (QStringList() << "Hello with\rHello again" << "Hello Col 3");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
     for (int i = 0; i < data.size(); ++i)
@@ -499,6 +516,11 @@ QString TestReader::getPathToFileTestDataTextDelimQuotes() const
 QString TestReader::getPathToFileTestFieldWithDQuotes() const
 {
     return getPathToFolderWithTestFiles() + "test-field-with-dquotes.csv";
+}
+
+QString TestReader::getPathToFileTestFieldWithCR() const
+{
+    return getPathToFolderWithTestFiles() + "test-field-with-cr.csv";
 }
 
 QString TestReader::getPathToFileTestFieldWithCRLF() const

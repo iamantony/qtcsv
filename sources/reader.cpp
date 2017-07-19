@@ -56,6 +56,9 @@ private:
     // Remove text delimiter symbols
     static QStringList removeTextDelimiters(const QStringList& elements,
                                             const QString& textDelimiter);
+
+    // Remove space symbols from start and end of the strings
+    static QStringList removeWhiteSpace(const QStringList& elements);
 };
 
 // Function that really reads csv-file and transfer it's data to
@@ -336,7 +339,7 @@ QStringList ReaderPrivate::splitElements(const QString& line,
         }
     }
 
-    return removeTextDelimiters(result, textDelimiter);
+    return removeTextDelimiters(removeWhiteSpace(result), textDelimiter);
 }
 
 // Try to find end position of first or middle element
@@ -494,6 +497,49 @@ QStringList ReaderPrivate::removeTextDelimiters(const QStringList& elements,
         // Also replace double text delimiter with one text delimiter symbol
         str.replace(doubleTextDelim, textDelimiter);
         result << str;
+    }
+
+    return result;
+}
+
+// Remove space symbols (" ") from start and end of the strings
+// @input:
+// - elements - list of row elements
+// @output:
+// - QStringList - list of elements
+QStringList ReaderPrivate::removeWhiteSpace(const QStringList& elements)
+{
+    if (elements.isEmpty())
+    {
+        return elements;
+    }
+
+    QStringList result;
+    for (int i = 0; i < elements.size(); ++i)
+    {
+        QString str = elements.at(i);
+        int startPos = 0, endPos = str.size() -1;
+
+        // Find first non-space char
+        for (;
+             startPos < str.size() &&
+                 str.at(startPos).category() == QChar::Separator_Space;
+             ++startPos);
+
+        // Find last non-space char
+        for (;
+             endPos >= 0 &&
+                 str.at(endPos).category() == QChar::Separator_Space;
+             --endPos);
+
+        if (startPos > endPos)
+        {
+            result << QString();
+        }
+        else
+        {
+            result << str.mid(startPos, endPos - startPos + 1);
+        }
     }
 
     return result;
