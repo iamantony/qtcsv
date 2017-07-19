@@ -280,7 +280,7 @@ void TestReader::testReadFieldWithCR()
 
     QList<QStringList> expected;
     expected << (QStringList() << "Column1, Column2" << "Column3");
-    expected << (QStringList() << "Hello with\rHello again" << "Hello Col 3");
+    expected << (QStringList() << " Hello with\r Hello again " << "Hello Col 3");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
     for (int i = 0; i < data.size(); ++i)
