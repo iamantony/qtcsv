@@ -1,6 +1,7 @@
 #include "include/qtcsv/reader.h"
 
 #include <QStringList>
+#include <QStringRef>
 #include <QFile>
 #include <QTextStream>
 #include <QDebug>
@@ -53,12 +54,9 @@ private:
                               const QString& separator,
                               const QString& txtDelim);
 
-    // Remove text delimiter symbols
-    static QStringList removeTextDelimiters(const QStringList& elements,
-                                            const QString& textDelimiter);
-
-    // Remove space symbols from start and end of the strings
-    static QStringList removeWhiteSpace(const QStringList& elements);
+    // Remove extra symbols (spaces, text delimeters...)
+    static void removeExtraSymbols(QStringList& elements,
+                                   const QString& textDelimiter);
 };
 
 // Function that really reads csv-file and transfer it's data to
@@ -339,7 +337,8 @@ QStringList ReaderPrivate::splitElements(const QString& line,
         }
     }
 
-    return removeTextDelimiters(removeWhiteSpace(result), textDelimiter);
+    removeExtraSymbols(result, textDelimiter);
+    return result;
 }
 
 // Try to find end position of first or middle element
@@ -465,60 +464,23 @@ bool ReaderPrivate::isElementLast(const QString& str,
     return false;
 }
 
-// Remove text delimiter symbols
+// Remove extra symbols (spaces, text delimeters...)
 // @input:
 // - elements - list of row elements
 // - textDelimiter - string that is used as text delimiter
-// @output:
-// - QStringList - list of elements
-QStringList ReaderPrivate::removeTextDelimiters(const QStringList& elements,
-                                                const QString& textDelimiter)
-{
-    if (elements.isEmpty() || textDelimiter.isEmpty())
-    {
-        return elements;
-    }
-
-    QStringList result;
-    const QString doubleTextDelim = textDelimiter + textDelimiter;
-    for (int i = 0; i < elements.size(); ++i)
-    {
-        QString str = elements.at(i);
-        if (str.startsWith(textDelimiter))
-        {
-            str.remove(0, textDelimiter.size());
-        }
-
-        if (str.endsWith(textDelimiter))
-        {
-            str.chop(textDelimiter.size());
-        }
-
-        // Also replace double text delimiter with one text delimiter symbol
-        str.replace(doubleTextDelim, textDelimiter);
-        result << str;
-    }
-
-    return result;
-}
-
-// Remove space symbols (" ") from start and end of the strings
-// @input:
-// - elements - list of row elements
-// @output:
-// - QStringList - list of elements
-QStringList ReaderPrivate::removeWhiteSpace(const QStringList& elements)
+void ReaderPrivate::removeExtraSymbols(QStringList& elements,
+                                       const QString& textDelimiter)
 {
     if (elements.isEmpty())
     {
-        return elements;
+        return;
     }
 
-    QStringList result;
+    const QString doubleTextDelim = textDelimiter + textDelimiter;
     for (int i = 0; i < elements.size(); ++i)
     {
-        QString str = elements.at(i);
-        int startPos = 0, endPos = str.size() -1;
+        QStringRef str(&elements.at(i));
+        int startPos = 0, endPos = str.size() - 1;
 
         // Find first non-space char
         for (;
@@ -532,17 +494,33 @@ QStringList ReaderPrivate::removeWhiteSpace(const QStringList& elements)
                  str.at(endPos).category() == QChar::Separator_Space;
              --endPos);
 
-        if (startPos > endPos)
+        if (false == textDelimiter.isEmpty())
         {
-            result << QString();
-        }
-        else
-        {
-            result << str.mid(startPos, endPos - startPos + 1);
-        }
-    }
+            // Skip text delimiter symbol if element starts with it
+            QStringRef strStart(&elements.at(i), startPos, textDelimiter.size());
+            if ( strStart == textDelimiter)
+            {
+                startPos += textDelimiter.size();
+            }
 
-    return result;
+            // Skip text delimiter symbol if element ends with it
+            QStringRef strEnd(&elements.at(i), endPos - textDelimiter.size() + 1,
+                              textDelimiter.size());
+            if (strEnd == textDelimiter)
+            {
+                endPos -= textDelimiter.size();
+            }
+        }
+
+        if ( (0 < startPos || endPos < str.size() - 1) &&
+             startPos <= endPos)
+        {
+            elements[i] = elements[i].mid(startPos, endPos - startPos + 1);
+        }
+
+        // Also replace double text delimiter with one text delimiter symbol
+        elements[i].replace(doubleTextDelim, textDelimiter);
+    }
 }
 
 // ReadToListProcessor - processor that saves rows of elements to list.
