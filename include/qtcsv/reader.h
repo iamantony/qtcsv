@@ -38,14 +38,23 @@ namespace QtCSV
             explicit AbstractProcessor() {}
             virtual ~AbstractProcessor() {}
 
-            // Process one line worth of elements
+            // Preprocess one raw line from a file
+            // @input:
+            // line - raw line from a file
+            virtual void preProcessRawLine(QString& line)
+            {
+                // Here you can edit line
+                Q_UNUSED(line);
+            }
+
+            // Process one row worth of elements
             // @input:
             // - elements - list of row elements
             // @output:
             // bool - True if elements was processed successfully, False in case
             // of error. If process() return False, the csv-file will be stopped
             // reading
-            virtual bool process(const QStringList& elements) = 0;
+            virtual bool processRowElements(const QStringList& elements) = 0;
         };
 
         // Read csv-file and save it's data as strings to QList<QStringList>

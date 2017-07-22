@@ -454,7 +454,7 @@ void TestReader::testReadByProcessorWithBreak()
             counter = 0;
         }
 
-        virtual bool process(const QStringList& elements)
+        virtual bool processRowElements(const QStringList& elements)
         {
             if (counter < 2)
             {

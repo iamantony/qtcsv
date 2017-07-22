@@ -99,6 +99,7 @@ bool ReaderPrivate::read(const QString& filePath,
     while (false == stream.atEnd())
     {
         QString line = stream.readLine();
+        processor.preProcessRawLine(line);
         QStringList elements = ReaderPrivate::splitElements(
                   line, separator, textDelimiter, elemInfo);
         if (elemInfo.isEnded)
@@ -108,7 +109,7 @@ bool ReaderPrivate::read(const QString& filePath,
             if (row.isEmpty())
             {
                 // No, these elements constitute the entire row
-                if (false == processor.process(elements))
+                if (false == processor.processRowElements(elements))
                 {
                     result = false;
                     break;
@@ -123,7 +124,7 @@ bool ReaderPrivate::read(const QString& filePath,
                     row << elements;
                 }
 
-                if (false == processor.process(row))
+                if (false == processor.processRowElements(row))
                 {
                     result = false;
                     break;
@@ -151,7 +152,7 @@ bool ReaderPrivate::read(const QString& filePath,
 
     if (false == elemInfo.isEnded && false == row.isEmpty())
     {
-        result = processor.process(row);
+        result = processor.processRowElements(row);
     }
 
     return result;
@@ -528,7 +529,7 @@ class ReadToListProcessor : public Reader::AbstractProcessor
 {
 public:
     QList<QStringList> data;
-    virtual bool process(const QStringList& elements)
+    virtual bool processRowElements(const QStringList& elements)
     {
         data << elements;
         return true;
