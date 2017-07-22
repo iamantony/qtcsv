@@ -205,14 +205,13 @@ it has.
   - *textDelimiter* (optional) - text delimiter symbol;
   - *codec* (optional) - pointer to the codec object.
 
-  This function will read csv-file line-by-line and pass each line to
-  *processor* object via virtual function
-  **_AbstractProcessor::process(QStringList)_**.
+  This function will read csv-file line-by-line and pass data to
+  *processor* object.
 
 #### 2.2.2 AbstractProcessor
 
-**[_AbstractProcessor_][reader]** is a pure virtual class with one
-function - **_process(QStringList)_**.
+**[_AbstractProcessor_][reader]** is an abstract class with two
+functions:
 
 ``` cpp
 class AbstractProcessor
@@ -221,13 +220,19 @@ public:
     explicit AbstractProcessor() {}
     virtual ~AbstractProcessor() {}
 
-    virtual bool process(const QStringList& elements) = 0;
+    virtual void preProcessRawLine(QString& line) { }
+    virtual bool processRowElements(const QStringList& elements) = 0;
 };
 ```
 
-**_Reader_** pass row elements to **_AbstractProcessor_**-based class via
-**_process(QStringList)_** function. What to do with these elements -
-the processor itself decides. Processor can save elements, filter them,
+When **_Reader_** opens a file, it starts to read it line by line in a cycle.
+Each new line **_Reader_** first of all pass to processor method
+**_preProcessRawLine(QString&)_**. In this method you can edit the line - 
+replace values, remove sensitive information and so on.
+
+After **_Reader_** parses elements of the row, it pass them to processor
+method **_processRowElements(QStringList)_**. What to do next with these
+elements - the processor decides. Processor can save elements, filter them,
 edit and so on. As an example we can consider class **_ReadToListProcessor_**
 (defined in [reader.cpp][reader-cpp]) which simply saves elements into
 **_QList_**.
