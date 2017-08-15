@@ -1,6 +1,7 @@
 #ifndef QTCSVREADER_H
 #define QTCSVREADER_H
 
+#include <QFile>
 #include <QList>
 #include <QTextCodec>
 
@@ -73,6 +74,27 @@ namespace QtCSV
 
         // Read csv-file and process it line-by-line
         static bool readToProcessor(const QString& filePath,
+                        AbstractProcessor& processor,
+                        const QString& separator = QString(","),
+                        const QString& textDelimiter = QString("\""),
+                        QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
+
+        // Read csv-data and save it's data as strings to QList<QStringList>
+        static QList<QStringList> readToList(QIODevice& iodevice,
+                        const QString& separator = QString(","),
+                        const QString& textDelimiter = QString("\""),
+                        QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
+
+        // Read csv-data and save it's data to AbstractData-based container
+        // class
+        static bool readToData(QIODevice& iodevice,
+                        AbstractData& data,
+                        const QString& separator = QString(","),
+                        const QString& textDelimiter = QString("\""),
+                        QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
+
+        // Read csv-data and process it line-by-line
+        static bool readToProcessor(QIODevice& iodevice,
                         AbstractProcessor& processor,
                         const QString& separator = QString(","),
                         const QString& textDelimiter = QString("\""),

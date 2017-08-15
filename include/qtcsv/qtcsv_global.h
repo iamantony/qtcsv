@@ -1,7 +1,7 @@
 #ifndef QTCSV_GLOBAL_H
 #define QTCSV_GLOBAL_H
 
-#include <QtCore/qglobal.h>
+#include <QtGlobal>
 
 #ifdef QTCSV_STATIC_LIB
 #  define QTCSVSHARED_EXPORT

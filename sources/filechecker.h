@@ -16,6 +16,12 @@ namespace QtCSV
     inline bool CheckFile(const QString& filePath,
                           const bool& mustExist = false)
     {
+        if ( filePath.isEmpty() )
+        {
+            qDebug() << __FUNCTION__ << "Error - file path is empty";
+            return false;
+        }
+
         QFileInfo fileInfo(filePath);
         if ( fileInfo.isAbsolute() &&
              false == fileInfo.isDir() )
