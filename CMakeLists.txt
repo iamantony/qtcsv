@@ -25,9 +25,12 @@ set(CMAKE_AUTOMOC ON)
 # set list of source files
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/sources/*.cpp)
 
-# for QtCreator: see all files in project
-file(GLOB_RECURSE QTCSV_ALL_FILES "*")
-add_custom_target(show_all_files_in_${PROJECT_NAME} SOURCES ${QTCSV_ALL_FILES})
+# Show all files in QtCreator. Starting with CMake 3.7 server-mode is used
+# and QtCreator will show the files properly in an extra <Headers> section.
+if(CMAKE_VERSION VERSION_LESS "3.7.0")
+    file(GLOB_RECURSE QTCSV_ALL_FILES "*")
+    add_custom_target(show_all_files_in_${PROJECT_NAME} SOURCES ${QTCSV_ALL_FILES})
+endif()
 
 if(STATIC_LIB)
     add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})
