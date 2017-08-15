@@ -1,7 +1,3 @@
-cmake_minimum_required(VERSION 3.0)
-
-project (qtcsv_tests VERSION ${PROJECT_VERSION})
-
 if(USE_QT4)
     find_package(Qt4 REQUIRED)
     set(QT_TEST_TARGET Qt4::QtTest)
@@ -14,7 +10,7 @@ else()
 endif(USE_QT4)
 
 # define names
-set(BINARY_NAME ${PROJECT_NAME})
+set(BINARY_NAME qtcsv_tests)
 
 # instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
