@@ -38,6 +38,15 @@ namespace QtCSV
                         const QStringList& header = QStringList(),
                         const QStringList& footer = QStringList(),
                         QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
+
+        // Write data to io device
+        static bool write(QIODevice& iodevice,
+                        const AbstractData& data,
+                        const QString& separator = QString(","),
+                        const QString& textDelimiter = QString("\""),
+                        const QStringList& header = QStringList(),
+                        const QStringList& footer = QStringList(),
+                        QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
     };
 }
 

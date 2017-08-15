@@ -45,6 +45,11 @@ public:
                               ContentIterator& content,
                               QTextCodec* codec);
 
+    // Write to io device
+    static bool writeToIODevice(QIODevice& iodevice,
+                                ContentIterator& content,
+                                QTextCodec* codec);
+
     // Create unique name for the temporary file
     static QString getTempFileName();
 };
@@ -74,17 +79,10 @@ bool WriterPrivate::appendToFile(const QString& filePath,
         return false;
     }
 
-    QTextStream stream(&csvFile);
-    stream.setCodec(codec);
-    while( content.hasNext() )
-    {
-        stream << content.getNext();
-    }
-
-    stream.flush();
+    bool result = writeToIODevice(csvFile, content, codec);
     csvFile.close();
 
-    return true;
+    return result;
 }
 
 // Overwrite file with new information
@@ -132,6 +130,34 @@ bool WriterPrivate::overwriteFile(const QString& filePath,
     }
 
     return true;
+}
+
+// Write csv data to io device
+// @input:
+// - iodevice - io device to write data to
+// - content - not empty handler of content for csv-file
+// - codec - pointer to codec object that would be used for file writing
+// @output:
+// - bool - True if data could be written to the io device
+bool WriterPrivate::writeToIODevice(QIODevice& iodevice,
+                                    ContentIterator& content,
+                                    QTextCodec* codec) {
+    if ( content.isEmpty() )
+    {
+        qDebug() << __FUNCTION__ << "Error - invalid arguments";
+        return false;
+    }
+
+    QTextStream stream(&iodevice);
+    stream.setCodec(codec);
+    while( content.hasNext() )
+    {
+        stream << content.getNext();
+    }
+
+    stream.flush();
+
+    return stream.status() == QTextStream::Ok;
 }
 
 // Create unique name for the temporary file
@@ -213,4 +239,16 @@ bool Writer::write(const QString& filePath,
     }
 
     return result;
+}
+
+bool Writer::write(QIODevice &iodevice, const AbstractData &data, const QString &separator, const QString &textDelimiter, const QStringList &header, const QStringList &footer, QTextCodec *codec)
+{
+    if ( data.isEmpty() )
+    {
+        qDebug() << __FUNCTION__ << "Error - empty data";
+        return false;
+    }
+
+    ContentIterator content(data, separator, textDelimiter, header, footer);
+    return WriterPrivate::writeToIODevice(iodevice, content, codec);
 }
