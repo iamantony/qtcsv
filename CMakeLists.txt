@@ -1,12 +1,12 @@
-cmake_minimum_required (VERSION 2.8.11)
+cmake_minimum_required (VERSION 3.0)
 
-project (qtcsv)
+project (qtcsv VERSION 1.5.0 LANGUAGES CXX)
 
 # define names
-set(LIB_MAJOR_VERSION 1)
-set(LIB_MINOR_VERSION 5)
-set(LIB_REVISION_VERSION 0)
-set(LIB_VERSION ${LIB_MAJOR_VERSION}.${LIB_MINOR_VERSION}.${LIB_REVISION_VERSION})
+set(LIB_MAJOR_VERSION ${PROJECT_VERSION_MAJOR})
+set(LIB_MINOR_VERSION ${PROJECT_VERSION_MINOR})
+set(LIB_REVISION_VERSION ${PROJECT_VERSION_PATCH})
+set(LIB_VERSION ${PROJECT_VERSION})
 set(LIBRARY_NAME ${PROJECT_NAME})
 
 # set options
@@ -28,7 +28,6 @@ endif(USE_QT4)
 
 # instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # set list of source files
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/sources/*.cpp)
