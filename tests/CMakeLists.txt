@@ -1,7 +1,3 @@
-cmake_minimum_required(VERSION 2.8.11)
-
-project (qtcsv_tests)
-
 if(USE_QT4)
     find_package(Qt4 REQUIRED)
     set(QT_TEST_TARGET Qt4::QtTest)
@@ -14,7 +10,7 @@ else()
 endif(USE_QT4)
 
 # define names
-set(BINARY_NAME ${PROJECT_NAME})
+set(BINARY_NAME qtcsv_tests)
 
 # instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
@@ -24,7 +20,7 @@ file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT
 
 add_executable(${BINARY_NAME} ${SOURCE_FILES} )
 
-TARGET_LINK_LIBRARIES(${BINARY_NAME} PRIVATE ${QT_TEST_TARGET} ${LIBRARY_NAME})
+TARGET_LINK_LIBRARIES(${BINARY_NAME} PRIVATE ${QT_TEST_TARGET} ${PROJECT_NAME})
 
 # provide current project dir for projects header search path
 target_include_directories(${BINARY_NAME} PRIVATE .)

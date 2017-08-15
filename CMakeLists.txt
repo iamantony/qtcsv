@@ -1,13 +1,6 @@
-cmake_minimum_required (VERSION 2.8.11)
+cmake_minimum_required (VERSION 3.0)
 
-project (qtcsv)
-
-# define names
-set(LIB_MAJOR_VERSION 1)
-set(LIB_MINOR_VERSION 5)
-set(LIB_REVISION_VERSION 0)
-set(LIB_VERSION ${LIB_MAJOR_VERSION}.${LIB_MINOR_VERSION}.${LIB_REVISION_VERSION})
-set(LIBRARY_NAME ${PROJECT_NAME})
+project (qtcsv VERSION 1.5.0 LANGUAGES CXX)
 
 # set options
 option(STATIC_LIB "build as static lib if ON, otherwise build shared lib" OFF)
@@ -28,7 +21,6 @@ endif(USE_QT4)
 
 # instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # set list of source files
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/sources/*.cpp)
@@ -38,42 +30,42 @@ file(GLOB_RECURSE QTCSV_ALL_FILES "*")
 add_custom_target(show_all_files_in_${PROJECT_NAME} SOURCES ${QTCSV_ALL_FILES})
 
 if(STATIC_LIB)
-    add_library(${LIBRARY_NAME} STATIC ${SOURCE_FILES})
+    add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})
     #propogate the QTCSV_STATIC_LIB define for all qtcsv consuming stuff
     #necessary for correct QTCSVSHARED_EXPORT handling, espacially for windows (cross compilation) builds
-    target_compile_definitions(${LIBRARY_NAME} PUBLIC -DQTCSV_STATIC_LIB)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC -DQTCSV_STATIC_LIB)
 else()
-    add_library(${LIBRARY_NAME} SHARED ${SOURCE_FILES})
-    set_target_properties(${LIBRARY_NAME} PROPERTIES
-        VERSION ${LIB_VERSION}
-        SOVERSION ${LIB_MAJOR_VERSION})
+    add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        VERSION ${PROJECT_VERSION}
+        SOVERSION ${PROJECT_VERSION_MAJOR})
 endif(STATIC_LIB)
 
 #use the QTCSV_LIBRARY define only for qtcsv build time to use export statements instead of import statements
-target_compile_definitions(${LIBRARY_NAME} PRIVATE -DQTCSV_LIBRARY)
+target_compile_definitions(${PROJECT_NAME} PRIVATE -DQTCSV_LIBRARY)
 
 # include root project folder as private, because the source headers are included with source/*.h
-target_include_directories(${LIBRARY_NAME}
+target_include_directories(${PROJECT_NAME}
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include> PRIVATE .)
 
 # set compiler flags for the library target
 if (CMAKE_COMPILER_IS_GNUCXX)
-    target_compile_options(${LIBRARY_NAME} PRIVATE -Wall -Werror -Wformat=2
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Werror -Wformat=2
         -Wuninitialized -Winit-self -Wswitch-enum -Wundef
         -Wpointer-arith -Wdisabled-optimization -Wcast-align -Wcast-qual)
 endif()
 
-target_link_libraries(${LIBRARY_NAME} PRIVATE ${QT_CORE_TARGET})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${QT_CORE_TARGET})
 
-install(TARGETS ${LIBRARY_NAME} EXPORT ${LIBRARY_NAME}Config
+install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}Config
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib)
 
 install(DIRECTORY include DESTINATION .)
 
 # create and install cmake package files
-install(EXPORT ${LIBRARY_NAME}Config DESTINATION share/${LIBRARY_NAME}/cmake)
-export(TARGETS ${LIBRARY_NAME} FILE ${LIBRARY_NAME}Config.cmake)
+install(EXPORT ${PROJECT_NAME}Config DESTINATION share/${PROJECT_NAME}/cmake)
+export(TARGETS ${PROJECT_NAME} FILE ${PROJECT_NAME}Config.cmake)
 
 if(BUILD_TESTS)
     add_subdirectory(tests)
