@@ -131,8 +131,8 @@ can use **_QVariant_** magic. Wrap your data into **_QVariants_** and pass it to
 
 ### 2.2 Reader
 
-Use **[_Reader_][reader]** class to read csv-files. Let's see what functions
-it has.
+Use **[_Reader_][reader]** class to read csv-files / csv-data. Let's see what
+functions it has.
 
 #### 2.2.1 Reader functions
 
@@ -142,10 +142,16 @@ it has.
                                 const QString& separator,
                                 const QString& textDelimiter,
                                 QTextCodec* codec);
+                                
+  QList<QStringList> readToList(QIODevice& ioDevice,
+                                const QString& separator,
+                                const QString& textDelimiter,
+                                QTextCodec* codec);
   ```
 
   - *filePath* - string with absolute path to existent csv-file
     (example: "/home/user/my-file.csv");
+  - *ioDevice* - IO Device that contains csv-formatted data;
   - *separator* (optional) - delimiter symbol, that separate elements
   in a row (by default it is comma - ",");
   - *textDelimiter* (optional) - text delimiter symbol that enclose
@@ -154,13 +160,20 @@ it has.
   to read data from the file (by default it is UTF-8 codec).
 
   As a result function will return **_QList\<QStringList\>_**
-  that holds content of the file. If all went smooth, list will not be
-  empty and size of it will be equal to the number of rows in csv-file.
-  Each **_QStringList_** will contain elements of the corresponding row.
+  that holds content of the file / IO Device. If all went smooth,
+  list will not be empty and size of it will be equal to the number of rows
+  in csv-data source. Each **_QStringList_** will contain elements of
+  the corresponding row.
 
 2. Read data to **_AbstractData_**-based container
   ```cpp
   bool readToData(const QString& filePath,
+                  AbstractData& data,
+                  const QString& separator,
+                  const QString& textDelimiter,
+                  QTextCodec* codec);
+                  
+  bool readToData(QIODevice& ioDevice,
                   AbstractData& data,
                   const QString& separator,
                   const QString& textDelimiter,
@@ -170,21 +183,22 @@ it has.
   Second function is a little more advanced and, I hope, a little more useful.
 
   - *filePath* - string with absolute path to existent csv-file;
+  - *ioDevice* - IO Device that contains csv-formatted data;
   - *data* - reference to **_AbstractData_**-based class object;
   - *separator* (optional) - delimiter symbol;
   - *textDelimiter* (optional) - text delimiter symbol;
   - *codec* (optional) - pointer to the codec object.
 
-  Function will save content of the file in *data* object, using virtual
+  Function will save content of the file / IO Device in *data* object using virtual
   function **_AbstractData::addRow(QStringList)_**. If you pass to the
   function **_Reader::readToData()_** object of class **_StringData_** or
-  **_VariantData_**, elements of csv-file will be saved in them as strings.
+  **_VariantData_**, elements of csv-data will be saved in them as strings.
 
   If you are not happy with this fact, you can create your own
   **_AbstractData_**-based container class and implement function
   **_addRow(QStringList)_** in a way you want it.
 
-  For example, if you know, that each row of your csv-file contains 3 elements
+  For example, if you know, that each row of your csv-data contains 3 elements
   (integer value, floating-point value and string), then in function
   **_addRow(QStringList)_** you can convert first element of **_QStringList_**
   to int, second - to double and save all three elements to some
@@ -197,16 +211,23 @@ it has.
                        const QString& separator,
                        const QString& textDelimiter,
                        QTextCodec* codec);
+                       
+  bool readToProcessor(QIODevice& ioDevice,
+                       AbstractProcessor& processor,
+                       const QString& separator,
+                       const QString& textDelimiter,
+                       QTextCodec* codec);
   ```
 
   - *filePath* - string with absolute path to existent csv-file;
+  - *ioDevice* - IO Device that contains csv-formatted data;
   - *processor* - reference to **_AbstractProcessor_**-based class object;
   - *separator* (optional) - delimiter symbol;
   - *textDelimiter* (optional) - text delimiter symbol;
   - *codec* (optional) - pointer to the codec object.
 
-  This function will read csv-file line-by-line and pass data to
-  *processor* object.
+  This function will read csv-data from file / IO Device line-by-line and
+  pass data to *processor* object.
 
 #### 2.2.2 AbstractProcessor
 
@@ -225,10 +246,10 @@ public:
 };
 ```
 
-When **_Reader_** opens a file, it starts to read it line by line in a cycle.
-Each new line **_Reader_** first of all pass to processor method
-**_preProcessRawLine(QString&)_**. In this method you can edit the line - 
-replace values, remove sensitive information and so on.
+When **_Reader_** opens a csv-data source (file or IO Device), it starts
+to read it line by line in a cycle. Each new line **_Reader_** first of all
+pass to processor method **_preProcessRawLine(QString&)_**. In this method
+you can edit the line - replace values, remove sensitive information and so on.
 
 After **_Reader_** parses elements of the row, it pass them to processor
 method **_processRowElements(QStringList)_**. What to do next with these
@@ -239,23 +260,32 @@ edit and so on. As an example we can consider class **_ReadToListProcessor_**
 
 ### 2.3 Writer
 
-Use **[_Writer_][writer]** class to write to csv-files. It has only one function:
+Use **[_Writer_][writer]** class to write csv-data to files / IO Devices.
 
 ```cpp
-bool Writer::write(const QString& filePath,
-                   const AbstractData& data,
-                   const QString& separator,
-                   const QString& textDelimiter,
-                   const WriteMode& mode,
-                   const QStringList& header,
-                   const QStringList& footer,
-                   QTextCodec* codec)
+bool write(const QString& filePath,
+           const AbstractData& data,
+           const QString& separator,
+           const QString& textDelimiter,
+           const WriteMode& mode,
+           const QStringList& header,
+           const QStringList& footer,
+           QTextCodec* codec);
+                   
+bool write(QIODevice& ioDevice,
+           const AbstractData& data,
+           const QString& separator,
+           const QString& textDelimiter,
+           const QStringList& header,
+           const QStringList& footer,
+           QTextCodec* codec);
 ```
 
 - *filePath* - string with absolute path to csv-file (new or existent);
-- *data* - object, that contains information that you want to write to csv-file.
-**_Writer_** internally will use **_QStringList AbstractData::rowValues(int)_**
-function to get row values;
+- *ioDevice* - IO Device;
+- *data* - object, that contains information that you want to write to
+csv-file / IO Device. **_Writer_** internally will use
+**_QStringList AbstractData::rowValues(int)_** function to get row values;
 - *separator* (optional) - delimiter symbol (by default it is comma - ",");
 - *textDelimiter* (optional) - text delimiter symbol that enclose
 each element in a row (by default it is double quoute - ");
@@ -264,10 +294,10 @@ If it set to **_WriteMode::REWRITE_** and csv-file exist, then csv-file will be
 rewritten. If *mode* set to **_WriteMode::APPEND_** and csv-file exist, then new
 information will be appended to the end of the file.
 By default mode set to **_WriteMode::REWRITE_**.
-- *header* (optional) - strings that will be written at the beginning of the file, separated
-with defined separator (empty by default);
-- *footer* (optional) - strings that will be written at the end of the file, separated
-with defined separator (empty by default);
+- *header* (optional) - strings that will be written at the beginning
+of the csv-data, separated with defined separator (empty by default);
+- *footer* (optional) - strings that will be written at the end of the
+csv-data, separated with defined separator (empty by default);
 - *codec* (optional) - pointer to the codec object that will be used
 to write data to the file (by default it is UTF-8 codec).
 
@@ -429,7 +459,8 @@ proper csv-file.
 ## 9. Creators
 
 Author: [Antony Cherepanov][mypage] (antony.cherepanov@gmail.com)  
-Contributors: [Patrizio "pbek" Bekerle][pbek], [Furkan "Furkanzmc" Üzümcü][Furkanzmc], [Martin "schulmar" Schulze][schulmar], [cguentherTUChemnitz][cguentherTUChemnitz], [David Jung][David_Jung], [Nicu Tofan][TNick]
+Contributors: [Patrizio "pbek" Bekerle][pbek], [Furkan "Furkanzmc" Üzümcü][Furkanzmc], [Martin "schulmar" Schulze][schulmar], [cguentherTUChemnitz][cguentherTUChemnitz], [David Jung][David_Jung], [Nicu Tofan][TNick],
+[Florian Apolloner][apollo13]
 
 [csvwiki]: http://en.wikipedia.org/wiki/Comma-separated_values
 [reader]: https://github.com/iamantony/qtcsv/blob/master/include/qtcsv/reader.h
@@ -451,3 +482,4 @@ Contributors: [Patrizio "pbek" Bekerle][pbek], [Furkan "Furkanzmc" Üzümcü][Fu
 [cguentherTUChemnitz]: https://github.com/cguentherTUChemnitz
 [David_Jung]: https://github.com/davidljung
 [TNick]: https://github.com/TNick
+[apollo13]: https://github.com/apollo13
