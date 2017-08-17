@@ -15,7 +15,7 @@
 using namespace QtCSV;
 
 // Class TempFileHandler is a helper class. Its main purpose is to delete file
-// on destruction. It is like "smart poiter" but for temporary file. When you
+// on destruction. It is like a "smart pointer" but for temporary file. When you
 // create object of class TempFileHandler, you must specify absolute path
 // to the (temp) file (as a string). When object will be about to destroy, it
 // will try to remove specified file.
@@ -45,8 +45,8 @@ public:
                               ContentIterator& content,
                               QTextCodec* codec);
 
-    // Write to io device
-    static bool writeToIODevice(QIODevice& iodevice,
+    // Write to IO Device
+    static bool writeToIODevice(QIODevice& ioDevice,
                                 ContentIterator& content,
                                 QTextCodec* codec);
 
@@ -132,14 +132,14 @@ bool WriterPrivate::overwriteFile(const QString& filePath,
     return true;
 }
 
-// Write csv data to io device
+// Write csv data to IO Device
 // @input:
-// - iodevice - io device to write data to
+// - iodevice - IO Device to write data to
 // - content - not empty handler of content for csv-file
 // - codec - pointer to codec object that would be used for file writing
 // @output:
-// - bool - True if data could be written to the io device
-bool WriterPrivate::writeToIODevice(QIODevice& iodevice,
+// - bool - True if data could be written to the IO Device
+bool WriterPrivate::writeToIODevice(QIODevice& ioDevice,
                                     ContentIterator& content,
                                     QTextCodec* codec) {
     if ( content.isEmpty() )
@@ -148,7 +148,15 @@ bool WriterPrivate::writeToIODevice(QIODevice& iodevice,
         return false;
     }
 
-    QTextStream stream(&iodevice);
+    // Open IO Device if it was not opened
+    if (false == ioDevice.isOpen() &&
+            false == ioDevice.open(QIODevice::Append | QIODevice::Text))
+    {
+        qDebug() << __FUNCTION__ << "Error - failed to open IO Device";
+        return false;
+    }
+
+    QTextStream stream(&ioDevice);
     stream.setCodec(codec);
     while( content.hasNext() )
     {
@@ -241,7 +249,27 @@ bool Writer::write(const QString& filePath,
     return result;
 }
 
-bool Writer::write(QIODevice &iodevice, const AbstractData &data, const QString &separator, const QString &textDelimiter, const QStringList &header, const QStringList &footer, QTextCodec *codec)
+// Write data to IO Device
+// @input:
+// - ioDevice - IO Device
+// - data - not empty AbstractData object that contains information that should
+// be written to IO Device
+// - separator - string or character that would separate values in a row
+// - textDelimiter - string or character that enclose each element in a row
+// - header - strings that will be written at the beginning of the csv-data in
+// one line. separator will be used as delimiter character.
+// - footer - strings that will be written at the end of the csv-data in
+// one line. separator will be used as delimiter character.
+// - codec - pointer to codec object that would be used for data writing
+// @output:
+// - bool - True if data was written to the IO Device, otherwise False
+bool Writer::write(QIODevice& ioDevice,
+                   const AbstractData& data,
+                   const QString& separator,
+                   const QString& textDelimiter,
+                   const QStringList& header,
+                   const QStringList& footer,
+                   QTextCodec* codec)
 {
     if ( data.isEmpty() )
     {
@@ -250,5 +278,5 @@ bool Writer::write(QIODevice &iodevice, const AbstractData &data, const QString 
     }
 
     ContentIterator content(data, separator, textDelimiter, header, footer);
-    return WriterPrivate::writeToIODevice(iodevice, content, codec);
+    return WriterPrivate::writeToIODevice(ioDevice, content, codec);
 }

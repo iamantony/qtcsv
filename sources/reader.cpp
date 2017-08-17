@@ -1,5 +1,6 @@
 #include "include/qtcsv/reader.h"
 
+#include <QFile>
 #include <QStringList>
 #include <QStringRef>
 #include <QFile>
@@ -12,22 +13,22 @@
 
 using namespace QtCSV;
 
-bool openFile(const QString& filePath, QFile& file)
+inline bool openFile(const QString& filePath, QFile& file)
 {
-    if ( false == CheckFile(filePath, true) )
+    if (false == CheckFile(filePath, true))
     {
         qDebug() << __FUNCTION__ << "Error - wrong file path:" << filePath;
         return false;
     }
 
     file.setFileName(filePath);
-    if ( false == file.open(QIODevice::ReadOnly) )
+    bool result = file.open(QIODevice::ReadOnly);
+    if (false == result)
     {
         qDebug() << __FUNCTION__ << "Error - can't open file:" << filePath;
-        return false;
     }
-    return true;
 
+    return result;
 }
 
 // ElementInfo is a helper struct that is used as indicator of row end
@@ -43,7 +44,7 @@ class ReaderPrivate
 public:
     // Function that really reads csv-data and transfer it's data to
     // AbstractProcessor-based processor
-    static bool read(QIODevice& iodevice,
+    static bool read(QIODevice& ioDevice,
                      Reader::AbstractProcessor& processor,
                      const QString& separator,
                      const QString& textDelimiter,
@@ -80,25 +81,33 @@ private:
 // Function that really reads csv-data and transfer it's data to
 // AbstractProcessor-based processor
 // @input:
-// - iodevice - io device containing the csv data
+// - ioDevice - IO Device containing the csv-formatted data
 // - processor - refernce to AbstractProcessor-based object
 // - separator - string or character that separate values in a row
 // - textDelimiter - string or character that enclose row elements
 // - codec - pointer to codec object that would be used for file reading
 // @output:
 // - bool - result of read operation
-bool ReaderPrivate::read(QIODevice& iodevice,
-                            Reader::AbstractProcessor& processor,
-                            const QString& separator,
-                            const QString& textDelimiter,
-                            QTextCodec* codec)
+bool ReaderPrivate::read(QIODevice& ioDevice,
+                         Reader::AbstractProcessor& processor,
+                         const QString& separator,
+                         const QString& textDelimiter,
+                         QTextCodec* codec)
 {
     if ( false == checkParams(separator) )
     {
         return false;
     }
 
-    QTextStream stream(&iodevice);
+    // Open IO Device if it was not opened
+    if (false == ioDevice.isOpen() &&
+            false == ioDevice.open(QIODevice::ReadOnly))
+    {
+        qDebug() << __FUNCTION__ << "Error - failed to open IO Device";
+        return false;
+    }
+
+    QTextStream stream(&ioDevice);
     stream.setCodec(codec);
 
     // This list will contain elements of the row if its elements
@@ -174,7 +183,7 @@ bool ReaderPrivate::read(QIODevice& iodevice,
 // - bool - True if file path and separator are valid, otherwise False
 bool ReaderPrivate::checkParams(const QString& separator)
 {
-    if ( separator.isEmpty() )
+    if (separator.isEmpty())
     {
         qDebug() << __FUNCTION__ << "Error - separator could not be empty";
         return false;
@@ -545,9 +554,25 @@ QList<QStringList> Reader::readToList(const QString& filePath,
                                       const QString& textDelimiter,
                                       QTextCodec* codec)
 {
-    QFile f;
-    if (!openFile(filePath, f)) return QList<QStringList>();
-    return readToList(f, separator, textDelimiter, codec);
+    QFile file;
+    if (false == openFile(filePath, file))
+    {
+        return QList<QStringList>();
+    }
+
+    return readToList(file, separator, textDelimiter, codec);
+}
+
+// Read csv-formatted data from IO Device and save it
+// as strings to QList<QStringList>
+QList<QStringList> Reader::readToList(QIODevice &ioDevice,
+                                      const QString &separator,
+                                      const QString &textDelimiter,
+                                      QTextCodec *codec)
+{
+    ReadToListProcessor processor;
+    ReaderPrivate::read(ioDevice, processor, separator, textDelimiter, codec);
+    return processor.data;
 }
 
 // Read csv-file and save it's data to AbstractData-based container class
@@ -565,46 +590,26 @@ bool Reader::readToData(const QString& filePath,
                         const QString& textDelimiter,
                         QTextCodec* codec)
 {
-    QFile f;
-    if (!openFile(filePath, f)) return false;
-    return readToData(f, data, separator, textDelimiter, codec);
+    QFile file;
+    if (false == openFile(filePath, file))
+    {
+        return false;
+    }
+
+    return readToData(file, data, separator, textDelimiter, codec);
 }
 
-// Read csv-file and process it line-by-line
-// @input:
-// - filePath - string with absolute path to csv-file
-// - processor - AbstractProcessor-based object that receives data from
-// csv-file line-by-line
-// - separator - string or character that separate elements in a row
-// - textDelimiter - string or character that enclose each element in a row
-// - codec - pointer to codec object that would be used for file reading
-// @output:
-// - bool - True if file was successfully read, otherwise False
-bool Reader::readToProcessor(const QString &filePath,
-                             Reader::AbstractProcessor& processor,
-                             const QString &separator,
-                             const QString &textDelimiter,
-                             QTextCodec *codec)
-{
-    QFile f;
-    if (!openFile(filePath, f)) return false;
-    return readToProcessor(f, processor, separator, textDelimiter, codec);
-}
-
-QList<QStringList> Reader::readToList(QIODevice &iodevice, const QString &separator,
-                                      const QString &textDelimiter, QTextCodec *codec)
-{
-    ReadToListProcessor processor;
-    ReaderPrivate::read(iodevice, processor, separator, textDelimiter, codec);
-    return processor.data;
-}
-
-bool Reader::readToData(QIODevice &iodevice, AbstractData &data, const QString &separator,
-                        const QString &textDelimiter, QTextCodec *codec)
+// Read csv-formatted data from IO Device and save it
+// to AbstractData-based container class
+bool Reader::readToData(QIODevice& ioDevice,
+                        AbstractData& data,
+                        const QString& separator,
+                        const QString& textDelimiter,
+                        QTextCodec* codec)
 {
     ReadToListProcessor processor;
     if (false == ReaderPrivate::read(
-                iodevice, processor, separator, textDelimiter, codec))
+                ioDevice, processor, separator, textDelimiter, codec))
     {
         return false;
     }
@@ -617,9 +622,38 @@ bool Reader::readToData(QIODevice &iodevice, AbstractData &data, const QString &
     return true;
 }
 
-bool Reader::readToProcessor(QIODevice &iodevice, Reader::AbstractProcessor &processor,
-                             const QString &separator, const QString &textDelimiter, QTextCodec *codec)
+// Read csv-file and process it line-by-line
+// @input:
+// - filePath - string with absolute path to csv-file
+// - processor - AbstractProcessor-based object that receives data from
+// csv-file line-by-line
+// - separator - string or character that separate elements in a row
+// - textDelimiter - string or character that enclose each element in a row
+// - codec - pointer to codec object that would be used for file reading
+// @output:
+// - bool - True if file was successfully read, otherwise False
+bool Reader::readToProcessor(const QString& filePath,
+                             Reader::AbstractProcessor& processor,
+                             const QString& separator,
+                             const QString& textDelimiter,
+                             QTextCodec* codec)
 {
-    return ReaderPrivate::read(iodevice, processor, separator, textDelimiter,
-                               codec);
+    QFile file;
+    if (false == openFile(filePath, file))
+    {
+        return false;
+    }
+
+    return readToProcessor(file, processor, separator, textDelimiter, codec);
+}
+
+// Read csv-formatted data from IO Device and process it line-by-line
+bool Reader::readToProcessor(QIODevice& ioDevice,
+                             Reader::AbstractProcessor& processor,
+                             const QString& separator,
+                             const QString& textDelimiter,
+                             QTextCodec* codec)
+{
+    return ReaderPrivate::read(
+                ioDevice, processor, separator, textDelimiter, codec);
 }
