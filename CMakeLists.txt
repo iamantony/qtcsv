@@ -61,6 +61,7 @@ endif()
 target_link_libraries(${PROJECT_NAME} PRIVATE ${QT_CORE_TARGET})
 
 install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}Config
+        RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib)
 
