@@ -485,6 +485,11 @@ void ReaderPrivate::removeExtraSymbols(QStringList& elements,
     for (int i = 0; i < elements.size(); ++i)
     {
         QStringRef str(&elements.at(i));
+        if (str.isEmpty())
+        {
+            continue;
+        }
+
         int startPos = 0, endPos = str.size() - 1;
 
         // Find first non-space char
