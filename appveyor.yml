@@ -21,7 +21,7 @@ environment:
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
     use_cmake: "false"
   - QT5: C:\Qt\5.6.3\mingw49_32
-    MINGW: C:\Qt\5.6.3\mingw49_32
+    MINGW: C:\Qt\Tools\mingw530_32
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     use_cmake: "false"
   - QT5: C:\Qt\5.7\mingw53_32
@@ -33,15 +33,15 @@ environment:
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
     use_cmake: "false"
   - QT5: C:\Qt\5.9\mingw53_32
-    MINGW: C:\Qt\5.9.5\mingw53_32
+    MINGW: C:\Qt\Tools\mingw530_32
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     use_cmake: "false"
   - QT5: C:\Qt\5.10\mingw53_32
-    MINGW: C:\Qt\5.10.1\mingw53_32
+    MINGW: C:\Qt\Tools\mingw530_32
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     use_cmake: "false"
   - QT5: C:\Qt\5.11\mingw53_32
-    MINGW: C:\Qt\5.11.0\mingw53_32
+    MINGW: C:\Qt\Tools\mingw530_32
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     use_cmake: "false"
 
