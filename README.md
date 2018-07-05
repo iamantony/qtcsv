@@ -460,7 +460,7 @@ proper csv-file.
 
 Author: [Antony Cherepanov][mypage] (antony.cherepanov@gmail.com)  
 Contributors: [Patrizio "pbek" Bekerle][pbek], [Furkan "Furkanzmc" Üzümcü][Furkanzmc], [Martin "schulmar" Schulze][schulmar], [cguentherTUChemnitz][cguentherTUChemnitz], [David Jung][David_Jung], [Nicu Tofan][TNick],
-[Florian Apolloner][apollo13]
+[Florian Apolloner][apollo13], [Michael Pollind][pollend]
 
 [csvwiki]: http://en.wikipedia.org/wiki/Comma-separated_values
 [reader]: https://github.com/iamantony/qtcsv/blob/master/include/qtcsv/reader.h
@@ -483,3 +483,4 @@ Contributors: [Patrizio "pbek" Bekerle][pbek], [Furkan "Furkanzmc" Üzümcü][Fu
 [David_Jung]: https://github.com/davidljung
 [TNick]: https://github.com/TNick
 [apollo13]: https://github.com/apollo13
+[pollend]: https://github.com/pollend
