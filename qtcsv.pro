@@ -29,7 +29,8 @@ DISTFILES += \
     CMakeLists.txt
 
 OTHER_FILES += \
-    appveyor.yml
+    .appveyor.yml \
+    .travis.yml
 
 message(=== Configuration of qtcsv ===)
 message(Qt version: $$[QT_VERSION])
