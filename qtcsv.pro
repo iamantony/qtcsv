@@ -1,4 +1,4 @@
-QT -= gui
+QT = core
 TARGET = qtcsv
 TEMPLATE = lib
 VERSION = 1.5.0
@@ -16,33 +16,20 @@ win32:TARGET_EXT = .dll
 }
 
 DEFINES += QTCSV_LIBRARY
-INCLUDEPATH += $$PWD/include/
+
+include(qtcsv.pri)
 
 # Uncomment this settings if you want to manually set destination directory for
 # compiled library
 #CONFIG(release, debug|release): DESTDIR = $$PWD
 #CONFIG(debug, debug|release): DESTDIR = $$PWD
 
-SOURCES += \
-    sources/writer.cpp \
-    sources/variantdata.cpp \
-    sources/stringdata.cpp \
-    sources/reader.cpp \
-    sources/contentiterator.cpp
-
-HEADERS += \
-    include/qtcsv/qtcsv_global.h \
-    include/qtcsv/writer.h \
-    include/qtcsv/variantdata.h \
-    include/qtcsv/stringdata.h \
-    include/qtcsv/reader.h \
-    include/qtcsv/abstractdata.h \
-    sources/filechecker.h \
-    sources/contentiterator.h \
-    sources/symbols.h
-
 DISTFILES += \
     CMakeLists.txt
+
+OTHER_FILES += \
+    appveyor.yml \
+    .travis.yml
 
 message(=== Configuration of qtcsv ===)
 message(Qt version: $$[QT_VERSION])
