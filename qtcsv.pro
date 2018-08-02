@@ -15,6 +15,7 @@ win32:TARGET_EXT = .dll
             -Wdisabled-optimization -Wcast-align -Wcast-qual
 }
 
+CONFIG(staticlib): DEFINES += QTCSV_STATIC_LIB
 DEFINES += QTCSV_LIBRARY
 
 include(qtcsv.pri)
