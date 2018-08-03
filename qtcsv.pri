@@ -1,7 +1,7 @@
- 
-QT -= gui
+CONFIG *= qt
+QT *= core
 
-DEFINES +=  QTCSV_MAKE_LIB
+!contains(DEFINES, QTCSV_LIBRARY): DEFINES += QTCSV_MAKE_LIB
 
 INCLUDEPATH += $$PWD/include \
                $$PWD
