@@ -81,13 +81,17 @@ matrix:
     sudo: required
     compiler: gcc
     env:
-     - QT_BASE=510
+     - QT_BASE=510 USE_CMAKE=true
   - os: linux
-    dist: trusty
-    sudo: required
+    dist: xenial
     compiler: gcc
     env:
-     - QT_BASE=510 USE_CMAKE=true
+     - QT_BASE=511
+  - os: linux
+    dist: xenial
+    compiler: gcc
+    env:
+     - QT_BASE=511 USE_CMAKE=true
   - os: osx
     compiler: clang
     env:
@@ -103,12 +107,13 @@ before_install:
   - if [ "$QT_BASE" = "52" ]; then sudo add-apt-repository ppa:beineri/opt-qt521-trusty -y; fi
   - if [ "$QT_BASE" = "53" ]; then sudo add-apt-repository ppa:beineri/opt-qt532-trusty -y; fi
   - if [ "$QT_BASE" = "54" ]; then sudo add-apt-repository ppa:beineri/opt-qt542-trusty -y; fi
-  - if [[ "$QT_BASE" = "55" && "$TRAVIS_OS_NAME" = "linux" ]]; then sudo add-apt-repository ppa:beineri/opt-qt551-trusty -y; fi
+  - if [ "$QT_BASE" = "55" ]; then sudo add-apt-repository ppa:beineri/opt-qt551-trusty -y; fi
   - if [ "$QT_BASE" = "56" ]; then sudo add-apt-repository ppa:beineri/opt-qt563-trusty -y; fi
   - if [ "$QT_BASE" = "57" ]; then sudo add-apt-repository ppa:beineri/opt-qt571-trusty -y; fi
   - if [ "$QT_BASE" = "58" ]; then sudo add-apt-repository ppa:beineri/opt-qt58-trusty -y; fi
   - if [ "$QT_BASE" = "59" ]; then sudo add-apt-repository ppa:beineri/opt-qt595-trusty -y; fi
   - if [ "$QT_BASE" = "510" ]; then sudo add-apt-repository ppa:beineri/opt-qt-5.10.1-trusty -y; fi
+  - if [[ "$QT_BASE" = "511" && "$TRAVIS_OS_NAME" = "linux" ]]; then sudo add-apt-repository ppa:beineri/opt-qt-5.11.2-xenial -y; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then
       sudo apt-get update -qq;
     else
@@ -138,7 +143,7 @@ install:
   - if [ "$QT_BASE" = "510" ]; then sudo apt-get install -qq qt510base; source /opt/qt510/bin/qt510-env.sh; fi
   - if [ "$QT_BASE" = "511" ]; then
       if [ "$TRAVIS_OS_NAME" = "linux" ]; then
-        echo "beineri, please add Qt 5.11 packages for Ubuntu Trusty!"
+        sudo apt-get install -qq qt511base; source /opt/qt511/bin/qt511-env.sh;
       else
         brew install qt5;
         brew link --force qt5;
