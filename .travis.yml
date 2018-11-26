@@ -2,100 +2,100 @@ language: cpp
 
 matrix:
  include:
-#   - os: linux
-#     dist: trusty
-#     sudo: required
-#     compiler: gcc
-#     env:
-#      - QT_BASE=48
-#   - os: linux
-#     dist: trusty
-#     sudo: required
-#     compiler: gcc
-#     env:
-#      - QT_BASE=48 USE_CMAKE=true
-#   - os: osx
-#     compiler: clang
-#     env:
-#      - QT_BASE=48
-#   - os: osx
-#     compiler: clang
-#     env:
-#      - QT_BASE=48 USE_CMAKE=true
-#   - os: linux
-#     dist: trusty
-#     sudo: required
-#     compiler: gcc
-#     env:
-#      - QT_BASE=51 USE_CMAKE=true
-#   - os: linux
-#     dist: trusty
-#     sudo: required
-#     compiler: gcc
-#     env:
-#      - QT_BASE=52 USE_CMAKE=true
-#   - os: linux
-#     dist: trusty
-#     sudo: required
-#     compiler: gcc
-#     env:
-#      - QT_BASE=53 USE_CMAKE=true
-#   - os: linux
-#     dist: trusty
-#     sudo: required
-#     compiler: gcc
-#     env:
-#      - QT_BASE=54 USE_CMAKE=true
-#   - os: linux
-#     dist: trusty
-#     sudo: required
-#     compiler: gcc
-#     env:
-#      - QT_BASE=55 USE_CMAKE=true
-#   - os: linux
-#     dist: trusty
-#     sudo: required
-#     compiler: gcc
-#     env:
-#      - QT_BASE=56 USE_CMAKE=true
-#   - os: linux
-#     dist: trusty
-#     sudo: required
-#     compiler: gcc
-#     env:
-#      - QT_BASE=57 USE_CMAKE=true
-#   - os: linux
-#     dist: trusty
-#     sudo: required
-#     compiler: gcc
-#     env:
-#      - QT_BASE=58 USE_CMAKE=true
-#   - os: linux
-#     dist: trusty
-#     sudo: required
-#     compiler: gcc
-#     env:
-#      - QT_BASE=59 USE_CMAKE=true
-#   - os: linux
-#     dist: trusty
-#     sudo: required
-#     compiler: gcc
-#     env:
-#      - QT_BASE=510 USE_CMAKE=true
-#   - os: linux
-#     dist: xenial
-#     compiler: gcc
-#     env:
-#      - QT_BASE=511
-#   - os: linux
-#     dist: xenial
-#     compiler: gcc
-#     env:
-#      - QT_BASE=511 USE_CMAKE=true
-#   - os: osx
-#     compiler: clang
-#     env:
-#      - QT_BASE=511
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=48
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=48 USE_CMAKE=true
+  - os: osx
+    compiler: clang
+    env:
+     - QT_BASE=48
+  - os: osx
+    compiler: clang
+    env:
+     - QT_BASE=48 USE_CMAKE=true
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=51 USE_CMAKE=true
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=52 USE_CMAKE=true
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=53 USE_CMAKE=true
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=54 USE_CMAKE=true
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=55 USE_CMAKE=true
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=56 USE_CMAKE=true
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=57 USE_CMAKE=true
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=58 USE_CMAKE=true
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=59 USE_CMAKE=true
+  - os: linux
+    dist: trusty
+    sudo: required
+    compiler: gcc
+    env:
+     - QT_BASE=510 USE_CMAKE=true
+  - os: linux
+    dist: xenial
+    compiler: gcc
+    env:
+     - QT_BASE=511
+  - os: linux
+    dist: xenial
+    compiler: gcc
+    env:
+     - QT_BASE=511 USE_CMAKE=true
+  - os: osx
+    compiler: clang
+    env:
+     - QT_BASE=511
   - os: osx
     compiler: clang
     env:
