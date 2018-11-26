@@ -149,7 +149,7 @@ install:
         brew link --force qt;
         export HOMEBREW_QT5_VERSION=$(brew list --versions qt | rev | cut -d' ' -f1 | rev);
         sudo ln -s /usr/local/Cellar/qt/$HOMEBREW_QT5_VERSION/mkspecs /usr/local/mkspecs;
-        echo 'export PATH="/usr/local/opt/qt/bin:$PATH"' >> ~/.bash_profile
+        echo 'export PATH="/usr/local/opt/qt/bin:$PATH"' >> ~/.bash_profile;
       fi
     fi
 
