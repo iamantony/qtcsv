@@ -74,7 +74,7 @@ build_script:
     mingw32-make)
 
 # download test file
-- curl -fsS -o worldcitiespop.txt.gz https://github.com/apache/commons-csv/raw/master/src/test/resources/perf/worldcitiespop.txt.gz
+- wget -O worldcitiespop.txt.gz https://raw.github.com/apache/commons-csv/master/src/test/resources/perf/worldcitiespop.txt.gz
 - 7z e worldcitiespop.txt.gz
 - move worldcitiespop.txt data\
 
