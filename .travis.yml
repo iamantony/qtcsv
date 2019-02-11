@@ -180,7 +180,7 @@ script:
     fi
 
   # download test file
-  - wget http://www.maxmind.com/download/worldcities/worldcitiespop.txt.gz
+  - wget https://github.com/apache/commons-csv/raw/master/src/test/resources/perf/worldcitiespop.txt.gz
   - gunzip worldcitiespop.txt.gz
   - mv ./worldcitiespop.txt ./data
 
