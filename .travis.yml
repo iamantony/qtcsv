@@ -180,7 +180,7 @@ script:
     fi
 
   # download test file
-  - wget https://github.com/apache/commons-csv/raw/master/src/test/resources/perf/worldcitiespop.txt.gz
+  - wget -O worldcitiespop.txt.gz https://raw.github.com/apache/commons-csv/master/src/test/resources/perf/worldcitiespop.txt.gz
   - gunzip worldcitiespop.txt.gz
   - mv ./worldcitiespop.txt ./data
 
