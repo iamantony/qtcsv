@@ -180,9 +180,9 @@ script:
     fi
 
   # download test file
-  - wget -O worldcitiespop.txt.gz https://raw.github.com/apache/commons-csv/master/src/test/resources/perf/worldcitiespop.txt.gz
-  - gunzip worldcitiespop.txt.gz
-  - mv ./worldcitiespop.txt ./data
+  #- wget -O worldcitiespop.txt.gz https://raw.github.com/apache/commons-csv/master/src/test/resources/perf/worldcitiespop.txt.gz
+  #- gunzip worldcitiespop.txt.gz
+  #- mv ./worldcitiespop.txt ./data
 
   # run tests
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/../
