@@ -97,6 +97,6 @@ install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake DESTINATION
 configure_file(${PROJECT_NAME}.pc.in ${PROJECT_NAME}.pc @ONLY)
 install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/${CMAKE_LIBRARY_ARCHITECTURE}/pkgconfig)
 
-#if(BUILD_TESTS)
-#    add_subdirectory(tests)
-#endif(BUILD_TESTS)
+if(BUILD_TESTS)
+    add_subdirectory(tests)
+endif(BUILD_TESTS)
