@@ -52,10 +52,6 @@ environment:
     MINGW: C:\Qt\Tools\mingw730_32
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     use_cmake: "false"
-  - QT5: C:\Qt\5.14.2\mingw73_32
-    MINGW: C:\Qt\Tools\mingw730_32
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    use_cmake: "false"
 
 matrix:
   fast_finish: true
