@@ -4,7 +4,7 @@
 
 #include <QDir>
 #include <QFile>
-#include <QTime>
+#include <QElapsedTimer>
 #include <QDebug>
 
 #include "qtcsv/writer.h"
@@ -311,7 +311,7 @@ void TestWriter::testWriteDifferentDataAmount()
     int rowsNumber = 10;
     int rowsMultiplier  = 2;
     int rowCycles = 2;
-    QTime time;
+    QElapsedTimer time;
     for ( int rc = 0; rc < rowCycles; ++rc )
     {
         int symbolsNumber = 10;
