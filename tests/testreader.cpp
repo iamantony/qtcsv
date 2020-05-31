@@ -2,7 +2,7 @@
 
 #include <QDir>
 #include <QFile>
-#include <QTime>
+#include <QElapsedTimer>
 
 #include "qtcsv/reader.h"
 #include "qtcsv/stringdata.h"
@@ -379,7 +379,7 @@ void TestReader::testReadFileWorldCitiesPop()
         return;
     }
 
-    QTime timer;
+    QElapsedTimer timer;
     timer.start();
     QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
     qDebug() << "Elapsed time:" << timer.elapsed() << "ms";
