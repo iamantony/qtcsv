@@ -163,7 +163,7 @@ install:
   - if [ "$QT_BASE" = "512" ]; then sudo apt-get install -qq qt512base; source /opt/qt512/bin/qt512-env.sh; fi
   - if [ "$QT_BASE" = "513" ]; then
       if [ "$TRAVIS_OS_NAME" = "linux" ]; then
-        sudo apt-get install -qq qt511base; source /opt/qt513/bin/qt513-env.sh;
+        sudo apt-get install -qq qt513base; source /opt/qt513/bin/qt513-env.sh;
       else
         brew install qt;
         brew link --force qt;
