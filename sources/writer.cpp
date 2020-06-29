@@ -7,6 +7,7 @@
 #include <QTextStream>
 #include <QCoreApplication>
 #include <QDebug>
+#include <QRandomGenerator>
 
 #include "include/qtcsv/abstractdata.h"
 #include "sources/filechecker.h"
@@ -180,7 +181,7 @@ QString WriterPrivate::getTempFileName()
 
     for (int counter = 0; counter < std::numeric_limits<int>::max(); ++counter)
     {
-        QString name = nameTemplate.arg(QString::number(qrand()));
+        QString name = nameTemplate.arg(QString::number(QRandomGenerator::global()->generate()));
         if ( false == QFile::exists(name) )
         {
             return name;
