@@ -8,7 +8,7 @@
 #include <QCoreApplication>
 #include <QDebug>
 #include <QtGlobal>
-#if QT_VERSION >= 0x050A00
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
     #include <QRandomGenerator>
 #endif
 
@@ -184,10 +184,10 @@ QString WriterPrivate::getTempFileName()
 
     for (int counter = 0; counter < std::numeric_limits<int>::max(); ++counter)
     {
-#if QT_VERSION >= 0x050A00
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
              QString name = nameTemplate.arg(QString::number(QRandomGenerator::global()->generate()));
 #else
-              QString name = nameTemplate.arg(QString::number(qrand()));
+             QString name = nameTemplate.arg(QString::number(qrand()));
 #endif
         if ( false == QFile::exists(name) )
         {
