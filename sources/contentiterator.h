@@ -1,8 +1,14 @@
 #ifndef QTCSVCONTENTITERATOR_H
 #define QTCSVCONTENTITERATOR_H
 
+#include <QtGlobal>
+
+#if QT_VERSION >= 0x060000
+using QStringList = QList<QString>;
+#else
 class QString;
 class QStringList;
+#endif
 
 namespace QtCSV
 {

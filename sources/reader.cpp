@@ -389,11 +389,19 @@ int ReaderPrivate::findMiddleElementPositioin(const QString& str,
         int numOfDelimiters = 0;
         for (int pos = elemEndPos; startPos <= pos; --pos, ++numOfDelimiters)
         {
+#if QT_VERSION >= 0x060000
+            auto strRef = str.mid(pos, txtDelim.size());
+            if (QString::compare(strRef, txtDelim) != 0)
+            {
+                break;
+            }
+#else
             QStringRef strRef = str.midRef(pos, txtDelim.size());
             if (QStringRef::compare(strRef, txtDelim) != 0)
             {
                 break;
             }
+#endif
         }
 
         // If we have odd number of delimiter symbols that stand together,
@@ -451,11 +459,19 @@ bool ReaderPrivate::isElementLast(const QString& str,
     int numOfDelimiters = 0;
     for (int pos = str.size() - 1; startPos <= pos; --pos, ++numOfDelimiters)
     {
+#if QT_VERSION >= 0x060000
+        auto strRef = str.mid(pos, txtDelim.size());
+        if (QString::compare(strRef, txtDelim) != 0)
+        {
+            break;
+        }
+#else
         QStringRef strRef = str.midRef(pos, txtDelim.size());
         if (QStringRef::compare(strRef, txtDelim) != 0)
         {
             break;
         }
+#endif
     }
 
     // If we have odd number of delimiter symbols that stand together,
