@@ -48,7 +48,12 @@ public:
                      Reader::AbstractProcessor& processor,
                      const QString& separator,
                      const QString& textDelimiter,
-                     QTextCodec* codec);
+#if QT_VERSION >= 0x060000
+                     QStringConverter::Encoding codec
+#else
+                     QTextCodec* codec
+#endif
+                     );
 
 
 private:
@@ -92,7 +97,12 @@ bool ReaderPrivate::read(QIODevice& ioDevice,
                          Reader::AbstractProcessor& processor,
                          const QString& separator,
                          const QString& textDelimiter,
-                         QTextCodec* codec)
+#if QT_VERSION >= 0x060000
+                         QStringConverter::Encoding codec
+#else
+                         QTextCodec* codec
+#endif
+                         )
 {
     if ( false == checkParams(separator) )
     {
@@ -108,7 +118,11 @@ bool ReaderPrivate::read(QIODevice& ioDevice,
     }
 
     QTextStream stream(&ioDevice);
+#if QT_VERSION >= 0x060000
+    stream.setEncoding(codec);
+#else
     stream.setCodec(codec);
+#endif
 
     // This list will contain elements of the row if its elements
     // are located on several lines
@@ -573,7 +587,12 @@ public:
 QList<QStringList> Reader::readToList(const QString& filePath,
                                       const QString& separator,
                                       const QString& textDelimiter,
-                                      QTextCodec* codec)
+#if QT_VERSION >= 0x060000
+                                      QStringConverter::Encoding codec
+#else
+                                      QTextCodec* codec
+#endif
+                                      )
 {
     QFile file;
     if (false == openFile(filePath, file))
@@ -589,7 +608,12 @@ QList<QStringList> Reader::readToList(const QString& filePath,
 QList<QStringList> Reader::readToList(QIODevice &ioDevice,
                                       const QString &separator,
                                       const QString &textDelimiter,
-                                      QTextCodec *codec)
+#if QT_VERSION >= 0x060000
+                                      QStringConverter::Encoding codec
+#else
+                                      QTextCodec *codec
+#endif
+                                      )
 {
     ReadToListProcessor processor;
     ReaderPrivate::read(ioDevice, processor, separator, textDelimiter, codec);
@@ -609,7 +633,12 @@ bool Reader::readToData(const QString& filePath,
                         AbstractData& data,
                         const QString& separator,
                         const QString& textDelimiter,
-                        QTextCodec* codec)
+#if QT_VERSION >= 0x060000
+                        QStringConverter::Encoding codec
+#else
+                        QTextCodec* codec
+#endif
+                        )
 {
     QFile file;
     if (false == openFile(filePath, file))
@@ -626,7 +655,12 @@ bool Reader::readToData(QIODevice& ioDevice,
                         AbstractData& data,
                         const QString& separator,
                         const QString& textDelimiter,
-                        QTextCodec* codec)
+#if QT_VERSION >= 0x060000
+                        QStringConverter::Encoding codec
+#else
+                        QTextCodec* codec
+#endif
+                        )
 {
     ReadToListProcessor processor;
     if (false == ReaderPrivate::read(
@@ -657,7 +691,12 @@ bool Reader::readToProcessor(const QString& filePath,
                              Reader::AbstractProcessor& processor,
                              const QString& separator,
                              const QString& textDelimiter,
-                             QTextCodec* codec)
+#if QT_VERSION >= 0x060000
+                             QStringConverter::Encoding codec
+#else
+                             QTextCodec* codec
+#endif
+                             )
 {
     QFile file;
     if (false == openFile(filePath, file))
@@ -673,7 +712,12 @@ bool Reader::readToProcessor(QIODevice& ioDevice,
                              Reader::AbstractProcessor& processor,
                              const QString& separator,
                              const QString& textDelimiter,
-                             QTextCodec* codec)
+#if QT_VERSION >= 0x060000
+                             QStringConverter::Encoding codec
+#else
+                             QTextCodec* codec
+#endif
+                             )
 {
     return ReaderPrivate::read(
                 ioDevice, processor, separator, textDelimiter, codec);

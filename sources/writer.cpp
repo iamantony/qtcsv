@@ -42,17 +42,32 @@ public:
     // Append information to the file
     static bool appendToFile(const QString& filePath,
                              ContentIterator& content,
-                             QTextCodec* codec);
+#if QT_VERSION >= 0x060000
+                             QStringConverter::Encoding codec
+#else
+                             QTextCodec* codec
+#endif
+                             );
 
     // Overwrite file with new information
     static bool overwriteFile(const QString& filePath,
                               ContentIterator& content,
-                              QTextCodec* codec);
+#if QT_VERSION >= 0x060000
+                              QStringConverter::Encoding codec
+#else
+                              QTextCodec* codec
+#endif
+                              );
 
     // Write to IO Device
     static bool writeToIODevice(QIODevice& ioDevice,
                                 ContentIterator& content,
-                                QTextCodec* codec);
+#if QT_VERSION >= 0x060000
+                                QStringConverter::Encoding codec
+#else
+                                QTextCodec* codec
+#endif
+                                );
 
     // Create unique name for the temporary file
     static QString getTempFileName();
@@ -67,7 +82,12 @@ public:
 // - bool - True if data was appended to the file, otherwise False
 bool WriterPrivate::appendToFile(const QString& filePath,
                                  ContentIterator& content,
-                                 QTextCodec* codec)
+#if QT_VERSION >= 0x060000
+                                 QStringConverter::Encoding codec
+#else
+                                 QTextCodec* codec
+#endif
+                                 )
 {
     if ( filePath.isEmpty() || content.isEmpty() )
     {
@@ -98,7 +118,12 @@ bool WriterPrivate::appendToFile(const QString& filePath,
 // - bool - True if file was overwritten with new data, otherwise False
 bool WriterPrivate::overwriteFile(const QString& filePath,
                                   ContentIterator& content,
-                                  QTextCodec* codec)
+#if QT_VERSION >= 0x060000
+                                  QStringConverter::Encoding codec
+#else
+                                  QTextCodec* codec
+#endif
+                                  )
 {
     // Create path to the unique temporary file
     QString tempFileName = getTempFileName();
@@ -145,7 +170,12 @@ bool WriterPrivate::overwriteFile(const QString& filePath,
 // - bool - True if data could be written to the IO Device
 bool WriterPrivate::writeToIODevice(QIODevice& ioDevice,
                                     ContentIterator& content,
-                                    QTextCodec* codec) {
+#if QT_VERSION >= 0x060000
+                                    QStringConverter::Encoding codec
+#else
+                                    QTextCodec* codec
+#endif
+                                    ) {
     if ( content.isEmpty() )
     {
         qDebug() << __FUNCTION__ << "Error - invalid arguments";
@@ -161,7 +191,11 @@ bool WriterPrivate::writeToIODevice(QIODevice& ioDevice,
     }
 
     QTextStream stream(&ioDevice);
+#if QT_VERSION >= 0x060000
+    stream.setEncoding(codec);
+#else
     stream.setCodec(codec);
+#endif
     while( content.hasNext() )
     {
         stream << content.getNext();
@@ -221,7 +255,12 @@ bool Writer::write(const QString& filePath,
                    const WriteMode& mode,
                    const QStringList& header,
                    const QStringList& footer,
-                   QTextCodec* codec)
+#if QT_VERSION >= 0x060000
+                   QStringConverter::Encoding codec
+#else
+                   QTextCodec* codec
+#endif
+                   )
 {
     if ( filePath.isEmpty() )
     {
@@ -277,7 +316,12 @@ bool Writer::write(QIODevice& ioDevice,
                    const QString& textDelimiter,
                    const QStringList& header,
                    const QStringList& footer,
-                   QTextCodec* codec)
+#if QT_VERSION >= 0x060000
+                   QStringConverter::Encoding codec
+#else
+                   QTextCodec* codec
+#endif
+                   )
 {
     if ( data.isEmpty() )
     {

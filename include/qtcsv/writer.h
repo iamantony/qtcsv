@@ -3,7 +3,12 @@
 
 #include <QString>
 #include <QStringList>
+#if QT_VERSION >= 0x060000
+#include <QStringConverter>
+#include <QtCore5Compat/QTextCodec>
+#else
 #include <QTextCodec>
+#endif
 
 #include "qtcsv/qtcsv_global.h"
 
@@ -41,7 +46,12 @@ namespace QtCSV
                         const WriteMode& mode = REWRITE,
                         const QStringList& header = QStringList(),
                         const QStringList& footer = QStringList(),
-                        QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
+#if QT_VERSION >= 0x060000
+                        QStringConverter::Encoding codec = QStringConverter::Utf8
+#else
+                        QTextCodec* codec = QTextCodec::codecForName("UTF-8")
+#endif
+                );
 
         // Write data to IO Device
         static bool write(QIODevice& ioDevice,
@@ -50,7 +60,12 @@ namespace QtCSV
                         const QString& textDelimiter = QString("\""),
                         const QStringList& header = QStringList(),
                         const QStringList& footer = QStringList(),
-                        QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
+#if QT_VERSION >= 0x060000
+                          QStringConverter::Encoding codec = QStringConverter::Utf8
+#else
+                          QTextCodec* codec = QTextCodec::codecForName("UTF-8")
+#endif
+                );
     };
 }
 
