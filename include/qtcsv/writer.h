@@ -3,13 +3,8 @@
 
 #include <QString>
 #include <QStringList>
-#if QT_VERSION >= 0x060000
-#include <QStringConverter>
-#include <QtCore5Compat/QTextCodec>
-#else
-#include <QTextCodec>
-#endif
 
+#include <QStringConverter>
 #include "qtcsv/qtcsv_global.h"
 
 class QIODevice;
@@ -39,33 +34,23 @@ namespace QtCSV
         };
 
         // Write data to csv-file
-        static bool write(const QString& filePath,
-                        const AbstractData& data,
-                        const QString& separator = QString(","),
-                        const QString& textDelimiter = QString("\""),
-                        const WriteMode& mode = REWRITE,
-                        const QStringList& header = QStringList(),
-                        const QStringList& footer = QStringList(),
-#if QT_VERSION >= 0x060000
-                        QStringConverter::Encoding codec = QStringConverter::Utf8
-#else
-                        QTextCodec* codec = QTextCodec::codecForName("UTF-8")
-#endif
-                );
+        static bool write(const QString &filePath,
+                          const AbstractData &data,
+                          const QString &separator = QString(","),
+                          const QString &textDelimiter = QString("\""),
+                          const WriteMode &mode = REWRITE,
+                          const QStringList &header = QStringList(),
+                          const QStringList &footer = QStringList(),
+                          QStringConverter::Encoding codec = QStringConverter::Utf8);
 
         // Write data to IO Device
-        static bool write(QIODevice& ioDevice,
-                        const AbstractData& data,
-                        const QString& separator = QString(","),
-                        const QString& textDelimiter = QString("\""),
-                        const QStringList& header = QStringList(),
-                        const QStringList& footer = QStringList(),
-#if QT_VERSION >= 0x060000
-                          QStringConverter::Encoding codec = QStringConverter::Utf8
-#else
-                          QTextCodec* codec = QTextCodec::codecForName("UTF-8")
-#endif
-                );
+        static bool write(QIODevice &ioDevice,
+                          const AbstractData &data,
+                          const QString &separator = QString(","),
+                          const QString &textDelimiter = QString("\""),
+                          const QStringList &header = QStringList(),
+                          const QStringList &footer = QStringList(),
+                          QStringConverter::Encoding codec = QStringConverter::Utf8);
     };
 }
 

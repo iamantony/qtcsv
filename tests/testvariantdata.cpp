@@ -75,7 +75,9 @@ void TestVariantData::testAddRows()
     secondRow << QVariant("kkoo") << QVariant(771) << QVariant(3.14);
 
     QStringList thirdRow;
-    thirdRow << "one" << "two" << "three";
+    thirdRow << "one"
+             << "two"
+             << "three";
 
     QtCSV::VariantData varData;
     varData.addRow(firstRow);
@@ -129,7 +131,9 @@ void TestVariantData::testClearNotEmptyData()
     secondRow << QVariant("kkoo") << QVariant(771) << QVariant(3.14);
 
     QStringList thirdRow;
-    thirdRow << "one" << "two" << "three";
+    thirdRow << "one"
+             << "two"
+             << "three";
 
     QtCSV::VariantData varData;
     varData.addRow(firstRow);
@@ -154,7 +158,9 @@ void TestVariantData::testInsertRows()
     secondRow << QVariant("kkoo") << QVariant(771) << QVariant(3.14);
 
     QStringList thirdRow;
-    thirdRow << "one" << "two" << "three";
+    thirdRow << "one"
+             << "two"
+             << "three";
 
     QString stringOne("hey testing");
 
@@ -180,8 +186,8 @@ void TestVariantData::testInsertRows()
 
     QStringList resultSecondRow = varData.rowValues(1);
     QVERIFY2(secondRow.at(0).toString() == resultSecondRow.at(0) &&
-             secondRow.at(1).toString() == resultSecondRow.at(1) &&
-             secondRow.at(2).toString() == resultSecondRow.at(2),
+                 secondRow.at(1).toString() == resultSecondRow.at(1) &&
+                 secondRow.at(2).toString() == resultSecondRow.at(2),
              "Wrong data for second row");
 
     QVERIFY2(QStringList() == varData.rowValues(2),
@@ -196,8 +202,11 @@ void TestVariantData::testInsertRows()
 void TestVariantData::testCompareForEquality()
 {
     QStringList firstRow, secondRow;
-    firstRow << "one" << "two" << "three";
-    secondRow << "four" << "five";
+    firstRow << "one"
+             << "two"
+             << "three";
+    secondRow << "four"
+              << "five";
 
     QtCSV::VariantData firstData;
     firstData.addRow(firstRow);
@@ -224,8 +233,11 @@ void TestVariantData::testCompareForEquality()
 void TestVariantData::testCopyConstruction()
 {
     QStringList firstRow, secondRow;
-    firstRow << "one" << "two" << "three";
-    secondRow << "four" << "five";
+    firstRow << "one"
+             << "two"
+             << "three";
+    secondRow << "four"
+              << "five";
 
     QtCSV::VariantData firstData;
     firstData.addRow(firstRow);
@@ -250,8 +262,11 @@ void TestVariantData::testCopyConstruction()
 void TestVariantData::testCopyAssignment()
 {
     QStringList firstRow, secondRow;
-    firstRow << "one" << "two" << "three";
-    secondRow << "four" << "five";
+    firstRow << "one"
+             << "two"
+             << "three";
+    secondRow << "four"
+              << "five";
 
     QtCSV::VariantData firstData;
     firstData.addRow(firstRow);
@@ -280,7 +295,9 @@ void TestVariantData::testOperatorInput()
     data << QString("1") << QVariant(double(3.14));
 
     QStringList thirdRow;
-    thirdRow << "one" << "two" << "three";
+    thirdRow << "one"
+             << "two"
+             << "three";
 
     data << thirdRow;
 
@@ -305,8 +322,12 @@ void TestVariantData::testRemoveRow()
     QVERIFY2(true == data.isEmpty(), "Container is not empty");
 
     QStringList valuesFirst, valuesSecond;
-    valuesFirst << "one" << "two" << "three";
-    valuesSecond << "asgreg" << "ertetw" << "";
+    valuesFirst << "one"
+                << "two"
+                << "three";
+    valuesSecond << "asgreg"
+                 << "ertetw"
+                 << "";
 
     QString stringOne("hey test"), stringTwo("sdfwioiouoioi");
 
@@ -324,8 +345,12 @@ void TestVariantData::testRemoveRow()
 void TestVariantData::testReplaceRow()
 {
     QStringList valuesFirst, valuesSecond;
-    valuesFirst << "one" << "two" << "three";
-    valuesSecond << "asgreg" << "ertetw" << "";
+    valuesFirst << "one"
+                << "two"
+                << "three";
+    valuesSecond << "asgreg"
+                 << "ertetw"
+                 << "";
 
     QString stringOne("hey test"), stringTwo("sdfwioiouoioi");
 

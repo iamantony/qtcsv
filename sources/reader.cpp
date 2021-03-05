@@ -13,7 +13,7 @@
 
 using namespace QtCSV;
 
-inline bool openFile(const QString& filePath, QFile& file)
+inline bool openFile(const QString &filePath, QFile &file)
 {
     if (false == CheckFile(filePath, true))
     {
@@ -44,43 +44,37 @@ class ReaderPrivate
 public:
     // Function that really reads csv-data and transfer it's data to
     // AbstractProcessor-based processor
-    static bool read(QIODevice& ioDevice,
-                     Reader::AbstractProcessor& processor,
-                     const QString& separator,
-                     const QString& textDelimiter,
-#if QT_VERSION >= 0x060000
-                     QStringConverter::Encoding codec
-#else
-                     QTextCodec* codec
-#endif
-                     );
-
+    static bool read(QIODevice &ioDevice,
+                     Reader::AbstractProcessor &processor,
+                     const QString &separator,
+                     const QString &textDelimiter,
+                     QStringConverter::Encoding codec);
 
 private:
     // Check if file path and separator are valid
-    static bool checkParams(const QString& separator);
+    static bool checkParams(const QString &separator);
 
     // Split string to elements
-    static QStringList splitElements(const QString& line,
-                                     const QString& separator,
-                                     const QString& textDelimiter,
-                                     ElementInfo& elemInfo);
+    static QStringList splitElements(const QString &line,
+                                     const QString &separator,
+                                     const QString &textDelimiter,
+                                     ElementInfo &elemInfo);
 
     // Try to find end position of first or middle element
-    static int findMiddleElementPositioin(const QString& str,
-                                          const int& startPos,
-                                          const QString& separator,
-                                          const QString& txtDelim);
+    static int findMiddleElementPositioin(const QString &str,
+                                          const int &startPos,
+                                          const QString &separator,
+                                          const QString &txtDelim);
 
     // Check if current element is the last element
-    static bool isElementLast(const QString& str,
-                              const int& startPos,
-                              const QString& separator,
-                              const QString& txtDelim);
+    static bool isElementLast(const QString &str,
+                              const int &startPos,
+                              const QString &separator,
+                              const QString &txtDelim);
 
     // Remove extra symbols (spaces, text delimeters...)
-    static void removeExtraSymbols(QStringList& elements,
-                                   const QString& textDelimiter);
+    static void removeExtraSymbols(QStringList &elements,
+                                   const QString &textDelimiter);
 };
 
 // Function that really reads csv-data and transfer it's data to
@@ -93,25 +87,20 @@ private:
 // - codec - pointer to codec object that would be used for file reading
 // @output:
 // - bool - result of read operation
-bool ReaderPrivate::read(QIODevice& ioDevice,
-                         Reader::AbstractProcessor& processor,
-                         const QString& separator,
-                         const QString& textDelimiter,
-#if QT_VERSION >= 0x060000
-                         QStringConverter::Encoding codec
-#else
-                         QTextCodec* codec
-#endif
-                         )
+bool ReaderPrivate::read(QIODevice &ioDevice,
+                         Reader::AbstractProcessor &processor,
+                         const QString &separator,
+                         const QString &textDelimiter,
+                         QStringConverter::Encoding codec)
 {
-    if ( false == checkParams(separator) )
+    if (false == checkParams(separator))
     {
         return false;
     }
 
     // Open IO Device if it was not opened
     if (false == ioDevice.isOpen() &&
-            false == ioDevice.open(QIODevice::ReadOnly))
+        false == ioDevice.open(QIODevice::ReadOnly))
     {
         qDebug() << __FUNCTION__ << "Error - failed to open IO Device";
         return false;
@@ -135,7 +124,7 @@ bool ReaderPrivate::read(QIODevice& ioDevice,
         QString line = stream.readLine();
         processor.preProcessRawLine(line);
         QStringList elements = ReaderPrivate::splitElements(
-                  line, separator, textDelimiter, elemInfo);
+            line, separator, textDelimiter, elemInfo);
         if (elemInfo.isEnded)
         {
             // Current row ends on this line. Check if these elements are
@@ -195,7 +184,7 @@ bool ReaderPrivate::read(QIODevice& ioDevice,
 // - separator - string or character that separate values in a row
 // @output:
 // - bool - True if file path and separator are valid, otherwise False
-bool ReaderPrivate::checkParams(const QString& separator)
+bool ReaderPrivate::checkParams(const QString &separator)
 {
     if (separator.isEmpty())
     {
@@ -213,10 +202,10 @@ bool ReaderPrivate::checkParams(const QString& separator)
 // - textDelimiter - string that is used as text delimiter
 // @output:
 // - QStringList - list of elements
-QStringList ReaderPrivate::splitElements(const QString& line,
-                                            const QString& separator,
-                                            const QString& textDelimiter,
-                                            ElementInfo& elemInfo)
+QStringList ReaderPrivate::splitElements(const QString &line,
+                                         const QString &separator,
+                                         const QString &textDelimiter,
+                                         ElementInfo &elemInfo)
 {
     // If separator is empty, return whole line. Can't work in this
     // conditions!
@@ -242,7 +231,7 @@ QStringList ReaderPrivate::splitElements(const QString& line,
 
     QStringList result;
     int pos = 0;
-    while(pos < line.size())
+    while (pos < line.size())
     {
         if (elemInfo.isEnded)
         {
@@ -261,7 +250,7 @@ QStringList ReaderPrivate::splitElements(const QString& line,
                 // with delimiter and the seprator symbols standing next to each
                 // other.
                 int midElemEndPos = findMiddleElementPositioin(
-                                        line, pos, separator, textDelimiter);
+                    line, pos, separator, textDelimiter);
                 if (midElemEndPos > 0)
                 {
                     int length = midElemEndPos - pos;
@@ -293,7 +282,7 @@ QStringList ReaderPrivate::splitElements(const QString& line,
                 // ends at the next separator symbol.
                 // Check if line contains separator symbol.
                 int separatorPos = line.indexOf(separator, pos);
-                if (separatorPos >= 0 )
+                if (separatorPos >= 0)
                 {
                     // If line contains separator symbol, then our element
                     // located between current position and separator
@@ -331,7 +320,7 @@ QStringList ReaderPrivate::splitElements(const QString& line,
             // with delimiter and the seprator symbols standing next to each
             // other.
             int midElemEndPos = findMiddleElementPositioin(
-                                line, pos, separator, textDelimiter);
+                line, pos, separator, textDelimiter);
             if (midElemEndPos >= 0)
             {
                 result << (LF + line.mid(pos, midElemEndPos - pos));
@@ -369,23 +358,23 @@ QStringList ReaderPrivate::splitElements(const QString& line,
 // @output:
 // - int - end position of the element or -1 if this element is not first
 // or middle
-int ReaderPrivate::findMiddleElementPositioin(const QString& str,
-                                              const int& startPos,
-                                              const QString& separator,
-                                              const QString& txtDelim)
+int ReaderPrivate::findMiddleElementPositioin(const QString &str,
+                                              const int &startPos,
+                                              const QString &separator,
+                                              const QString &txtDelim)
 {
     const int ERROR = -1;
     if (str.isEmpty() ||
-            startPos < 0 ||
-            separator.isEmpty() ||
-            txtDelim.isEmpty())
+        startPos < 0 ||
+        separator.isEmpty() ||
+        txtDelim.isEmpty())
     {
         return ERROR;
     }
 
     const QString elemEndSymbols = txtDelim + separator;
     int elemEndPos = startPos;
-    while(elemEndPos < str.size())
+    while (elemEndPos < str.size())
     {
         // Find position of element end symbol
         elemEndPos = str.indexOf(elemEndSymbols, elemEndPos);
@@ -403,19 +392,11 @@ int ReaderPrivate::findMiddleElementPositioin(const QString& str,
         int numOfDelimiters = 0;
         for (int pos = elemEndPos; startPos <= pos; --pos, ++numOfDelimiters)
         {
-#if QT_VERSION >= 0x060000
             auto strRef = str.mid(pos, txtDelim.size());
             if (QString::compare(strRef, txtDelim) != 0)
             {
                 break;
             }
-#else
-            QStringRef strRef = str.midRef(pos, txtDelim.size());
-            if (QStringRef::compare(strRef, txtDelim) != 0)
-            {
-                break;
-            }
-#endif
         }
 
         // If we have odd number of delimiter symbols that stand together,
@@ -446,15 +427,15 @@ int ReaderPrivate::findMiddleElementPositioin(const QString& str,
 // @output:
 // - bool - True if the current element is the last element of the string,
 // False otherwise
-bool ReaderPrivate::isElementLast(const QString& str,
-                                  const int& startPos,
-                                  const QString& separator,
-                                  const QString& txtDelim)
+bool ReaderPrivate::isElementLast(const QString &str,
+                                  const int &startPos,
+                                  const QString &separator,
+                                  const QString &txtDelim)
 {
     if (str.isEmpty() ||
-            startPos < 0 ||
-            separator.isEmpty() ||
-            txtDelim.isEmpty())
+        startPos < 0 ||
+        separator.isEmpty() ||
+        txtDelim.isEmpty())
     {
         return false;
     }
@@ -473,19 +454,11 @@ bool ReaderPrivate::isElementLast(const QString& str,
     int numOfDelimiters = 0;
     for (int pos = str.size() - 1; startPos <= pos; --pos, ++numOfDelimiters)
     {
-#if QT_VERSION >= 0x060000
         auto strRef = str.mid(pos, txtDelim.size());
         if (QString::compare(strRef, txtDelim) != 0)
         {
             break;
         }
-#else
-        QStringRef strRef = str.midRef(pos, txtDelim.size());
-        if (QStringRef::compare(strRef, txtDelim) != 0)
-        {
-            break;
-        }
-#endif
     }
 
     // If we have odd number of delimiter symbols that stand together,
@@ -503,8 +476,8 @@ bool ReaderPrivate::isElementLast(const QString& str,
 // @input:
 // - elements - list of row elements
 // - textDelimiter - string that is used as text delimiter
-void ReaderPrivate::removeExtraSymbols(QStringList& elements,
-                                       const QString& textDelimiter)
+void ReaderPrivate::removeExtraSymbols(QStringList &elements,
+                                       const QString &textDelimiter)
 {
     if (elements.isEmpty())
     {
@@ -525,20 +498,22 @@ void ReaderPrivate::removeExtraSymbols(QStringList& elements,
         // Find first non-space char
         for (;
              startPos < str.size() &&
-                 str.at(startPos).category() == QChar::Separator_Space;
-             ++startPos);
+             str.at(startPos).category() == QChar::Separator_Space;
+             ++startPos)
+            ;
 
         // Find last non-space char
         for (;
              endPos >= 0 &&
-                 str.at(endPos).category() == QChar::Separator_Space;
-             --endPos);
+             str.at(endPos).category() == QChar::Separator_Space;
+             --endPos)
+            ;
 
         if (false == textDelimiter.isEmpty())
         {
             // Skip text delimiter symbol if element starts with it
             QStringRef strStart(&elements.at(i), startPos, textDelimiter.size());
-            if ( strStart == textDelimiter)
+            if (strStart == textDelimiter)
             {
                 startPos += textDelimiter.size();
             }
@@ -552,8 +527,8 @@ void ReaderPrivate::removeExtraSymbols(QStringList& elements,
             }
         }
 
-        if ( (0 < startPos || endPos < str.size() - 1) &&
-             startPos <= endPos)
+        if ((0 < startPos || endPos < str.size() - 1) &&
+            startPos <= endPos)
         {
             elements[i] = elements[i].mid(startPos, endPos - startPos + 1);
         }
@@ -568,7 +543,7 @@ class ReadToListProcessor : public Reader::AbstractProcessor
 {
 public:
     QList<QStringList> data;
-    virtual bool processRowElements(const QStringList& elements)
+    virtual bool processRowElements(const QStringList &elements)
     {
         data << elements;
         return true;
@@ -584,15 +559,10 @@ public:
 // @output:
 // - QList<QStringList> - list of values (as strings) from csv-file. In case of
 // error will return empty QList<QStringList>.
-QList<QStringList> Reader::readToList(const QString& filePath,
-                                      const QString& separator,
-                                      const QString& textDelimiter,
-#if QT_VERSION >= 0x060000
-                                      QStringConverter::Encoding codec
-#else
-                                      QTextCodec* codec
-#endif
-                                      )
+QList<QStringList> Reader::readToList(const QString &filePath,
+                                      const QString &separator,
+                                      const QString &textDelimiter,
+                                      QStringConverter::Encoding codec)
 {
     QFile file;
     if (false == openFile(filePath, file))
@@ -608,12 +578,7 @@ QList<QStringList> Reader::readToList(const QString& filePath,
 QList<QStringList> Reader::readToList(QIODevice &ioDevice,
                                       const QString &separator,
                                       const QString &textDelimiter,
-#if QT_VERSION >= 0x060000
-                                      QStringConverter::Encoding codec
-#else
-                                      QTextCodec *codec
-#endif
-                                      )
+                                      QStringConverter::Encoding codec)
 {
     ReadToListProcessor processor;
     ReaderPrivate::read(ioDevice, processor, separator, textDelimiter, codec);
@@ -629,16 +594,11 @@ QList<QStringList> Reader::readToList(QIODevice &ioDevice,
 // - codec - pointer to codec object that would be used for file reading
 // @output:
 // - bool - True if file was successfully read, otherwise False
-bool Reader::readToData(const QString& filePath,
-                        AbstractData& data,
-                        const QString& separator,
-                        const QString& textDelimiter,
-#if QT_VERSION >= 0x060000
-                        QStringConverter::Encoding codec
-#else
-                        QTextCodec* codec
-#endif
-                        )
+bool Reader::readToData(const QString &filePath,
+                        AbstractData &data,
+                        const QString &separator,
+                        const QString &textDelimiter,
+                        QStringConverter::Encoding codec)
 {
     QFile file;
     if (false == openFile(filePath, file))
@@ -651,20 +611,15 @@ bool Reader::readToData(const QString& filePath,
 
 // Read csv-formatted data from IO Device and save it
 // to AbstractData-based container class
-bool Reader::readToData(QIODevice& ioDevice,
-                        AbstractData& data,
-                        const QString& separator,
-                        const QString& textDelimiter,
-#if QT_VERSION >= 0x060000
-                        QStringConverter::Encoding codec
-#else
-                        QTextCodec* codec
-#endif
-                        )
+bool Reader::readToData(QIODevice &ioDevice,
+                        AbstractData &data,
+                        const QString &separator,
+                        const QString &textDelimiter,
+                        QStringConverter::Encoding codec)
 {
     ReadToListProcessor processor;
     if (false == ReaderPrivate::read(
-                ioDevice, processor, separator, textDelimiter, codec))
+                     ioDevice, processor, separator, textDelimiter, codec))
     {
         return false;
     }
@@ -687,16 +642,11 @@ bool Reader::readToData(QIODevice& ioDevice,
 // - codec - pointer to codec object that would be used for file reading
 // @output:
 // - bool - True if file was successfully read, otherwise False
-bool Reader::readToProcessor(const QString& filePath,
-                             Reader::AbstractProcessor& processor,
-                             const QString& separator,
-                             const QString& textDelimiter,
-#if QT_VERSION >= 0x060000
-                             QStringConverter::Encoding codec
-#else
-                             QTextCodec* codec
-#endif
-                             )
+bool Reader::readToProcessor(const QString &filePath,
+                             Reader::AbstractProcessor &processor,
+                             const QString &separator,
+                             const QString &textDelimiter,
+                             QStringConverter::Encoding codec)
 {
     QFile file;
     if (false == openFile(filePath, file))
@@ -708,17 +658,12 @@ bool Reader::readToProcessor(const QString& filePath,
 }
 
 // Read csv-formatted data from IO Device and process it line-by-line
-bool Reader::readToProcessor(QIODevice& ioDevice,
-                             Reader::AbstractProcessor& processor,
-                             const QString& separator,
-                             const QString& textDelimiter,
-#if QT_VERSION >= 0x060000
-                             QStringConverter::Encoding codec
-#else
-                             QTextCodec* codec
-#endif
-                             )
+bool Reader::readToProcessor(QIODevice &ioDevice,
+                             Reader::AbstractProcessor &processor,
+                             const QString &separator,
+                             const QString &textDelimiter,
+                             QStringConverter::Encoding codec)
 {
     return ReaderPrivate::read(
-                ioDevice, processor, separator, textDelimiter, codec);
+        ioDevice, processor, separator, textDelimiter, codec);
 }

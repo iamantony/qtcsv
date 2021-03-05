@@ -7,11 +7,7 @@
 #include "qtcsv/qtcsv_global.h"
 
 class QVariant;
-#if QT_VERSION >= 0x060000
 using QStringList = QList<QString>;
-#else
-class QStringList;
-#endif
 
 namespace QtCSV
 {
@@ -26,69 +22,69 @@ namespace QtCSV
     {
     public:
         explicit VariantData();
-        VariantData(const VariantData& other);
+        VariantData(const VariantData &other);
         virtual ~VariantData();
 
         // Add new empty row
         virtual void addEmptyRow();
         // Add new row with one value
-        bool addRow(const QVariant& value);
+        bool addRow(const QVariant &value);
         // Add new row with specified values
-        bool addRow(const QList<QVariant>& values);
+        bool addRow(const QList<QVariant> &values);
         // Add new row with specified values (as strings)
-        virtual void addRow(const QStringList& values);
+        virtual void addRow(const QStringList &values);
         // Clear all data
         virtual void clear();
         // Insert new row at index position 'row'
-        bool insertRow(const int& row,
-                       const QVariant& value);
+        bool insertRow(const int &row,
+                       const QVariant &value);
 
-        bool insertRow(const int& row,
-                       const QStringList& values);
+        bool insertRow(const int &row,
+                       const QStringList &values);
 
-        bool insertRow(const int& row,
-                       const QList<QVariant>& values);
+        bool insertRow(const int &row,
+                       const QList<QVariant> &values);
 
         // Check if there are any data
         virtual bool isEmpty() const;
         // Remove the row at index position 'row'
-        void removeRow(const int& row);
+        void removeRow(const int &row);
         // Replace the row at index position 'row' with new row
-        bool replaceRow(const int& row,
-                        const QVariant& value);
+        bool replaceRow(const int &row,
+                        const QVariant &value);
 
-        bool replaceRow(const int& row,
-                        const QStringList& values);
+        bool replaceRow(const int &row,
+                        const QStringList &values);
 
-        bool replaceRow(const int& row,
-                        const QList<QVariant>& values);
+        bool replaceRow(const int &row,
+                        const QList<QVariant> &values);
 
         // Reserve space for 'size' rows
-        void reserve(const int& size);
+        void reserve(const int &size);
         // Get number of rows
         virtual int rowCount() const;
         // Get values (as list of strings) of specified row
-        virtual QStringList rowValues(const int& row) const;
+        virtual QStringList rowValues(const int &row) const;
 
-        bool operator==(const VariantData& other) const;
+        bool operator==(const VariantData &other) const;
 
-        friend bool operator!=(const VariantData& left,
-                               const VariantData& right)
+        friend bool operator!=(const VariantData &left,
+                               const VariantData &right)
         {
             return !(left == right);
         }
 
-        VariantData& operator=(const VariantData& other);
+        VariantData &operator=(const VariantData &other);
 
         // Add new row that would contain one value
-        VariantData& operator<<(const QVariant &value);
+        VariantData &operator<<(const QVariant &value);
         // Add new row with specified values
-        VariantData& operator<<(const QList<QVariant> &values);
-        VariantData& operator<<(const QStringList &values);
+        VariantData &operator<<(const QList<QVariant> &values);
+        VariantData &operator<<(const QStringList &values);
 
     private:
         class VariantDataPrivate;
-        VariantDataPrivate* d_ptr;
+        VariantDataPrivate *d_ptr;
     };
 }
 

@@ -3,12 +3,7 @@
 
 #include <QtGlobal>
 
-#if QT_VERSION >= 0x060000
 using QStringList = QList<QString>;
-#else
-class QString;
-class QStringList;
-#endif
 
 namespace QtCSV
 {
@@ -26,11 +21,11 @@ namespace QtCSV
     class ContentIterator
     {
     public:
-        explicit ContentIterator(const AbstractData& data,
-                                 const QString& separator,
-                                 const QString& textDelimiter,
-                                 const QStringList& header,
-                                 const QStringList& footer,
+        explicit ContentIterator(const AbstractData &data,
+                                 const QString &separator,
+                                 const QString &textDelimiter,
+                                 const QStringList &header,
+                                 const QStringList &footer,
                                  int chunkSize = 1000);
 
         ~ContentIterator() {}
@@ -44,14 +39,14 @@ namespace QtCSV
 
     private:
         // Compose row string from values
-        QString composeRow(const QStringList& values) const;
+        QString composeRow(const QStringList &values) const;
 
     private:
-        const AbstractData& m_data;
-        const QString& m_separator;
-        const QString& m_textDelimiter;
-        const QStringList& m_header;
-        const QStringList& m_footer;
+        const AbstractData &m_data;
+        const QString &m_separator;
+        const QString &m_textDelimiter;
+        const QStringList &m_header;
+        const QStringList &m_footer;
         const int m_chunkSize;
         int m_dataRow;
         bool atEnd;

@@ -5,7 +5,7 @@
 #include "testreader.h"
 #include "testwriter.h"
 
-int AssertTest(QObject* obj)
+int AssertTest(QObject *obj)
 {
     int status = QTest::qExec(obj);
     delete obj;

@@ -3,11 +3,7 @@
 
 #include "qtcsv_global.h"
 
-#if QT_VERSION >= 0x060000
 using QStringList = QList<QString>;
-#else
-class QStringList;
-#endif
 
 namespace QtCSV
 {
@@ -47,7 +43,7 @@ namespace QtCSV
         // Add new empty row
         virtual void addEmptyRow() = 0;
         // Add new row with specified values (as strings)
-        virtual void addRow(const QStringList& values) = 0;
+        virtual void addRow(const QStringList &values) = 0;
         // Clear all data
         virtual void clear() = 0;
         // Check if there are any rows
@@ -55,7 +51,7 @@ namespace QtCSV
         // Get number of rows
         virtual int rowCount() const = 0;
         // Get values of specified row as list of strings
-        virtual QStringList rowValues(const int& row) const = 0;
+        virtual QStringList rowValues(const int &row) const = 0;
     };
 }
 
