@@ -19,8 +19,8 @@ matrix:
   fast_finish: false
 
 before_build:
-  - ps: echo %PATH%
-  - ps: set PATH=%MINGW%\bin;%QT6%\bin;%PATH%
+  - ps: echo $env:PATH
+  - ps: set PATH=$env:MINGW\bin;$env:QT6\bin;$env:PATH
 
 build_script:
   - mkdir build
