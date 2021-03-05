@@ -4,8 +4,12 @@
 #include "qtcsv/qtcsv_global.h"
 #include "qtcsv/abstractdata.h"
 
+#if QT_VERSION >= 0x060000
+using QStringList = QList<QString>;
+#else
 class QString;
 class QStringList;
+#endif
 
 namespace QtCSV
 {

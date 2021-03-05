@@ -3,7 +3,11 @@
 
 #include "qtcsv_global.h"
 
+#if QT_VERSION >= 0x060000
+using QStringList = QList<QString>;
+#else
 class QStringList;
+#endif
 
 namespace QtCSV
 {

@@ -1,6 +1,9 @@
 if(USE_QT4)
     find_package(Qt4 REQUIRED)
     set(QT_TEST_TARGET Qt4::QtTest)
+elseif(USE_QT6)
+    find_package(Qt6 COMPONENTS Test REQUIRED)
+    set(QT_TEST_TARGET Qt6::Test)
 else()
     # if cmake failed to find Qt5Test configuration file, set path manually:
     #list(APPEND CMAKE_PREFIX_PATH "/path/to/Qt/lib/cmake/Qt5Test/")
