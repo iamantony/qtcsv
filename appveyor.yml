@@ -8,11 +8,9 @@ environment:
     - QT6: C:\Qt\6.0.1\mingw81_64
       MINGW: C:\Qt\Tools\mingw810_64
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
-      use_cmake: "false"
     - QT6: C:\Qt\6.0.2\mingw81_64
       MINGW: C:\Qt\Tools\mingw810_64
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
-      use_cmake: "false"
 
 matrix:
   fast_finish: true
@@ -23,30 +21,12 @@ before_build:
 build_script:
   - mkdir .\build
   - cd .\build
-
   # build library and tests
-  - if [%use_cmake%]==[true] (
-    cmake --version &&
-    cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release .. &&
-    make &&
-    dir /s &&
-    cd .\tests)
-    else (
-    qmake -v &&
-    qmake ..\qtcsv.pro CONFIG+=release DESTDIR=%cd% &&
-    mingw32-make &&
-    dir /s &&
-    mkdir .\tests &&
-    cd .\tests &&
-    copy ..\*qtcsv.dll .\ &&
-    qmake ..\..\tests\tests.pro CONFIG+=release DESTDIR=%cd%\tests &&
-    mingw32-make)
-
-  # download test file
-  #- wget -O worldcitiespop.txt.gz https://raw.github.com/apache/commons-csv/master/src/test/resources/perf/worldcitiespop.txt.gz
-  #- 7z e worldcitiespop.txt.gz
-  #- move worldcitiespop.txt data\
-
+  - cmake --version
+  - cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release ..
+  - make
+  - dir /s
+  - cd .\tests
   # run tests
   - dir /s
   - qtcsv_tests.exe
