@@ -8,6 +8,8 @@ environment:
     - QT6: C:\Qt\6.0.1\mingw81_64
       MINGW: C:\Qt\Tools\mingw810_64
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    - QT6: $HOME/Qt/6.0.0
+      APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu2004
     # 6.0.2 not yet available as of 05 March 2021
     # - QT6: C:\Qt\6.0.2\mingw81_64
     #   MINGW: C:\Qt\Tools\mingw810_64
@@ -17,19 +19,20 @@ matrix:
   fast_finish: true
 
 before_build:
-  - echo %PATH%
-  - set PATH=%MINGW%\bin;%QT6%\bin;%PATH%
+  - cmd: echo %PATH%
+  - cmd: set PATH=%MINGW%\bin;%QT6%\bin;%PATH%
 
 build_script:
-  - mkdir .\build
-  - cd .\build
+  - mkdir build
+  - cd build
   # build library and tests
   - cmake --version
   # IGNORE_PATH is a workaround for CMake not wanting sh.exe on PATH for MinGW
-  - cmake -G "MinGW Makefiles" -DCMAKE_IGNORE_PATH="C:/Program Files/Git/usr/bin" -DCMAKE_BUILD_TYPE=Release ..
-  - mingw32-make
+  - cmd: cmake -G "MinGW Makefiles" -DCMAKE_IGNORE_PATH="C:/Program Files/Git/usr/bin" -DCMAKE_BUILD_TYPE=Release --build ..
+  - sh: cmake -G "GNU Makefiles" -DCMAKE_BUILD_TYPE=Release --build ..
+  # - mingw32-make
   # - dir /s
-  - cd .\tests
+  # - cd .\tests
   # run tests
   # - dir /s
-  - qtcsv_tests.exe
+  # - qtcsv_tests.exe
