@@ -7,8 +7,8 @@ option(STATIC_LIB "build as static lib if ON, otherwise build shared lib" OFF)
 option(BUILD_TESTS "build tests" ON)
 
 # find qt package
-find_package(Qt6 COMPONENTS Core Core5Compat REQUIRED)
-set(QT_CORE_TARGET Qt6::Core Qt6::Core5Compat)
+find_package(Qt6 COMPONENTS Core REQUIRED)
+set(QT_CORE_TARGET Qt6::Core)
 
 # instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
