@@ -16,11 +16,11 @@ environment:
     #   APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 
 matrix:
-  fast_finish: true
+  fast_finish: false
 
 before_build:
-  - cmd: echo %PATH%
-  - cmd: set PATH=%MINGW%\bin;%QT6%\bin;%PATH%
+  - ps: echo %PATH%
+  - ps: set PATH=%MINGW%\bin;%QT6%\bin;%PATH%
 
 build_script:
   - mkdir build
@@ -28,12 +28,12 @@ build_script:
   # build library and tests
   - cmake --version
   # IGNORE_PATH is a workaround for CMake not wanting sh.exe on PATH for MinGW
-  - cmd: cmake -G "MinGW Makefiles" -DCMAKE_IGNORE_PATH="C:/Program Files/Git/usr/bin" -DCMAKE_BUILD_TYPE=Release --build ..
-  - cmd: dir /s
+  - ps: cmake -G "MinGW Makefiles" -DCMAKE_IGNORE_PATH="C:/Program Files/Git/usr/bin" -DCMAKE_BUILD_TYPE=Release --build ..
+  - ps: dir /s
   - sh: cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release --build ..
   - sh: ls -lah *
   - cd tests
-  - cmd: qtcsv_tests.exe
+  - ps: qtcsv_tests.exe
   - sh: ./qtcsv_tests
   # - mingw32-make
   # - dir /s
