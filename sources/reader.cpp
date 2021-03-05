@@ -2,7 +2,7 @@
 
 #include <QFile>
 #include <QStringList>
-#include <QStringRef>
+#include <QStringView>
 #include <QFile>
 #include <QTextStream>
 #include <QDebug>
@@ -487,7 +487,7 @@ void ReaderPrivate::removeExtraSymbols(QStringList &elements,
     const QString doubleTextDelim = textDelimiter + textDelimiter;
     for (int i = 0; i < elements.size(); ++i)
     {
-        QStringRef str(&elements.at(i));
+        QStringView str = QStringView{elements.at(i)};
         if (str.isEmpty())
         {
             continue;
@@ -512,16 +512,13 @@ void ReaderPrivate::removeExtraSymbols(QStringList &elements,
         if (false == textDelimiter.isEmpty())
         {
             // Skip text delimiter symbol if element starts with it
-            QStringRef strStart(&elements.at(i), startPos, textDelimiter.size());
-            if (strStart == textDelimiter)
+            if (str.startsWith(textDelimiter))
             {
                 startPos += textDelimiter.size();
             }
 
             // Skip text delimiter symbol if element ends with it
-            QStringRef strEnd(&elements.at(i), endPos - textDelimiter.size() + 1,
-                              textDelimiter.size());
-            if (strEnd == textDelimiter)
+            if (str.endsWith(textDelimiter))
             {
                 endPos -= textDelimiter.size();
             }
