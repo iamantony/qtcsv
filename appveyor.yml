@@ -53,4 +53,4 @@ for:
       - ps: ls -s
       - ps: mingw32-make
       - ps: cd tests
-      - ps: qtcsv_tests.exe
+      - ps: .\qtcsv_tests.exe
