@@ -55,3 +55,14 @@ for:
       - ps: mingw32-make
       - ps: cd tests
       - ps: .\qtcsv_tests.exe
+      - ps: echo "after test"
+      - ps: echo "after test"
+      - ps: echo "after test"
+      - ps: echo "after test"
+      - ps: echo "after test"
+      - ps: echo "after test"
+      - ps: echo "after test"
+      - ps: echo "after test"
+      - ps: echo "after test"
+      - ps: echo "after test"
+      - ps: echo "after test"
