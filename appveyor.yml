@@ -22,22 +22,36 @@ before_build:
   - ps: echo $env:PATH
   - ps: set PATH=$MINGW\bin;$QT6\bin;$env:PATH
 
-build_script:
-  - mkdir build
-  - cd build
-  # build library and tests
-  - cmake --version
-  # IGNORE_PATH is a workaround for CMake not wanting sh.exe on PATH for MinGW
-  - ps: cmake -G "MinGW Makefiles" -DCMAKE_IGNORE_PATH="C:/Program Files/Git/usr/bin" -DCMAKE_BUILD_TYPE=Release --build ..
-  - ps: dir /s
-  - sh: cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release --build ..
-  - sh: ls -lah *
-  - cd tests
-  - ps: qtcsv_tests.exe
-  - sh: ./qtcsv_tests
-  # - mingw32-make
-  # - dir /s
-  # - cd .\tests
-  # run tests
-  # - dir /s
-  # - qtcsv_tests.exe
+for:
+  - matrix:
+      only:
+        - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu2004
+
+    build_script:
+      - echo Ubuntu build script
+      - mkdir build
+      - cd build
+      - cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release --build ..
+      # - cd tests
+      # - sh: ./qtcsv_tests
+
+  - matrix:
+      only:
+        - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    build_script:
+      - echo Windows build script
+      - echo %PATH%
+      - set PATH=%MINGW%\bin;%QT6%\bin;%PATH%
+      - mkdir build
+      - cd build
+      # build library and tests
+      - cmake --version
+      # IGNORE_PATH is a workaround for CMake not wanting sh.exe on PATH for MinGW
+      - cmake -G "MinGW Makefiles" -DCMAKE_IGNORE_PATH="C:/Program Files/Git/usr/bin" -DCMAKE_BUILD_TYPE=Release --build ..
+      - dir /s
+      # - mingw32-make
+      # - dir /s
+      # - cd .\tests
+      # run tests
+      # - dir /s
+      # - qtcsv_tests.exe
