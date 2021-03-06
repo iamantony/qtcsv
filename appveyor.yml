@@ -25,6 +25,7 @@ for:
 
     build_script:
       - echo Ubuntu build script
+      - export PATH=$QT6/bin:$PATH
       - export CMAKE_PREFIX_PATH=$QT6
       - mkdir build
       - cd build
