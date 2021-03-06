@@ -90,7 +90,8 @@ bool StringData::isEmpty() const
 // (i.e., 0 <= row < rowCount()). Otherwise function will do nothing.
 void StringData::removeRow(const int &row)
 {
-    if (row >= 0 && row < d_ptr->m_values.size()) {
+    if (row >= 0 && row < d_ptr->m_values.size())
+    {
         d_ptr->m_values.removeAt(row);
     }
 }
