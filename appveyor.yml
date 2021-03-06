@@ -28,7 +28,7 @@ for:
 
     build_script:
       - echo $APPVEYOR_BUILD_WORKER_IMAGE build script
-      - "echo 'Shell: $SHELL'"
+      - "echo Shell: $SHELL"
       - export PATH=$QT6/bin:$PATH
       - export CMAKE_PREFIX_PATH=$QT6
       - ls -lah "$QT6"
