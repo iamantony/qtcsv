@@ -54,4 +54,5 @@ for:
       - ps: ls -s
       - ps: mingw32-make
       - ps: cd tests
-      - ps: bash.exe -c "./qtcsv_tests.exe"
+      - ps:
+      - ps: bash.exe -c "cp ../libqtcsv.dll .; ./qtcsv_tests.exe"
