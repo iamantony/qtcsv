@@ -42,6 +42,7 @@ for:
     build_script:
       - ps: echo Windows build script
       - ps: echo $env:PATH
+      - ps: (dir env:)
       - ps: $env:PATH=$env:MINGW\bin;$env:QT6\bin;$env:PATH
       - ps: mkdir build
       - ps: cd build
