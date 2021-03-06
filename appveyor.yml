@@ -8,7 +8,7 @@ environment:
     - QT6: C:\Qt\6.0.1\mingw81_64
       MINGW: C:\Qt\Tools\mingw810_64
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    - QT6: $HOME/Qt/6.0.0
+    - QT6: $HOME/Qt/6.0.0/gcc_64
       APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu2004
     # 6.0.2 not yet available as of 05 March 2021
     # - QT6: C:\Qt\6.0.2\mingw81_64
@@ -25,11 +25,12 @@ for:
 
     build_script:
       - echo Ubuntu build script
+      - export CMAKE_PREFIX_PATH=$QT6
       - mkdir build
       - cd build
       - cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release --build ..
-      # - cd tests
-      # - sh: ./qtcsv_tests
+      - cd tests
+      - ./qtcsv_tests
 
   - matrix:
       only:
@@ -45,9 +46,6 @@ for:
       # IGNORE_PATH is a workaround for CMake not wanting sh.exe on PATH for MinGW
       - cmake -G "MinGW Makefiles" -DCMAKE_IGNORE_PATH="C:/Program Files/Git/usr/bin" -DCMAKE_BUILD_TYPE=Release --build ..
       - dir /s
-      # - mingw32-make
-      # - dir /s
-      # - cd .\tests
-      # run tests
-      # - dir /s
-      # - qtcsv_tests.exe
+      - mingw32-make
+      - cd tests
+      - qtcsv_tests.exe
