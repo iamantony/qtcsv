@@ -5,11 +5,13 @@ init:
 
 environment:
   matrix:
+    - QT6: $HOME/Qt/6.0.0/clang_64/bin
+      APPVEYOR_BUILD_WORKER_IMAGE: macos
+    - QT6: /home/appveyor/Qt/6.0.0/gcc_64
+      APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu2004
     - QT6: C:\Qt\6.0.1\mingw81_64
       MINGW: C:\Qt\Tools\mingw810_64
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    - QT6: /home/appveyor/Qt/6.0.0/gcc_64
-      APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu2004
     # 6.0.2 not yet available as of 05 March 2021
     # - QT6: C:\Qt\6.0.2\mingw81_64
     #   MINGW: C:\Qt\Tools\mingw810_64
@@ -22,9 +24,10 @@ for:
   - matrix:
       only:
         - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu2004
+        - APPVEYOR_BUILD_WORKER_IMAGE: macos
 
     build_script:
-      - echo Ubuntu build script
+      - echo $APPVEYOR_BUILD_WORKER_IMAGE build script
       - export PATH=$QT6/bin:$PATH
       - export CMAKE_PREFIX_PATH=$QT6
       - ls -lah $QT6
