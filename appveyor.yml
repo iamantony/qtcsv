@@ -29,6 +29,7 @@ for:
       - export CMAKE_PREFIX_PATH=$QT6
       - echo $HOME
       - ls -lah $HOME
+      - ls -lah $HOME/Qt
       - ls -lah $QT6
       - ls -lah $QT6/bin
       - mkdir build
