@@ -44,6 +44,7 @@ for:
       - ps: echo $env:PATH
       - ps: (dir env:)
       - ps: $env:PATH="$env:MINGW\bin;$env:QT6\bin;$env:PATH"
+      - ps: $env:QT_LOGGING_RULES="*.debug=true"
       - ps: mkdir build
       - ps: cd build
       # build library and tests
