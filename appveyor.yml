@@ -30,6 +30,7 @@ for:
       - echo $HOME
       - ls -lah $HOME
       - ls -lah $HOME/Qt
+      - ls -lah $HOME/Qt/6.0.0
       - ls -lah $QT6
       - ls -lah $QT6/bin
       - mkdir build
