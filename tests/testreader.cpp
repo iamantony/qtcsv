@@ -333,6 +333,7 @@ void TestReader::testReadFieldWithCR()
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
     for (int i = 0; i < data.size(); ++i)
     {
+        qWarning() << expected.at(i) << data.at(i);
         QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
     }
 }

@@ -512,13 +512,15 @@ void ReaderPrivate::removeExtraSymbols(QStringList &elements,
         if (false == textDelimiter.isEmpty())
         {
             // Skip text delimiter symbol if element starts with it
-            if (str.startsWith(textDelimiter))
+            QStringView strStart = str.mid(startPos, textDelimiter.size());
+            if (strStart == textDelimiter)
             {
                 startPos += textDelimiter.size();
             }
 
             // Skip text delimiter symbol if element ends with it
-            if (str.endsWith(textDelimiter))
+            QStringView strEnd = str.mid(endPos - textDelimiter.size() + 1, textDelimiter.size());
+            if (strEnd == textDelimiter)
             {
                 endPos -= textDelimiter.size();
             }
