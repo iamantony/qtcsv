@@ -73,7 +73,7 @@ void StringData::insertRow(const int &row,
 void StringData::insertRow(const int &row,
                            const QStringList &values)
 {
-    d_ptr->m_values.insert(row, values);
+    d_ptr->m_values.insert(qBound(0, row, d_ptr->m_values.size()), values);
 }
 
 // Check if there are any rows
@@ -90,7 +90,10 @@ bool StringData::isEmpty() const
 // (i.e., 0 <= row < rowCount()). Otherwise function will do nothing.
 void StringData::removeRow(const int &row)
 {
-    d_ptr->m_values.removeAt(row);
+    if (row >= 0 && row < d_ptr->m_values.size())
+    {
+        d_ptr->m_values.removeAt(row);
+    }
 }
 
 // Replace the row at index position 'row' with new row.
