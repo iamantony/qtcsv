@@ -18,10 +18,6 @@ environment:
 matrix:
   fast_finish: false
 
-before_build:
-  - ps: echo $env:PATH
-  - ps: set PATH=$MINGW\bin;$QT6\bin;$env:PATH
-
 for:
   - matrix:
       only:
