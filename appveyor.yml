@@ -5,7 +5,7 @@ init:
 
 environment:
   matrix:
-    - QT6: /Users/appveyor/Qt/6.0.0/clang_64/bin
+    - QT6: /Users/appveyor/Qt/6.0.0/clang_64
       APPVEYOR_BUILD_WORKER_IMAGE: macos
     - QT6: /home/appveyor/Qt/6.0.0/gcc_64
       APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu2004
