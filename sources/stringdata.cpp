@@ -1,5 +1,4 @@
 #include "include/qtcsv/stringdata.h"
-
 #include <QList>
 #include <QStringList>
 
@@ -11,14 +10,9 @@ public:
     QList<QStringList> m_values;
 };
 
-StringData::StringData() :
-    d_ptr(new StringDataPrivate)
-{
+StringData::StringData() : d_ptr(new StringDataPrivate) {}
 
-}
-
-StringData::StringData(const StringData& other) :
-    d_ptr(new StringDataPrivate)
+StringData::StringData(const StringData& other) : d_ptr(new StringDataPrivate)
 {
     d_ptr->m_values = other.d_ptr->m_values;
 }
@@ -62,8 +56,7 @@ void StringData::clear()
 // - row - index of row. If 'row' is 0, the value will be set as first row.
 // If 'row' is >= rowCount(), the value will be added as new last row.
 // - value - value that is supposed to be written to the new row
-void StringData::insertRow(const int& row,
-                           const QString& value)
+void StringData::insertRow(const int& row, const QString& value)
 {
     insertRow(row, (QStringList() << value));
 }
@@ -73,8 +66,7 @@ void StringData::insertRow(const int& row,
 // - row - index of row. If 'row' is 0, the values will be set as first row.
 // If 'row' is >= rowCount(), the values will be added as new last row.
 // - values - list of strings
-void StringData::insertRow(const int& row,
-                           const QStringList& values)
+void StringData::insertRow(const int& row, const QStringList& values)
 {
     d_ptr->m_values.insert(row, values);
 }
@@ -101,8 +93,7 @@ void StringData::removeRow(const int& row)
 // - row - index of row that should be replaced. 'row' must be
 // a valid index position (i.e., 0 <= row < rowCount()).
 // - value - value that is supposed to be written instead of the 'old' values
-void StringData::replaceRow(const int& row,
-                            const QString& value)
+void StringData::replaceRow(const int& row, const QString& value)
 {
     replaceRow(row, (QStringList() << value));
 }
@@ -113,8 +104,7 @@ void StringData::replaceRow(const int& row,
 // a valid index position (i.e., 0 <= row < rowCount()).
 // - values - list of strings that is supposed to be written instead of the
 // 'old' values
-void StringData::replaceRow(const int& row,
-                            const QStringList& values)
+void StringData::replaceRow(const int& row, const QStringList& values)
 {
     d_ptr->m_values.replace(row, values);
 }
@@ -144,7 +134,7 @@ int StringData::rowCount() const
 // return empty QStringList.
 QStringList StringData::rowValues(const int& row) const
 {
-    if ( row < 0 || rowCount() <= row )
+    if (row < 0 || rowCount() <= row)
     {
         return QStringList();
     }

@@ -1,13 +1,9 @@
 #include "teststringdata.h"
-
+#include "qtcsv/stringdata.h"
 #include <QDebug>
 #include <QTest>
 
-#include "qtcsv/stringdata.h"
-
-TestStringData::TestStringData()
-{
-}
+TestStringData::TestStringData() {}
 
 void TestStringData::testCreation()
 {

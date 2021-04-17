@@ -19,28 +19,6 @@ namespace QtCSV
     // new line symbol.
     class ContentIterator
     {
-    public:
-        explicit ContentIterator(const AbstractData& data,
-                                 const QString& separator,
-                                 const QString& textDelimiter,
-                                 const QStringList& header,
-                                 const QStringList& footer,
-                                 int chunkSize = 1000);
-
-        ~ContentIterator() {}
-
-        // Check if content contains information
-        bool isEmpty() const;
-        // Check if content still has chunks of information to return
-        bool hasNext() const;
-        // Get next chunk of information
-        QString getNext();
-
-    private:
-        // Compose row string from values
-        QString composeRow(const QStringList& values) const;
-
-    private:
         const AbstractData& m_data;
         const QString& m_separator;
         const QString& m_textDelimiter;
@@ -49,6 +27,25 @@ namespace QtCSV
         const int m_chunkSize;
         int m_dataRow;
         bool atEnd;
+
+        // Compose row string from values
+        QString composeRow(const QStringList& values) const;
+
+    public:
+        explicit ContentIterator(
+            const AbstractData& data,
+            const QString& separator,
+            const QString& textDelimiter,
+            const QStringList& header,
+            const QStringList& footer,
+            int chunkSize = 1000);
+
+        // Check if content contains information
+        bool isEmpty() const;
+        // Check if content still has chunks of information to return
+        bool hasNext() const;
+        // Get next chunk of information
+        QString getNext();
     };
 }
 

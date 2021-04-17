@@ -14,9 +14,13 @@ namespace QtCSV
     // provides basic functions for working with rows.
     class QTCSVSHARED_EXPORT StringData : public AbstractData
     {
+        class StringDataPrivate;
+        StringDataPrivate* d_ptr;
+
     public:
         explicit StringData();
         StringData(const StringData& other);
+        StringData& operator=(const StringData& other);
         virtual ~StringData();
 
         // Add new empty row
@@ -28,22 +32,16 @@ namespace QtCSV
         // Clear all data
         virtual void clear();
         // Insert new row at index position 'row'
-        void insertRow(const int& row,
-                       const QString& value);
-
-        void insertRow(const int& row,
-                       const QStringList& values);
+        void insertRow(const int& row, const QString& value);
+        void insertRow(const int& row, const QStringList& values);
 
         // Check if there are any data
         virtual bool isEmpty() const;
         // Remove the row at index position 'row'
         void removeRow(const int& row);
         // Replace the row at index position 'row' with new row
-        void replaceRow(const int& row,
-                        const QString& value);
-
-        void replaceRow(const int& row,
-                        const QStringList& values);
+        void replaceRow(const int& row, const QString& value);
+        void replaceRow(const int& row, const QStringList& values);
 
         // Reserve space for 'size' rows
         void reserve(const int& size);
@@ -52,24 +50,16 @@ namespace QtCSV
         // Get values (as list of strings) of specified row
         virtual QStringList rowValues(const int& row) const;
 
-        bool operator==(const StringData& other) const;
-
-        friend bool operator!=(const StringData& left,
-                               const StringData& right)
-        {
-            return !(left == right);
-        }
-
-        StringData& operator=(const StringData& other);
-
         // Add new row that would contain one value
         StringData& operator<<(const QString& value);
         // Add new row with specified values
         StringData& operator<<(const QStringList& values);
 
-    private:
-        class StringDataPrivate;
-        StringDataPrivate* d_ptr;
+        bool operator==(const StringData& other) const;
+        friend bool operator!=(const StringData& left, const StringData& right)
+        {
+            return !(left == right);
+        }
     };
 }
 

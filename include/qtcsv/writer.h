@@ -1,11 +1,10 @@
 #ifndef QTCSVWRITER_H
 #define QTCSVWRITER_H
 
+#include "qtcsv/qtcsv_global.h"
 #include <QString>
 #include <QStringList>
 #include <QTextCodec>
-
-#include "qtcsv/qtcsv_global.h"
 
 class QIODevice;
 
@@ -34,23 +33,24 @@ namespace QtCSV
         };
 
         // Write data to csv-file
-        static bool write(const QString& filePath,
-                        const AbstractData& data,
-                        const QString& separator = QString(","),
-                        const QString& textDelimiter = QString("\""),
-                        const WriteMode& mode = REWRITE,
-                        const QStringList& header = QStringList(),
-                        const QStringList& footer = QStringList(),
-                        QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
+        static bool write(
+            const QString& filePath,
+            const AbstractData& data,
+            const QString& separator = QString(","),
+            const QString& textDelimiter = QString("\""),
+            const WriteMode& mode = REWRITE,
+            const QStringList& header = QStringList(),
+            const QStringList& footer = QStringList(),
+            QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
 
         // Write data to IO Device
         static bool write(QIODevice& ioDevice,
-                        const AbstractData& data,
-                        const QString& separator = QString(","),
-                        const QString& textDelimiter = QString("\""),
-                        const QStringList& header = QStringList(),
-                        const QStringList& footer = QStringList(),
-                        QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
+            const AbstractData& data,
+            const QString& separator = QString(","),
+            const QString& textDelimiter = QString("\""),
+            const QStringList& header = QStringList(),
+            const QStringList& footer = QStringList(),
+            QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
     };
 }
 

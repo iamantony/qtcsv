@@ -1,10 +1,9 @@
 #ifndef QTCSVREADER_H
 #define QTCSVREADER_H
 
+#include "qtcsv/qtcsv_global.h"
 #include <QList>
 #include <QTextCodec>
-
-#include "qtcsv/qtcsv_global.h"
 
 class QIODevice;
 class QStringList;
@@ -17,10 +16,10 @@ namespace QtCSV
     // absolute path to the csv-file that you are going to read or
     // some IO Device with csv-formatted data.
     //
-    // Additionally you cant specify:
+    // Additionally you can specify:
     // - a separator character (or string) that is used as separator of row
-    // values in this csv-file. Default separator is comma (",");
-    // - text delimiter character (or string) that enclose each element in a
+    // values. Default separator is comma (",");
+    // - text delimiter character (or string) that encloses each element in a
     // row. Typical delimiter characters: none (""), quote ("'")
     // and double quotes ("\"");
     // - text codec.
@@ -32,8 +31,8 @@ namespace QtCSV
     class QTCSVSHARED_EXPORT Reader
     {
     public:
-
-        // AbstractProcessor is a class used to process files one line at a time
+        // AbstractProcessor is a class that could be used to process csv-data
+        // line by line
         class QTCSVSHARED_EXPORT AbstractProcessor
         {
         public:
@@ -60,47 +59,53 @@ namespace QtCSV
         };
 
         // Read csv-file and save it's data as strings to QList<QStringList>
-        static QList<QStringList> readToList(const QString& filePath,
-                        const QString& separator = QString(","),
-                        const QString& textDelimiter = QString("\""),
-                        QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
+        static QList<QStringList> readToList(
+            const QString& filePath,
+            const QString& separator = QString(","),
+            const QString& textDelimiter = QString("\""),
+            QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
 
         // Read csv-formatted data from IO Device and save it
         // as strings to QList<QStringList>
-        static QList<QStringList> readToList(QIODevice& ioDevice,
-                        const QString& separator = QString(","),
-                        const QString& textDelimiter = QString("\""),
-                        QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
+        static QList<QStringList> readToList(
+            QIODevice& ioDevice,
+            const QString& separator = QString(","),
+            const QString& textDelimiter = QString("\""),
+            QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
 
         // Read csv-file and save it's data to AbstractData-based container
         // class
-        static bool readToData(const QString& filePath,
-                        AbstractData& data,
-                        const QString& separator = QString(","),
-                        const QString& textDelimiter = QString("\""),
-                        QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
+        static bool readToData(
+            const QString& filePath,
+            AbstractData& data,
+            const QString& separator = QString(","),
+            const QString& textDelimiter = QString("\""),
+            QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
 
         // Read csv-formatted data from IO Device and save it
         // to AbstractData-based container class
-        static bool readToData(QIODevice& ioDevice,
-                        AbstractData& data,
-                        const QString& separator = QString(","),
-                        const QString& textDelimiter = QString("\""),
-                        QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
+        static bool readToData(
+            QIODevice& ioDevice,
+            AbstractData& data,
+            const QString& separator = QString(","),
+            const QString& textDelimiter = QString("\""),
+            QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
 
         // Read csv-file and process it line-by-line
-        static bool readToProcessor(const QString& filePath,
-                        AbstractProcessor& processor,
-                        const QString& separator = QString(","),
-                        const QString& textDelimiter = QString("\""),
-                        QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
+        static bool readToProcessor(
+            const QString& filePath,
+            AbstractProcessor& processor,
+            const QString& separator = QString(","),
+            const QString& textDelimiter = QString("\""),
+            QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
 
         // Read csv-formatted data from IO Device and process it line-by-line
-        static bool readToProcessor(QIODevice& ioDevice,
-                        AbstractProcessor& processor,
-                        const QString& separator = QString(","),
-                        const QString& textDelimiter = QString("\""),
-                        QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
+        static bool readToProcessor(
+            QIODevice& ioDevice,
+            AbstractProcessor& processor,
+            const QString& separator = QString(","),
+            const QString& textDelimiter = QString("\""),
+            QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
     };
 }
 
