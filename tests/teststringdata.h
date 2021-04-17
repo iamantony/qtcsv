@@ -3,14 +3,13 @@
 
 #include <QtTest>
 
-class TestStringData : public QObject
-{
+class TestStringData : public QObject {
     Q_OBJECT
 
-public:
+   public:
     TestStringData();
 
-private Q_SLOTS:
+   private Q_SLOTS:
     void testCreation();
     void testAddEmptyRow();
     void testAddOneRow();
@@ -27,4 +26,4 @@ private Q_SLOTS:
     void testReplaceRow();
 };
 
-#endif // TESTSTRINGDATA_H
+#endif  // TESTSTRINGDATA_H

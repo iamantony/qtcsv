@@ -1,34 +1,29 @@
 #include "testvariantdata.h"
+
 #include "qtcsv/variantdata.h"
 
 const double EPSILON = 0.000001;
 
-TestVariantData::TestVariantData()
-{
-}
+TestVariantData::TestVariantData() {}
 
-void TestVariantData::testCreation()
-{
+void TestVariantData::testCreation() {
     QtCSV::VariantData varData;
 
     QVERIFY2(varData.isEmpty(), "Empty VariantData is not empty");
-    QVERIFY2(varData.rowCount() == 0,
-             "Empty VariantData have too many rows");
+    QVERIFY2(varData.rowCount() == 0, "Empty VariantData have too many rows");
 }
 
-void TestVariantData::testAddEmptyRow()
-{
+void TestVariantData::testAddEmptyRow() {
     QtCSV::VariantData varData;
     varData.addEmptyRow();
 
-    QVERIFY2(false == varData.isEmpty(), "VariantData is empty with empty line");
+    QVERIFY2(false == varData.isEmpty(),
+             "VariantData is empty with empty line");
     QVERIFY2(1 == varData.rowCount(), "Wrong number of rows");
-    QVERIFY2(QStringList() == varData.rowValues(0),
-             "Wrong data for empty row");
+    QVERIFY2(QStringList() == varData.rowValues(0), "Wrong data for empty row");
 }
 
-void TestVariantData::testAddOneRow()
-{
+void TestVariantData::testAddOneRow() {
     QList<QVariant> values;
     QString strValue("Hey");
     int intValue = 7000;
@@ -48,8 +43,7 @@ void TestVariantData::testAddOneRow()
     QVERIFY2(resultInt == intValue, "Wrong int data");
 }
 
-void TestVariantData::testAddOneRowUsingOneElement()
-{
+void TestVariantData::testAddOneRowUsingOneElement() {
     int expectedValue = 42;
     QVariant varValue(expectedValue);
 
@@ -66,8 +60,7 @@ void TestVariantData::testAddOneRowUsingOneElement()
     QVERIFY2(resultValue == expectedValue, "Wrong data");
 }
 
-void TestVariantData::testAddRows()
-{
+void TestVariantData::testAddRows() {
     double expectedValue = 42.12309;
     QVariant firstRow(expectedValue);
 
@@ -109,8 +102,7 @@ void TestVariantData::testAddRows()
     QVERIFY2(thirdRow == varData.rowValues(2), "Wrong third row values");
 }
 
-void TestVariantData::testClearEmptyData()
-{
+void TestVariantData::testClearEmptyData() {
     QtCSV::VariantData varData;
 
     QVERIFY2(true == varData.isEmpty(), "VariantData is not empty");
@@ -122,8 +114,7 @@ void TestVariantData::testClearEmptyData()
     QVERIFY2(0 == varData.rowCount(), "Wrong number of rows");
 }
 
-void TestVariantData::testClearNotEmptyData()
-{
+void TestVariantData::testClearNotEmptyData() {
     double expectedValue = 42.12309;
     QVariant firstRow(expectedValue);
 
@@ -149,8 +140,7 @@ void TestVariantData::testClearNotEmptyData()
     QVERIFY2(0 == varData.rowCount(), "Wrong number of rows");
 }
 
-void TestVariantData::testInsertRows()
-{
+void TestVariantData::testInsertRows() {
     double expectedValue = 42.12309;
     QVariant firstRow(expectedValue);
 
@@ -190,8 +180,7 @@ void TestVariantData::testInsertRows()
                  secondRow.at(2).toString() == resultSecondRow.at(2),
              "Wrong data for second row");
 
-    QVERIFY2(QStringList() == varData.rowValues(2),
-             "Wrong data for third row");
+    QVERIFY2(QStringList() == varData.rowValues(2), "Wrong data for third row");
 
     QVERIFY2((QStringList() << stringOne) == varData.rowValues(3),
              "Wrong data for fourth row");
@@ -199,8 +188,7 @@ void TestVariantData::testInsertRows()
     QVERIFY2(thirdRow == varData.rowValues(4), "Wrong data for fifth row");
 }
 
-void TestVariantData::testCompareForEquality()
-{
+void TestVariantData::testCompareForEquality() {
     QStringList firstRow, secondRow;
     firstRow << "one"
              << "two"
@@ -230,8 +218,7 @@ void TestVariantData::testCompareForEquality()
     QVERIFY2(firstData != secondData, "Objects are the same");
 }
 
-void TestVariantData::testCopyConstruction()
-{
+void TestVariantData::testCopyConstruction() {
     QStringList firstRow, secondRow;
     firstRow << "one"
              << "two"
@@ -259,8 +246,7 @@ void TestVariantData::testCopyConstruction()
     QVERIFY2(secondRow == firstData.rowValues(1), "Wrong data for second row");
 }
 
-void TestVariantData::testCopyAssignment()
-{
+void TestVariantData::testCopyAssignment() {
     QStringList firstRow, secondRow;
     firstRow << "one"
              << "two"
@@ -289,8 +275,7 @@ void TestVariantData::testCopyAssignment()
     QVERIFY2(secondRow == firstData.rowValues(1), "Wrong data for second row");
 }
 
-void TestVariantData::testOperatorInput()
-{
+void TestVariantData::testOperatorInput() {
     QtCSV::VariantData data;
     data << QString("1") << QVariant(double(3.14));
 
@@ -313,8 +298,7 @@ void TestVariantData::testOperatorInput()
     QVERIFY2(thirdRow == data.rowValues(2), "Wrong data for third row");
 }
 
-void TestVariantData::testRemoveRow()
-{
+void TestVariantData::testRemoveRow() {
     QtCSV::VariantData data;
     data.removeRow(0);
     data.removeRow(563);
@@ -342,8 +326,7 @@ void TestVariantData::testRemoveRow()
              "Wrong data for third row");
 }
 
-void TestVariantData::testReplaceRow()
-{
+void TestVariantData::testReplaceRow() {
     QStringList valuesFirst, valuesSecond;
     valuesFirst << "one"
                 << "two"

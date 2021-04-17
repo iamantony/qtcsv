@@ -4,14 +4,13 @@
 #include <QObject>
 #include <QtTest>
 
-class TestVariantData : public QObject
-{
+class TestVariantData : public QObject {
     Q_OBJECT
 
-public:
+   public:
     TestVariantData();
 
-private Q_SLOTS:
+   private Q_SLOTS:
     void testCreation();
     void testAddEmptyRow();
     void testAddOneRow();
@@ -28,4 +27,4 @@ private Q_SLOTS:
     void testReplaceRow();
 };
 
-#endif // TESTVARIANTDATA_H
+#endif  // TESTVARIANTDATA_H

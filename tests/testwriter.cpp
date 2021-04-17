@@ -29,7 +29,7 @@ void TestWriter::cleanup()
         qDebug() << "Can't remove file:" << getFilePathXLS();
     }
 
-    if (QFile::exists(getFilePathWithDotsInName()) &&
+    if (QFile::exists(getFilePathWithDotsInName()) && 
         false == QFile::remove(getFilePathWithDotsInName()))
     {
         qDebug() << "Can't remove file:" << getFilePathWithDotsInName();

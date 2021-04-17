@@ -1,22 +1,19 @@
 #include "testreader.h"
 
 #include <QDir>
-#include <QFile>
 #include <QElapsedTimer>
+#include <QFile>
 
 #include "qtcsv/reader.h"
 #include "qtcsv/stringdata.h"
 #include "qtcsv/variantdata.h"
 
-TestReader::TestReader()
-{
-}
+TestReader::TestReader() {}
 
-void TestReader::testReadToListInvalidArgs()
-{
-    QVERIFY2(QList<QStringList>() ==
-                 QtCSV::Reader::readToList(QString(), QString()),
-             "Invalid arguments was accepted");
+void TestReader::testReadToListInvalidArgs() {
+    QVERIFY2(
+        QList<QStringList>() == QtCSV::Reader::readToList(QString(), QString()),
+        "Invalid arguments was accepted");
 
     QVERIFY2(QList<QStringList>() ==
                  QtCSV::Reader::readToList(getPathToFileTestComma(), QString()),
@@ -29,20 +26,20 @@ void TestReader::testReadToListInvalidArgs()
                  QtCSV::Reader::readToList("./some/path.csv", ","),
              "Invalid arguments was accepted");
 
-    QVERIFY2(QList<QStringList>() ==
-                 QtCSV::Reader::readToList(getPathToFileTestComma() + ".md5", ","),
-             "Invalid arguments was accepted");
+    QVERIFY2(
+        QList<QStringList>() ==
+            QtCSV::Reader::readToList(getPathToFileTestComma() + ".md5", ","),
+        "Invalid arguments was accepted");
 }
 
-void TestReader::testReadToDataInvalidArgs()
-{
+void TestReader::testReadToDataInvalidArgs() {
     QtCSV::StringData data;
 
     QVERIFY2(false == QtCSV::Reader::readToData(QString(), data, QString()),
              "Invalid arguments was accepted");
 
-    QVERIFY2(false == QtCSV::Reader::readToData(getPathToFileTestComma(), data,
-                                                QString()),
+    QVERIFY2(false == QtCSV::Reader::readToData(
+                          getPathToFileTestComma(), data, QString()),
              "Invalid arguments was accepted");
 
     QVERIFY2(false == QtCSV::Reader::readToData(QString(), data, ","),
@@ -56,8 +53,7 @@ void TestReader::testReadToDataInvalidArgs()
              "Invalid arguments was accepted");
 }
 
-void TestReader::testReadFileWithCommas()
-{
+void TestReader::testReadFileWithCommas() {
     const QString path = getPathToFileTestComma();
     QList<QStringList> data = QtCSV::Reader::readToList(path);
 
@@ -75,14 +71,12 @@ void TestReader::testReadFileWithCommas()
     expected << (QStringList() << "3.14");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
-    for (int i = 0; i < data.size(); ++i)
-    {
+    for (int i = 0; i < data.size(); ++i) {
         QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
     }
 }
 
-void TestReader::testReadFileWithDotsInName()
-{
+void TestReader::testReadFileWithDotsInName() {
     const QString path = getPathToFileTestDotsInName();
     QList<QStringList> data = QtCSV::Reader::readToList(path);
 
@@ -95,14 +89,12 @@ void TestReader::testReadFileWithDotsInName()
     expected << (QStringList() << "one_element");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
-    for (int i = 0; i < data.size(); ++i)
-    {
+    for (int i = 0; i < data.size(); ++i) {
         QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
     }
 }
 
-void TestReader::testReadFileWithCommasToStringData()
-{
+void TestReader::testReadFileWithCommasToStringData() {
     const QString path = getPathToFileTestComma();
     QtCSV::StringData strData;
     bool readResult = QtCSV::Reader::readToData(path, strData);
@@ -121,14 +113,12 @@ void TestReader::testReadFileWithCommasToStringData()
     expected << (QStringList() << "3.14");
 
     QVERIFY2(expected.size() == strData.rowCount(), "Wrong number of rows");
-    for (int i = 0; i < strData.rowCount(); ++i)
-    {
+    for (int i = 0; i < strData.rowCount(); ++i) {
         QVERIFY2(expected.at(i) == strData.rowValues(i), "Wrong row data");
     }
 }
 
-void TestReader::testReadFileWithCommasToVariantData()
-{
+void TestReader::testReadFileWithCommasToVariantData() {
     const QString path = getPathToFileTestComma();
     QtCSV::VariantData varData;
     bool readResult = QtCSV::Reader::readToData(path, varData);
@@ -147,14 +137,12 @@ void TestReader::testReadFileWithCommasToVariantData()
     expected << (QStringList() << "3.14");
 
     QVERIFY2(expected.size() == varData.rowCount(), "Wrong number of rows");
-    for (int i = 0; i < varData.rowCount(); ++i)
-    {
+    for (int i = 0; i < varData.rowCount(); ++i) {
         QVERIFY2(expected.at(i) == varData.rowValues(i), "Wrong row data");
     }
 }
 
-void TestReader::testReadFileWithSemicolons()
-{
+void TestReader::testReadFileWithSemicolons() {
     const QString path = getPathToFileTestSemicolon();
     QList<QStringList> data = QtCSV::Reader::readToList(path, ";");
 
@@ -175,8 +163,7 @@ void TestReader::testReadFileWithSemicolons()
     QVERIFY2(expectedSecondRow == data.at(1), "Wrong second row");
 }
 
-void TestReader::testReadFileWithSemicolonsToStringData()
-{
+void TestReader::testReadFileWithSemicolonsToStringData() {
     const QString path = getPathToFileTestSemicolon();
     QtCSV::StringData strData;
     bool readResult = QtCSV::Reader::readToData(path, strData, ";");
@@ -199,8 +186,7 @@ void TestReader::testReadFileWithSemicolonsToStringData()
     QVERIFY2(expectedSecondRow == strData.rowValues(1), "Wrong second row");
 }
 
-void TestReader::testReadFileWithSemicolonsToVariantData()
-{
+void TestReader::testReadFileWithSemicolonsToVariantData() {
     const QString path = getPathToFileTestSemicolon();
     QtCSV::VariantData varData;
     bool readResult = QtCSV::Reader::readToData(path, varData, ";");
@@ -223,8 +209,7 @@ void TestReader::testReadFileWithSemicolonsToVariantData()
     QVERIFY2(expectedSecondRow == varData.rowValues(1), "Wrong second row");
 }
 
-void TestReader::testReadFileWithTextDelimDQoutes()
-{
+void TestReader::testReadFileWithTextDelimDQoutes() {
     const QString path = getPathToFileTestDataTextDelimDQuotes();
     QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
 
@@ -241,14 +226,12 @@ void TestReader::testReadFileWithTextDelimDQoutes()
                                << "eight");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
-    for (int i = 0; i < data.size(); ++i)
-    {
+    for (int i = 0; i < data.size(); ++i) {
         QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
     }
 }
 
-void TestReader::testReadFileWithTextDelimQoutes()
-{
+void TestReader::testReadFileWithTextDelimQoutes() {
     const QString path = getPathToFileTestDataTextDelimQuotes();
     QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "'");
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
@@ -264,14 +247,12 @@ void TestReader::testReadFileWithTextDelimQoutes()
                                << "eight");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
-    for (int i = 0; i < data.size(); ++i)
-    {
+    for (int i = 0; i < data.size(); ++i) {
         QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
     }
 }
 
-void TestReader::testReadFileWithTextDelimDQToStringData()
-{
+void TestReader::testReadFileWithTextDelimDQToStringData() {
     const QString path = getPathToFileTestDataTextDelimDQuotes();
     QtCSV::StringData strData;
     bool readResult = QtCSV::Reader::readToData(path, strData, ",", "\"");
@@ -289,14 +270,12 @@ void TestReader::testReadFileWithTextDelimDQToStringData()
                                << "eight");
 
     QVERIFY2(expected.size() == strData.rowCount(), "Wrong number of rows");
-    for (int i = 0; i < strData.rowCount(); ++i)
-    {
+    for (int i = 0; i < strData.rowCount(); ++i) {
         QVERIFY2(expected.at(i) == strData.rowValues(i), "Wrong row data");
     }
 }
 
-void TestReader::testReadLongWithDQuotes()
-{
+void TestReader::testReadLongWithDQuotes() {
     const QString path = getPathToFileTestFieldWithDQuotes();
     QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
@@ -312,14 +291,12 @@ void TestReader::testReadLongWithDQuotes()
                                << "seven");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
-    for (int i = 0; i < data.size(); ++i)
-    {
+    for (int i = 0; i < data.size(); ++i) {
         QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
     }
 }
 
-void TestReader::testReadFieldWithCR()
-{
+void TestReader::testReadFieldWithCR() {
     const QString path = getPathToFileTestFieldWithCR();
     QList<QStringList> data = QtCSV::Reader::readToList(path, ";", "\"");
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
@@ -331,15 +308,13 @@ void TestReader::testReadFieldWithCR()
                                << "Hello Col 3");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
-    for (int i = 0; i < data.size(); ++i)
-    {
+    for (int i = 0; i < data.size(); ++i) {
         qWarning() << expected.at(i) << data.at(i);
         QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
     }
 }
 
-void TestReader::testReadFieldWithCRLF()
-{
+void TestReader::testReadFieldWithCRLF() {
     const QString path = getPathToFileTestFieldWithCRLF();
     QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
@@ -353,14 +328,12 @@ void TestReader::testReadFieldWithCRLF()
                                << "seven");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
-    for (int i = 0; i < data.size(); ++i)
-    {
+    for (int i = 0; i < data.size(); ++i) {
         QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
     }
 }
 
-void TestReader::testReadFieldWithCRLFLong()
-{
+void TestReader::testReadFieldWithCRLFLong() {
     const QString path = getPathToFileTestFieldWithCRLFLong();
     QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
@@ -374,14 +347,12 @@ void TestReader::testReadFieldWithCRLFLong()
                                << "eleven");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
-    for (int i = 0; i < data.size(); ++i)
-    {
+    for (int i = 0; i < data.size(); ++i) {
         QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
     }
 }
 
-void TestReader::testReadFieldEndTripleQuotes()
-{
+void TestReader::testReadFieldEndTripleQuotes() {
     const QString path = getPathToFileTestFieldEndTripleQuotes();
     QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
@@ -393,14 +364,12 @@ void TestReader::testReadFieldEndTripleQuotes()
                                << "line \"it is\",\"def");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
-    for (int i = 0; i < data.size(); ++i)
-    {
+    for (int i = 0; i < data.size(); ++i) {
         QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
     }
 }
 
-void TestReader::testReadFileDataCorrectness()
-{
+void TestReader::testReadFileDataCorrectness() {
     const QString path = getPathToFileTestDataCorrectness();
     QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
@@ -438,19 +407,19 @@ void TestReader::testReadFileDataCorrectness()
                                << "4900.00");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
-    for (int i = 0; i < data.size(); ++i)
-    {
+    for (int i = 0; i < data.size(); ++i) {
         QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
     }
 }
 
-void TestReader::testReadFileWorldCitiesPop()
-{
+void TestReader::testReadFileWorldCitiesPop() {
     const QString path = getPathToFileWorldCitiesPop();
-    if (false == QFile::exists(path))
-    {
-        qDebug() << "Skip testReadFileWorldCitiesPop() because file" << path << "do not exist. If you want to run this test, download file "
-                                                                                "from http://www.maxmind.com/download/worldcities/worldcitiespop.txt.gz";
+    if (false == QFile::exists(path)) {
+        qDebug() << "Skip testReadFileWorldCitiesPop() because file" << path
+                 << "do not exist. If you want to run this test, download file "
+                    "from "
+                    "http://www.maxmind.com/download/worldcities/"
+                    "worldcitiespop.txt.gz";
         return;
     }
 
@@ -463,8 +432,7 @@ void TestReader::testReadFileWorldCitiesPop()
     QVERIFY2(3173959 == data.size(), "Wrong number of rows");
 }
 
-void TestReader::testReadFileWithEmptyFields()
-{
+void TestReader::testReadFileWithEmptyFields() {
     const QString path = getPathToFileWithEmptyFields();
     QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
@@ -473,14 +441,12 @@ void TestReader::testReadFileWithEmptyFields()
     expected << (QStringList() << QString() << "0" << QString() << QString());
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
-    for (int i = 0; i < data.size(); ++i)
-    {
+    for (int i = 0; i < data.size(); ++i) {
         QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
     }
 }
 
-void TestReader::testReadFileWithEmptyFieldsComplexSeparator()
-{
+void TestReader::testReadFileWithEmptyFieldsComplexSeparator() {
     const QString path = getPathToFileWithEmptyFieldsComplexSeparator();
     QList<QStringList> data = QtCSV::Reader::readToList(path, ";-;", "\"");
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
@@ -489,18 +455,15 @@ void TestReader::testReadFileWithEmptyFieldsComplexSeparator()
     expected << (QStringList() << "0"
                                << "1" << QString() << QString());
     expected << (QStringList() << QString() << "Question"
-                               << "158" << QString()
-                               << QString());
+                               << "158" << QString() << QString());
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
-    for (int i = 0; i < data.size(); ++i)
-    {
+    for (int i = 0; i < data.size(); ++i) {
         QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
     }
 }
 
-void TestReader::testReadFileWithMultirowData()
-{
+void TestReader::testReadFileWithMultirowData() {
     const QString path = getPathToFileMultirowData();
     QList<QStringList> data = QtCSV::Reader::readToList(path);
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
@@ -524,29 +487,23 @@ void TestReader::testReadFileWithMultirowData()
                                << "dd");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
-    for (int i = 0; i < data.size(); ++i)
-    {
+    for (int i = 0; i < data.size(); ++i) {
         QVERIFY2(expected.at(i) == data.at(i), "Wrong row data");
     }
 }
 
-void TestReader::testReadByProcessorWithBreak()
-{
-    class ProcessorWithBreak : public QtCSV::Reader::AbstractProcessor
-    {
-    public:
+void TestReader::testReadByProcessorWithBreak() {
+    class ProcessorWithBreak : public QtCSV::Reader::AbstractProcessor {
+       public:
         size_t counter;
         QList<QStringList> data;
 
-        ProcessorWithBreak()
-        {
+        ProcessorWithBreak() {
             counter = 0;
         }
 
-        virtual bool processRowElements(const QStringList &elements)
-        {
-            if (counter < 2)
-            {
+        virtual bool processRowElements(const QStringList& elements) {
+            if (counter < 2) {
                 data << elements;
                 ++counter;
             }
@@ -571,90 +528,73 @@ void TestReader::testReadByProcessorWithBreak()
                                << "d");
 
     QVERIFY2(expected.size() == processor.data.size(), "Wrong number of rows");
-    for (int i = 0; i < processor.data.size(); ++i)
-    {
+    for (int i = 0; i < processor.data.size(); ++i) {
         QVERIFY2(expected.at(i) == processor.data.at(i), "Wrong row data");
     }
 }
 
-QString TestReader::getPathToFolderWithTestFiles() const
-{
+QString TestReader::getPathToFolderWithTestFiles() const {
     return QDir::currentPath() + "/data/";
 }
 
-QString TestReader::getPathToFileTestComma() const
-{
+QString TestReader::getPathToFileTestComma() const {
     return getPathToFolderWithTestFiles() + "test-comma.csv";
 }
 
-QString TestReader::getPathToFileTestDotsInName() const
-{
+QString TestReader::getPathToFileTestDotsInName() const {
     return getPathToFolderWithTestFiles() + "test.file.dots.csv";
 }
 
-QString TestReader::getPathToFileTestSemicolon() const
-{
+QString TestReader::getPathToFileTestSemicolon() const {
     return getPathToFolderWithTestFiles() + "test-semicolon.csv";
 }
 
-QString TestReader::getPathToFileTestDataTextDelimDQuotes() const
-{
+QString TestReader::getPathToFileTestDataTextDelimDQuotes() const {
     return getPathToFolderWithTestFiles() +
            "test-data-text-delim-double-quotes.csv";
 }
 
-QString TestReader::getPathToFileTestDataTextDelimQuotes() const
-{
+QString TestReader::getPathToFileTestDataTextDelimQuotes() const {
     return getPathToFolderWithTestFiles() + "test-data-text-delim-quotes.csv";
 }
 
-QString TestReader::getPathToFileTestFieldWithDQuotes() const
-{
+QString TestReader::getPathToFileTestFieldWithDQuotes() const {
     return getPathToFolderWithTestFiles() + "test-field-with-dquotes.csv";
 }
 
-QString TestReader::getPathToFileTestFieldWithCR() const
-{
+QString TestReader::getPathToFileTestFieldWithCR() const {
     return getPathToFolderWithTestFiles() + "test-field-with-cr.csv";
 }
 
-QString TestReader::getPathToFileTestFieldWithCRLF() const
-{
+QString TestReader::getPathToFileTestFieldWithCRLF() const {
     return getPathToFolderWithTestFiles() + "test-field-with-crlf.csv";
 }
 
-QString TestReader::getPathToFileTestFieldWithCRLFLong() const
-{
+QString TestReader::getPathToFileTestFieldWithCRLFLong() const {
     return getPathToFolderWithTestFiles() + "test-field-with-crlf-long.csv";
 }
 
-QString TestReader::getPathToFileTestFieldEndTripleQuotes() const
-{
+QString TestReader::getPathToFileTestFieldEndTripleQuotes() const {
     return getPathToFolderWithTestFiles() + "test-field-end-triple-quotes.csv";
 }
 
-QString TestReader::getPathToFileTestDataCorrectness() const
-{
+QString TestReader::getPathToFileTestDataCorrectness() const {
     return getPathToFolderWithTestFiles() + "test-data-correctness.csv";
 }
 
-QString TestReader::getPathToFileWorldCitiesPop() const
-{
+QString TestReader::getPathToFileWorldCitiesPop() const {
     return getPathToFolderWithTestFiles() + "worldcitiespop.txt";
 }
 
-QString TestReader::getPathToFileWithEmptyFields() const
-{
+QString TestReader::getPathToFileWithEmptyFields() const {
     return getPathToFolderWithTestFiles() + "test-empty-fields.csv";
 }
 
-QString TestReader::getPathToFileWithEmptyFieldsComplexSeparator() const
-{
+QString TestReader::getPathToFileWithEmptyFieldsComplexSeparator() const {
     return getPathToFolderWithTestFiles() +
            "test-empty-fields-complex-separator.csv";
 }
 
-QString TestReader::getPathToFileMultirowData() const
-{
+QString TestReader::getPathToFileMultirowData() const {
     return getPathToFolderWithTestFiles() + "test-multirow-data.csv";
 }

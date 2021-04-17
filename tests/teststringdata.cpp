@@ -5,32 +5,25 @@
 
 #include "qtcsv/stringdata.h"
 
-TestStringData::TestStringData()
-{
-}
+TestStringData::TestStringData() {}
 
-void TestStringData::testCreation()
-{
+void TestStringData::testCreation() {
     QtCSV::StringData strData;
 
     QVERIFY2(strData.isEmpty(), "Empty StringData is not empty");
-    QVERIFY2(strData.rowCount() == 0,
-             "Empty StringData have too many rows");
+    QVERIFY2(strData.rowCount() == 0, "Empty StringData have too many rows");
 }
 
-void TestStringData::testAddEmptyRow()
-{
+void TestStringData::testAddEmptyRow() {
     QtCSV::StringData strData;
     strData.addEmptyRow();
 
     QVERIFY2(false == strData.isEmpty(), "StringData is empty with empty line");
     QVERIFY2(1 == strData.rowCount(), "Wrong number of rows");
-    QVERIFY2(QStringList() == strData.rowValues(0),
-             "Wrong data for empty row");
+    QVERIFY2(QStringList() == strData.rowValues(0), "Wrong data for empty row");
 }
 
-void TestStringData::testAddOneRow()
-{
+void TestStringData::testAddOneRow() {
     QStringList rowValues;
     rowValues << "one"
               << "two"
@@ -44,8 +37,7 @@ void TestStringData::testAddOneRow()
     QVERIFY2(rowValues == strData.rowValues(0), "Wrong data for empty row");
 }
 
-void TestStringData::testAddOneRowUsingOneString()
-{
+void TestStringData::testAddOneRowUsingOneString() {
     QString value("faklj;");
 
     QtCSV::StringData strData;
@@ -59,8 +51,7 @@ void TestStringData::testAddOneRowUsingOneString()
     QVERIFY2(expectedRow == strData.rowValues(0), "Wrong data for empty row");
 }
 
-void TestStringData::testAddRows()
-{
+void TestStringData::testAddRows() {
     QStringList valuesFirst;
     valuesFirst << "1"
                 << "2"
@@ -85,8 +76,7 @@ void TestStringData::testAddRows()
     QVERIFY2(valuesThird == strData.rowValues(2), "Wrong data for third row");
 }
 
-void TestStringData::testClearEmptyData()
-{
+void TestStringData::testClearEmptyData() {
     QtCSV::StringData strData;
 
     QVERIFY2(true == strData.isEmpty(), "StringData is not empty");
@@ -96,8 +86,7 @@ void TestStringData::testClearEmptyData()
     QVERIFY2(true == strData.isEmpty(), "StringData is not empty");
 }
 
-void TestStringData::testClearNotEmptyData()
-{
+void TestStringData::testClearNotEmptyData() {
     QStringList rowValues;
     rowValues << "one"
               << "two"
@@ -113,8 +102,7 @@ void TestStringData::testClearNotEmptyData()
     QVERIFY2(true == strData.isEmpty(), "StringData is not empty");
 }
 
-void TestStringData::testInsertRows()
-{
+void TestStringData::testInsertRows() {
     QStringList valuesFirst, valuesSecond;
     valuesFirst << "one"
                 << "two"
@@ -147,8 +135,7 @@ void TestStringData::testInsertRows()
              "Wrong data for fifth row");
 }
 
-void TestStringData::testCompareForEquality()
-{
+void TestStringData::testCompareForEquality() {
     QStringList firstRow, secondRow;
     firstRow << "one"
              << "two"
@@ -179,8 +166,7 @@ void TestStringData::testCompareForEquality()
     QVERIFY2(firstData != secondData, "Objects are the same");
 }
 
-void TestStringData::testCopyConstruction()
-{
+void TestStringData::testCopyConstruction() {
     QStringList firstRow, secondRow;
     firstRow << "one"
              << "two"
@@ -210,8 +196,7 @@ void TestStringData::testCopyConstruction()
     QVERIFY2(secondRow == firstData.rowValues(1), "Wrong data for second row");
 }
 
-void TestStringData::testCopyAssignment()
-{
+void TestStringData::testCopyAssignment() {
     QStringList firstRow, secondRow;
     firstRow << "one"
              << "two"
@@ -242,8 +227,7 @@ void TestStringData::testCopyAssignment()
     QVERIFY2(secondRow == firstData.rowValues(1), "Wrong data for second row");
 }
 
-void TestStringData::testOperatorInput()
-{
+void TestStringData::testOperatorInput() {
     QtCSV::StringData data;
     data << QString("1") << "one";
 
@@ -267,8 +251,7 @@ void TestStringData::testOperatorInput()
     QVERIFY2(thirdRow == data.rowValues(2), "Wrong data for third row");
 }
 
-void TestStringData::testRemoveRow()
-{
+void TestStringData::testRemoveRow() {
     QtCSV::StringData strData;
     strData.removeRow(0);
     strData.removeRow(563);
@@ -296,8 +279,7 @@ void TestStringData::testRemoveRow()
              "Wrong data for third row");
 }
 
-void TestStringData::testReplaceRow()
-{
+void TestStringData::testReplaceRow() {
     QStringList valuesFirst, valuesSecond;
     valuesFirst << "one"
                 << "two"
