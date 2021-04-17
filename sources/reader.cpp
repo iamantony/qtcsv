@@ -29,13 +29,13 @@ inline bool openFile(const QString& filePath, QFile& file) {
 
 // ElementInfo is a helper struct that is used as indicator of row end
 struct ElementInfo {
-  public:
+   public:
     ElementInfo() : isEnded(true) {}
     bool isEnded;
 };
 
 class ReaderPrivate {
-  public:
+   public:
     // Function that really reads csv-data and transfer it's data to
     // AbstractProcessor-based processor
     static bool read(QIODevice& ioDevice,
@@ -44,13 +44,15 @@ class ReaderPrivate {
                      const QString& textDelimiter,
                      QStringConverter::Encoding codec);
 
-  private:
+   private:
     // Check if file path and separator are valid
     static bool checkParams(const QString& separator);
 
     // Split string to elements
-    static QStringList
-    splitElements(const QString& line, const QString& separator, const QString& textDelimiter, ElementInfo& elemInfo);
+    static QStringList splitElements(const QString& line,
+                                     const QString& separator,
+                                     const QString& textDelimiter,
+                                     ElementInfo& elemInfo);
 
     // Try to find end position of first or middle element
     static int findMiddleElementPositioin(const QString& str,
@@ -59,11 +61,14 @@ class ReaderPrivate {
                                           const QString& txtDelim);
 
     // Check if current element is the last element
-    static bool
-    isElementLast(const QString& str, const int& startPos, const QString& separator, const QString& txtDelim);
+    static bool isElementLast(const QString& str,
+                              const int& startPos,
+                              const QString& separator,
+                              const QString& txtDelim);
 
     // Remove extra symbols (spaces, text delimeters...)
-    static void removeExtraSymbols(QStringList& elements, const QString& textDelimiter);
+    static void removeExtraSymbols(QStringList& elements,
+                                   const QString& textDelimiter);
 };
 
 // Function that really reads csv-data and transfer it's data to
@@ -86,7 +91,8 @@ bool ReaderPrivate::read(QIODevice& ioDevice,
     }
 
     // Open IO Device if it was not opened
-    if (false == ioDevice.isOpen() && false == ioDevice.open(QIODevice::ReadOnly)) {
+    if (false == ioDevice.isOpen() &&
+        false == ioDevice.open(QIODevice::ReadOnly)) {
         qDebug() << __FUNCTION__ << "Error - failed to open IO Device";
         return false;
     }
@@ -107,7 +113,8 @@ bool ReaderPrivate::read(QIODevice& ioDevice,
     while (false == stream.atEnd()) {
         QString line = stream.readLine();
         processor.preProcessRawLine(line);
-        QStringList elements = ReaderPrivate::splitElements(line, separator, textDelimiter, elemInfo);
+        QStringList elements = ReaderPrivate::splitElements(
+            line, separator, textDelimiter, elemInfo);
         if (elemInfo.isEnded) {
             // Current row ends on this line. Check if these elements are
             // end elements of the long row
@@ -209,11 +216,13 @@ QStringList ReaderPrivate::splitElements(const QString& line,
                 // 1. Be the first or the middle element. Then it should end
                 // with delimiter and the seprator symbols standing next to each
                 // other.
-                int midElemEndPos = findMiddleElementPositioin(line, pos, separator, textDelimiter);
+                int midElemEndPos = findMiddleElementPositioin(
+                    line, pos, separator, textDelimiter);
                 if (midElemEndPos > 0) {
                     int length = midElemEndPos - pos;
                     result << line.mid(pos, length);
-                    pos = midElemEndPos + textDelimiter.size() + separator.size();
+                    pos =
+                        midElemEndPos + textDelimiter.size() + separator.size();
                     continue;
                 }
 
@@ -267,7 +276,8 @@ QStringList ReaderPrivate::splitElements(const QString& line,
             // 1. Ends somewhere in the middle of the line. Then it should ends
             // with delimiter and the seprator symbols standing next to each
             // other.
-            int midElemEndPos = findMiddleElementPositioin(line, pos, separator, textDelimiter);
+            int midElemEndPos =
+                findMiddleElementPositioin(line, pos, separator, textDelimiter);
             if (midElemEndPos >= 0) {
                 result << (LF + line.mid(pos, midElemEndPos - pos));
                 pos = midElemEndPos + textDelimiter.size() + separator.size();
@@ -308,7 +318,8 @@ int ReaderPrivate::findMiddleElementPositioin(const QString& str,
                                               const QString& separator,
                                               const QString& txtDelim) {
     const int ERROR = -1;
-    if (str.isEmpty() || startPos < 0 || separator.isEmpty() || txtDelim.isEmpty()) {
+    if (str.isEmpty() || startPos < 0 || separator.isEmpty() ||
+        txtDelim.isEmpty()) {
         return ERROR;
     }
 
@@ -364,7 +375,8 @@ bool ReaderPrivate::isElementLast(const QString& str,
                                   const int& startPos,
                                   const QString& separator,
                                   const QString& txtDelim) {
-    if (str.isEmpty() || startPos < 0 || separator.isEmpty() || txtDelim.isEmpty()) {
+    if (str.isEmpty() || startPos < 0 || separator.isEmpty() ||
+        txtDelim.isEmpty()) {
         return false;
     }
 
@@ -400,7 +412,8 @@ bool ReaderPrivate::isElementLast(const QString& str,
 // @input:
 // - elements - list of row elements
 // - textDelimiter - string that is used as text delimiter
-void ReaderPrivate::removeExtraSymbols(QStringList& elements, const QString& textDelimiter) {
+void ReaderPrivate::removeExtraSymbols(QStringList& elements,
+                                       const QString& textDelimiter) {
     if (elements.isEmpty()) {
         return;
     }
@@ -415,11 +428,15 @@ void ReaderPrivate::removeExtraSymbols(QStringList& elements, const QString& tex
         int startPos = 0, endPos = str.size() - 1;
 
         // Find first non-space char
-        for (; startPos < str.size() && str.at(startPos).category() == QChar::Separator_Space; ++startPos)
+        for (; startPos < str.size() &&
+               str.at(startPos).category() == QChar::Separator_Space;
+             ++startPos)
             ;
 
         // Find last non-space char
-        for (; endPos >= 0 && str.at(endPos).category() == QChar::Separator_Space; --endPos)
+        for (;
+             endPos >= 0 && str.at(endPos).category() == QChar::Separator_Space;
+             --endPos)
             ;
 
         if (false == textDelimiter.isEmpty()) {
@@ -430,7 +447,8 @@ void ReaderPrivate::removeExtraSymbols(QStringList& elements, const QString& tex
             }
 
             // Skip text delimiter symbol if element ends with it
-            QStringView strEnd = str.mid(endPos - textDelimiter.size() + 1, textDelimiter.size());
+            QStringView strEnd = str.mid(endPos - textDelimiter.size() + 1,
+                                         textDelimiter.size());
             if (strEnd == textDelimiter) {
                 endPos -= textDelimiter.size();
             }
@@ -447,7 +465,7 @@ void ReaderPrivate::removeExtraSymbols(QStringList& elements, const QString& tex
 
 // ReadToListProcessor - processor that saves rows of elements to list.
 class ReadToListProcessor : public Reader::AbstractProcessor {
-  public:
+   public:
     QList<QStringList> data;
     virtual bool processRowElements(const QStringList& elements) {
         data << elements;
@@ -517,7 +535,8 @@ bool Reader::readToData(QIODevice& ioDevice,
                         const QString& textDelimiter,
                         QStringConverter::Encoding codec) {
     ReadToListProcessor processor;
-    if (false == ReaderPrivate::read(ioDevice, processor, separator, textDelimiter, codec)) {
+    if (false == ReaderPrivate::read(
+                     ioDevice, processor, separator, textDelimiter, codec)) {
         return false;
     }
 
@@ -557,5 +576,6 @@ bool Reader::readToProcessor(QIODevice& ioDevice,
                              const QString& separator,
                              const QString& textDelimiter,
                              QStringConverter::Encoding codec) {
-    return ReaderPrivate::read(ioDevice, processor, separator, textDelimiter, codec);
+    return ReaderPrivate::read(
+        ioDevice, processor, separator, textDelimiter, codec);
 }

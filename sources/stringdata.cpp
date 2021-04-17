@@ -10,8 +10,7 @@ class StringData::StringDataPrivate {
     QList<QStringList> m_values;
 };
 
-StringData::StringData() : d_ptr(new StringDataPrivate) {
-}
+StringData::StringData() : d_ptr(new StringDataPrivate) {}
 
 StringData::StringData(const StringData& other) : d_ptr(new StringDataPrivate) {
     d_ptr->m_values = other.d_ptr->m_values;

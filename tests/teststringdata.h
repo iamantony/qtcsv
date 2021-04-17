@@ -23,7 +23,7 @@ class TestStringData : public QObject {
     void testCopyAssignment();
     void testOperatorInput();
     void testRemoveRow();
-    void testReplaceRow();
+    void testReplaceRow(); 
 };
 
 #endif  // TESTSTRINGDATA_H
