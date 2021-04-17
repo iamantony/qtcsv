@@ -6,12 +6,14 @@
 
 using QStringList = QList<QString>;
 
-namespace QtCSV {
+namespace QtCSV
+{
     // StringData is a simple container class. It implements interface of
     // AbstractData class and uses strings to store information. Also it
     // provides basic functions for working with rows.
-    class QTCSVSHARED_EXPORT StringData : public AbstractData {
-       public:
+    class QTCSVSHARED_EXPORT StringData : public AbstractData
+    {
+      public:
         explicit StringData();
         StringData(const StringData& other);
         virtual ~StringData();
@@ -47,8 +49,8 @@ namespace QtCSV {
 
         bool operator==(const StringData& other) const;
 
-        friend bool operator!=(const StringData& left,
-                               const StringData& right) {
+        friend bool operator!=(const StringData& left, const StringData& right)
+        {
             return !(left == right);
         }
 
@@ -59,10 +61,10 @@ namespace QtCSV {
         // Add new row with specified values
         StringData& operator<<(const QStringList& values);
 
-       private:
+      private:
         class StringDataPrivate;
         StringDataPrivate* d_ptr;
     };
-}  // namespace QtCSV
+} // namespace QtCSV
 
-#endif  // QTCSVSTRINGDATA_H
+#endif // QTCSVSTRINGDATA_H

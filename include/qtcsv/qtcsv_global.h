@@ -13,4 +13,4 @@
 #endif
 #endif
 
-#endif  // QTCSV_GLOBAL_H
+#endif // QTCSV_GLOBAL_H

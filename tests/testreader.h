@@ -4,13 +4,14 @@
 #include <QObject>
 #include <QtTest>
 
-class TestReader : public QObject {
+class TestReader : public QObject
+{
     Q_OBJECT
 
-   public:
+  public:
     TestReader();
 
-   private Q_SLOTS:
+  private Q_SLOTS:
     void testReadToListInvalidArgs();
     void testReadToDataInvalidArgs();
     void testReadFileWithCommas();
@@ -35,7 +36,7 @@ class TestReader : public QObject {
     void testReadFileWithMultirowData();
     void testReadByProcessorWithBreak();
 
-   private:
+  private:
     QString getPathToFolderWithTestFiles() const;
     QString getPathToFileTestComma() const;
     QString getPathToFileTestDotsInName() const;
@@ -54,4 +55,4 @@ class TestReader : public QObject {
     QString getPathToFileMultirowData() const;
 };
 
-#endif  // TESTREADER_H
+#endif // TESTREADER_H

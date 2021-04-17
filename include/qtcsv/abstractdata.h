@@ -5,7 +5,8 @@
 
 using QStringList = QList<QString>;
 
-namespace QtCSV {
+namespace QtCSV
+{
     // AbstractData is a pure abstract container class. Its main purpouse is to
     // provide common interface for concrete container classes, that could be
     // used in processing of csv-files.
@@ -33,8 +34,9 @@ namespace QtCSV {
     // Note, that AbstractData is just interface for container class, not a
     // container class. So you are free to decide how to store
     // information in derived classes.
-    class QTCSVSHARED_EXPORT AbstractData {
-       public:
+    class QTCSVSHARED_EXPORT AbstractData
+    {
+      public:
         explicit AbstractData() {}
         virtual ~AbstractData() {}
 
@@ -51,6 +53,6 @@ namespace QtCSV {
         // Get values of specified row as list of strings
         virtual QStringList rowValues(const int& row) const = 0;
     };
-}  // namespace QtCSV
+} // namespace QtCSV
 
-#endif  // QTCSVABSTRACTDATA_H
+#endif // QTCSVABSTRACTDATA_H

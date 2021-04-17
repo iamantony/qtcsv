@@ -20,19 +20,22 @@ using namespace QtCSV;
 // create object of class TempFileHandler, you must specify absolute path
 // to the (temp) file (as a string). When object will be about to destroy, it
 // will try to remove specified file.
-class TempFileHandler {
-   public:
+class TempFileHandler
+{
+  public:
     explicit TempFileHandler(const QString& filePath) : m_filePath(filePath) {}
-    ~TempFileHandler() {
+    ~TempFileHandler()
+    {
         QFile::remove(m_filePath);
     }
 
-   private:
+  private:
     QString m_filePath;
 };
 
-class WriterPrivate {
-   public:
+class WriterPrivate
+{
+  public:
     // Append information to the file
     static bool appendToFile(const QString& filePath,
                              ContentIterator& content,
@@ -61,14 +64,17 @@ class WriterPrivate {
 // - bool - True if data was appended to the file, otherwise False
 bool WriterPrivate::appendToFile(const QString& filePath,
                                  ContentIterator& content,
-                                 QStringConverter::Encoding codec) {
-    if (filePath.isEmpty() || content.isEmpty()) {
+                                 QStringConverter::Encoding codec)
+{
+    if (filePath.isEmpty() || content.isEmpty())
+    {
         qDebug() << __FUNCTION__ << "Error - invalid arguments";
         return false;
     }
 
     QFile csvFile(filePath);
-    if (false == csvFile.open(QIODevice::Append | QIODevice::Text)) {
+    if (false == csvFile.open(QIODevice::Append | QIODevice::Text))
+    {
         qDebug() << __FUNCTION__
                  << "Error - can't open file:" << csvFile.fileName();
         return false;
@@ -89,10 +95,12 @@ bool WriterPrivate::appendToFile(const QString& filePath,
 // - bool - True if file was overwritten with new data, otherwise False
 bool WriterPrivate::overwriteFile(const QString& filePath,
                                   ContentIterator& content,
-                                  QStringConverter::Encoding codec) {
+                                  QStringConverter::Encoding codec)
+{
     // Create path to the unique temporary file
     QString tempFileName = getTempFileName();
-    if (tempFileName.isEmpty()) {
+    if (tempFileName.isEmpty())
+    {
         qDebug() << __FUNCTION__
                  << "Error - failed to create unique name for temp file";
         return false;
@@ -101,19 +109,22 @@ bool WriterPrivate::overwriteFile(const QString& filePath,
     TempFileHandler handler(tempFileName);
 
     // Write information to the temporary file
-    if (false == appendToFile(tempFileName, content, codec)) {
+    if (false == appendToFile(tempFileName, content, codec))
+    {
         return false;
     }
 
     // Remove "old" file if it exists
-    if (QFile::exists(filePath) && false == QFile::remove(filePath)) {
+    if (QFile::exists(filePath) && false == QFile::remove(filePath))
+    {
         qDebug() << __FUNCTION__ << "Error - failed to remove file" << filePath;
         return false;
     }
 
     // Copy "new" file (temporary file) to the destination path (replace
     // "old" file)
-    if (false == QFile::copy(tempFileName, filePath)) {
+    if (false == QFile::copy(tempFileName, filePath))
+    {
         qDebug() << __FUNCTION__ << "Error - failed to copy temp file to"
                  << filePath;
         return false;
@@ -131,22 +142,26 @@ bool WriterPrivate::overwriteFile(const QString& filePath,
 // - bool - True if data could be written to the IO Device
 bool WriterPrivate::writeToIODevice(QIODevice& ioDevice,
                                     ContentIterator& content,
-                                    QStringConverter::Encoding codec) {
-    if (content.isEmpty()) {
+                                    QStringConverter::Encoding codec)
+{
+    if (content.isEmpty())
+    {
         qDebug() << __FUNCTION__ << "Error - invalid arguments";
         return false;
     }
 
     // Open IO Device if it was not opened
     if (false == ioDevice.isOpen() &&
-        false == ioDevice.open(QIODevice::Append | QIODevice::Text)) {
+        false == ioDevice.open(QIODevice::Append | QIODevice::Text))
+    {
         qDebug() << __FUNCTION__ << "Error - failed to open IO Device";
         return false;
     }
 
     QTextStream stream(&ioDevice);
     stream.setEncoding(codec);
-    while (content.hasNext()) {
+    while (content.hasNext())
+    {
         stream << content.getNext();
     }
 
@@ -160,20 +175,22 @@ bool WriterPrivate::writeToIODevice(QIODevice& ioDevice,
 // - QString - string with the absolute path to the temporary file that is not
 // exist yet. If function failed to create unique path, it will return empty
 // string.
-QString WriterPrivate::getTempFileName() {
+QString WriterPrivate::getTempFileName()
+{
     QString nameTemplate = QDir::tempPath() + "/qtcsv_" +
                            QString::number(QCoreApplication::applicationPid()) +
                            "_%1.csv";
 
-    for (int counter = 0; counter < std::numeric_limits<int>::max();
-         ++counter) {
+    for (int counter = 0; counter < std::numeric_limits<int>::max(); ++counter)
+    {
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
         QString name = nameTemplate.arg(
             QString::number(QRandomGenerator::global()->generate()));
 #else
         QString name = nameTemplate.arg(QString::number(qrand()));
 #endif
-        if (false == QFile::exists(name)) {
+        if (false == QFile::exists(name))
+        {
             return name;
         }
     }
@@ -204,18 +221,22 @@ bool Writer::write(const QString& filePath,
                    const WriteMode& mode,
                    const QStringList& header,
                    const QStringList& footer,
-                   QStringConverter::Encoding codec) {
-    if (filePath.isEmpty()) {
+                   QStringConverter::Encoding codec)
+{
+    if (filePath.isEmpty())
+    {
         qDebug() << __FUNCTION__ << "Error - empty path to file";
         return false;
     }
 
-    if (data.isEmpty()) {
+    if (data.isEmpty())
+    {
         qDebug() << __FUNCTION__ << "Error - empty data";
         return false;
     }
 
-    if (false == CheckFile(filePath)) {
+    if (false == CheckFile(filePath))
+    {
         qDebug() << __FUNCTION__ << "Error - wrong file path/name:" << filePath;
         return false;
     }
@@ -223,13 +244,14 @@ bool Writer::write(const QString& filePath,
     ContentIterator content(data, separator, textDelimiter, header, footer);
 
     bool result = false;
-    switch (mode) {
-        case APPEND:
-            result = WriterPrivate::appendToFile(filePath, content, codec);
-            break;
-        case REWRITE:
-        default:
-            result = WriterPrivate::overwriteFile(filePath, content, codec);
+    switch (mode)
+    {
+    case APPEND:
+        result = WriterPrivate::appendToFile(filePath, content, codec);
+        break;
+    case REWRITE:
+    default:
+        result = WriterPrivate::overwriteFile(filePath, content, codec);
     }
 
     return result;
@@ -255,8 +277,10 @@ bool Writer::write(QIODevice& ioDevice,
                    const QString& textDelimiter,
                    const QStringList& header,
                    const QStringList& footer,
-                   QStringConverter::Encoding codec) {
-    if (data.isEmpty()) {
+                   QStringConverter::Encoding codec)
+{
+    if (data.isEmpty())
+    {
         qDebug() << __FUNCTION__ << "Error - empty data";
         return false;
     }

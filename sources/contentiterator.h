@@ -5,7 +5,8 @@
 
 using QStringList = QList<QString>;
 
-namespace QtCSV {
+namespace QtCSV
+{
     class AbstractData;
 
     // ContentIterator is a class that holds references to containers with
@@ -17,8 +18,9 @@ namespace QtCSV {
     // You can use this class with csv-writer class. ContentIterator will join
     // elements of one row with separator symbol and then join rows with
     // new line symbol.
-    class ContentIterator {
-       public:
+    class ContentIterator
+    {
+      public:
         explicit ContentIterator(const AbstractData& data,
                                  const QString& separator,
                                  const QString& textDelimiter,
@@ -35,11 +37,11 @@ namespace QtCSV {
         // Get next chunk of information
         QString getNext();
 
-       private:
+      private:
         // Compose row string from values
         QString composeRow(const QStringList& values) const;
 
-       private:
+      private:
         const AbstractData& m_data;
         const QString& m_separator;
         const QString& m_textDelimiter;
@@ -49,6 +51,6 @@ namespace QtCSV {
         int m_dataRow;
         bool atEnd;
     };
-}  // namespace QtCSV
+} // namespace QtCSV
 
-#endif  // QTCSVCONTENTITERATOR_H
+#endif // QTCSVCONTENTITERATOR_H

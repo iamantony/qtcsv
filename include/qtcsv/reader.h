@@ -9,7 +9,8 @@
 class QIODevice;
 using QStringList = QList<QString>;
 
-namespace QtCSV {
+namespace QtCSV
+{
     class AbstractData;
 
     // Reader class is a file reader that work with csv-files. It needs an
@@ -28,18 +29,21 @@ namespace QtCSV {
     // - QList<QStringList>, where each QStringList contains values of one row;
     // - AbstractData-based container class;
     // - AbstractProcessor-based object.
-    class QTCSVSHARED_EXPORT Reader {
-       public:
+    class QTCSVSHARED_EXPORT Reader
+    {
+      public:
         // AbstractProcessor is a class used to process files one line at a time
-        class QTCSVSHARED_EXPORT AbstractProcessor {
-           public:
+        class QTCSVSHARED_EXPORT AbstractProcessor
+        {
+          public:
             explicit AbstractProcessor() {}
             virtual ~AbstractProcessor() {}
 
             // Preprocess one raw line from a file
             // @input:
             // line - raw line from a file
-            virtual void preProcessRawLine(QString& line) {
+            virtual void preProcessRawLine(QString& line)
+            {
                 // Here you can edit line
                 Q_UNUSED(line);
             }
@@ -103,6 +107,6 @@ namespace QtCSV {
             const QString& textDelimiter = QString("\""),
             QStringConverter::Encoding codec = QStringConverter::Utf8);
     };
-}  // namespace QtCSV
+} // namespace QtCSV
 
-#endif  // QTCSVREADER_H
+#endif // QTCSVREADER_H

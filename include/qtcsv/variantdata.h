@@ -9,7 +9,8 @@
 class QVariant;
 using QStringList = QList<QString>;
 
-namespace QtCSV {
+namespace QtCSV
+{
     // VariantData is a simple container class. It implements interface of
     // AbstractData class. It uses QVariant to hold information, so data could
     // be of almost any type - integral, strings and so on. There is only one
@@ -17,8 +18,9 @@ namespace QtCSV {
     // obviously, if we want to save information to CSV file, we would need to
     // convert it to plain-text form). So don't forget to see docs of QVariant
     // before you start using this class.
-    class QTCSVSHARED_EXPORT VariantData : public AbstractData {
-       public:
+    class QTCSVSHARED_EXPORT VariantData : public AbstractData
+    {
+      public:
         explicit VariantData();
         VariantData(const VariantData& other);
         virtual ~VariantData();
@@ -61,7 +63,8 @@ namespace QtCSV {
         bool operator==(const VariantData& other) const;
 
         friend bool operator!=(const VariantData& left,
-                               const VariantData& right) {
+                               const VariantData& right)
+        {
             return !(left == right);
         }
 
@@ -73,10 +76,10 @@ namespace QtCSV {
         VariantData& operator<<(const QList<QVariant>& values);
         VariantData& operator<<(const QStringList& values);
 
-       private:
+      private:
         class VariantDataPrivate;
         VariantDataPrivate* d_ptr;
     };
-}  // namespace QtCSV
+} // namespace QtCSV
 
-#endif  // QTCSVVARIANTDATA_H
+#endif // QTCSVVARIANTDATA_H

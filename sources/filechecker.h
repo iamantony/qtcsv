@@ -5,7 +5,8 @@
 #include <QFileInfo>
 #include <QString>
 
-namespace QtCSV {
+namespace QtCSV
+{
     // Check if path to csv file is valid
     // @input:
     // - filePath - string with absolute path to file
@@ -13,19 +14,24 @@ namespace QtCSV {
     // @output:
     // - bool - True if file is OK, else False
     inline bool CheckFile(const QString& filePath,
-                          const bool& mustExist = false) {
-        if (filePath.isEmpty()) {
+                          const bool& mustExist = false)
+    {
+        if (filePath.isEmpty())
+        {
             qDebug() << __FUNCTION__ << "Error - file path is empty";
             return false;
         }
 
         QFileInfo fileInfo(filePath);
-        if (fileInfo.isAbsolute() && false == fileInfo.isDir()) {
-            if (mustExist && false == fileInfo.exists()) {
+        if (fileInfo.isAbsolute() && false == fileInfo.isDir())
+        {
+            if (mustExist && false == fileInfo.exists())
+            {
                 return false;
             }
 
-            if ("csv" != fileInfo.suffix()) {
+            if ("csv" != fileInfo.suffix())
+            {
                 qDebug() << __FUNCTION__ << "Warning - file suffix is not .csv";
             }
 
@@ -34,6 +40,6 @@ namespace QtCSV {
 
         return false;
     }
-}  // namespace QtCSV
+} // namespace QtCSV
 
-#endif  // QTCSVFILECHECKER_H
+#endif // QTCSVFILECHECKER_H

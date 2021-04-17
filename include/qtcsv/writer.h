@@ -9,7 +9,8 @@
 
 class QIODevice;
 
-namespace QtCSV {
+namespace QtCSV
+{
     class AbstractData;
     class ContentIterator;
 
@@ -23,9 +24,14 @@ namespace QtCSV {
     // to the end of the file.
     //
     // Also you can specify header and footer for your data.
-    class QTCSVSHARED_EXPORT Writer {
-       public:
-        enum WriteMode { REWRITE = 0, APPEND };
+    class QTCSVSHARED_EXPORT Writer
+    {
+      public:
+        enum WriteMode
+        {
+            REWRITE = 0,
+            APPEND
+        };
 
         // Write data to csv-file
         static bool write(
@@ -48,6 +54,6 @@ namespace QtCSV {
             const QStringList& footer = QStringList(),
             QStringConverter::Encoding codec = QStringConverter::Utf8);
     };
-}  // namespace QtCSV
+} // namespace QtCSV
 
-#endif  // QTCSVWRITER_H
+#endif // QTCSVWRITER_H
