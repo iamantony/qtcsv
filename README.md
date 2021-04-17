@@ -6,9 +6,9 @@ Small easy-to-use library for reading and writing [csv-files][csvwiki]
 in Qt.
 
 Tested on:
-- Ubuntu 14.04 with gcc 4.8.4, Qt 4.8 and higher
-- Windows with MinGW, Qt 5.3 and higher
-- OS X with clang, Qt 4.8, 5.5, 5.7 and higher
+- Ubuntu with gcc, Qt 4.8 - 5.15
+- Windows with MinGW, Qt 5.3 - 5.15
+- OS X with clang, Qt 4.8 - 5.15
 
 ## Table of contents
 * [1. Quick Example](#1-quick-example)
@@ -67,7 +67,7 @@ int main()
 
     // read data from file
     QList<QStringList> readData = QtCSV::Reader::readToList(filePath);
-    for ( int i = 0; i < readData.size(); ++i )
+    for (int i = 0; i < readData.size(); ++i)
     {
         qDebug() << readData.at(i).join(",");
     }
@@ -83,13 +83,13 @@ Library could be separated into three parts: **_Reader_**,
 
 ### 2.1 Containers
 
-*qtcsv* library can work with standard Qt containers like QList and
-QStringList, but also with special ones.
+*qtcsv* library can work with standard Qt containers (like QList and
+QStringList) and special data containers.
 
 #### 2.1.1 AbstractData
 
-**[_AbstractData_][absdata]** is a pure abstract class that provide
-interface for a container class. Here is how it looks:
+**[_AbstractData_][absdata]** is a pure abstract class that provides
+interface for a class of special data containers.
 
 ```cpp
 class AbstractData
@@ -111,15 +111,11 @@ As you can see, **_AbstractData_** declare virtual functions for adding new rows
 getting rows values, clearing all information and so on. Basic stuff for a
 container class.
 
-If you have said *Pure Abstract Class*, you must also say *Implementation*.
-Don't worry, we have some:
-
 #### 2.1.2 StringData
 
-**[_StringData_][strdata]** have the same interface as **_AbstractData_**
-class plus some useful functions for inserting rows, removing rows and
-so on. It stores all data as strings. It is most convenient to use it
-when information that you want to save in csv-file is represented as strings.
+**[_StringData_][strdata]** inhertis interface of **_AbstractData_**
+class and provides some useful functions for inserting/removing rows and
+so on. Class uses strings to store data.
 
 #### 2.1.3 VariantData
 
@@ -127,12 +123,12 @@ If you store information in different types - integers, floating point
 values, strings or (almost) anything else (example: [1, 3.14, "check"]) -
 and you don't want to manually transform each element to string, then you
 can use **_QVariant_** magic. Wrap your data into **_QVariants_** and pass it to
-**[_VariantData_][vardata]** class.
+**[_VariantData_][vardata]** class. It also inherits interface of **_AbstractData_**
+plus has several useful methods.
 
 ### 2.2 Reader
 
-Use **[_Reader_][reader]** class to read csv-files / csv-data. Let's see what
-functions it has.
+Use **[_Reader_][reader]** class to read csv-files / csv-data. Let's see it's functions.
 
 #### 2.2.1 Reader functions
 
@@ -152,18 +148,17 @@ functions it has.
   - *filePath* - string with absolute path to existent csv-file
     (example: "/home/user/my-file.csv");
   - *ioDevice* - IO Device that contains csv-formatted data;
-  - *separator* (optional) - delimiter symbol, that separate elements
+  - *separator* (optional) - delimiter symbol, that separates elements
   in a row (by default it is comma - ",");
-  - *textDelimiter* (optional) - text delimiter symbol that enclose
+  - *textDelimiter* (optional) - text delimiter symbol that encloses
   each element in a row (by default it is double quoute - ");
   - *codec* (optional) - pointer to the codec object that will be used
   to read data from the file (by default it is UTF-8 codec).
 
-  As a result function will return **_QList\<QStringList\>_**
-  that holds content of the file / IO Device. If all went smooth,
-  list will not be empty and size of it will be equal to the number of rows
-  in csv-data source. Each **_QStringList_** will contain elements of
-  the corresponding row.
+  As a result function will return **_QList\<QStringList\>_** that holds content
+  of the file / IO Device. Size of it will be equal to the number of rows
+  in csv-data source. Each **_QStringList_** will contain elements of the
+  corresponding row. On error these functions will return empty list.
 
 2. Read data to **_AbstractData_**-based container
   ```cpp
@@ -190,19 +185,11 @@ functions it has.
   - *codec* (optional) - pointer to the codec object.
 
   Function will save content of the file / IO Device in *data* object using virtual
-  function **_AbstractData::addRow(QStringList)_**. If you pass to the
-  function **_Reader::readToData()_** object of class **_StringData_** or
-  **_VariantData_**, elements of csv-data will be saved in them as strings.
+  function **_AbstractData::addRow(QStringList)_**. Elements of csv-data will be
+  saved as strings in objects of **_StringData_** / **_VariantData_**.
 
-  If you are not happy with this fact, you can create your own
-  **_AbstractData_**-based container class and implement function
-  **_addRow(QStringList)_** in a way you want it.
-
-  For example, if you know, that each row of your csv-data contains 3 elements
-  (integer value, floating-point value and string), then in function
-  **_addRow(QStringList)_** you can convert first element of **_QStringList_**
-  to int, second - to double and save all three elements to some
-  internal container (or do with them whatever you want).
+  If you would like to convert row elements to the target types on-the-fly during
+  file reading, please implement your own **_AbstractData_**-based container class.
 
 3. Read data and process it line-by-line by **_AbstractProcessor_**-based processor
   ```cpp
@@ -231,8 +218,7 @@ functions it has.
 
 #### 2.2.2 AbstractProcessor
 
-**[_AbstractProcessor_][reader]** is an abstract class with two
-functions:
+**[_AbstractProcessor_][reader]** is an abstract class with two methods:
 
 ``` cpp
 class AbstractProcessor
@@ -247,16 +233,15 @@ public:
 ```
 
 When **_Reader_** opens a csv-data source (file or IO Device), it starts
-to read it line by line in a cycle. Each new line **_Reader_** first of all
-pass to processor method **_preProcessRawLine(QString&)_**. In this method
+reading it line by line in a cycle. First of all, **_Reader_** passes each
+new line to processor's method **_preProcessRawLine(QString&)_**. In this method
 you can edit the line - replace values, remove sensitive information and so on.
 
-After **_Reader_** parses elements of the row, it pass them to processor
-method **_processRowElements(QStringList)_**. What to do next with these
-elements - the processor decides. Processor can save elements, filter them,
-edit and so on. As an example we can consider class **_ReadToListProcessor_**
-(defined in [reader.cpp][reader-cpp]) which simply saves elements into
-**_QList_**.
+After that **_Reader_** parses elements of the row and passes them to processor's
+method **_processRowElements(QStringList)_**. At that step you can do whatever
+you want with row elements - convert/edit/save/filter the elements. Please check out
+**_ReadToListProcessor_** class (defined in [reader.cpp][reader-cpp]) as an example of
+such processor.
 
 ### 2.3 Writer
 
@@ -284,22 +269,19 @@ bool write(QIODevice& ioDevice,
 - *filePath* - string with absolute path to csv-file (new or existent);
 - *ioDevice* - IO Device;
 - *data* - object, that contains information that you want to write to
-csv-file / IO Device. **_Writer_** internally will use
-**_QStringList AbstractData::rowValues(int)_** function to get row values;
+csv-file / IO Device;
 - *separator* (optional) - delimiter symbol (by default it is comma - ",");
-- *textDelimiter* (optional) - text delimiter symbol that enclose
+- *textDelimiter* (optional) - text delimiter symbol that encloses
 each element in a row (by default it is double quoute - ");
 - *mode* (optional) - write mode flag.
 If it set to **_WriteMode::REWRITE_** and csv-file exist, then csv-file will be
 rewritten. If *mode* set to **_WriteMode::APPEND_** and csv-file exist, then new
-information will be appended to the end of the file.
-By default mode set to **_WriteMode::REWRITE_**.
-- *header* (optional) - strings that will be written at the beginning
-of the csv-data, separated with defined separator (empty by default);
-- *footer* (optional) - strings that will be written at the end of the
-csv-data, separated with defined separator (empty by default);
+information will be appended to the end of the file. By default mode is set
+to **_WriteMode::REWRITE_**.
+- *header* (optional) - strings that will be written as the first row;
+- *footer* (optional) - strings that will be written at the last row;
 - *codec* (optional) - pointer to the codec object that will be used
-to write data to the file (by default it is UTF-8 codec).
+in write operations (by default it is UTF-8 codec).
 
 **_Writer_** uses *CRLF* as line ending symbols in accordance with [standard][rfc].
 If element of the row contains separator symbol or line ending symbols, such
@@ -308,9 +290,8 @@ empty string as text delimiter symbol).
 
 ## 3. Requirements
 
-Qt 4.8 and higher.
-It is quite possible, that library will be successfully built with older Qt
-versions (4.7, 4.6, ...).
+Qt 4.8 - 5.15, only core/base modules.
+It is quite possible that library would work with older Qt versions.
 
 ## 4. Build
 
@@ -399,7 +380,7 @@ mingw32-make
 
 ## 5. Run tests
 
-If you want to run tests, then use this commands after build of *qtcsv*:
+To run tests use these commands after build of *qtcsv*:
 
 ### 5.1 Linux, OS X
 
@@ -427,14 +408,14 @@ qtcsv_tests.exe
 
 ## 6. Installation
 
-On Unix-like OS you can install *qtcsv* library using this command:
+On Unix-like OS you can install *qtcsv* library using these commands:
 
 ```bash
 sudo make install
 sudo ldconfig -n -v /usr/local/lib
 ```
 
-This command will copy all compiled files (libqtcsv.so\*) from build
+These commands will copy all compiled files (libqtcsv.so\*) from build
 folder to *"/usr/local/lib"*. Also all headers files will be copied
 from *"./include"* folder to *"/usr/local/include/"*.
 
@@ -446,12 +427,12 @@ files installation.
 
 ## 7. Examples
 
-If you want to try *qtcsv*, you can download [qtcsv-example project][qtcsv-example].
-Don't forget to read README file!
+If you would like to try *qtcsv*, you can download [qtcsv-example project][qtcsv-example].
+Don't forget to read README.md file!
 
 ## 8. Other
 
-If you want to know more about csv-file format, read [RFC 4180][rfc] standard.
+If you want to know more about csv-file format, please read [RFC 4180][rfc] standard.
 
 Also on [this page][csvlint] you can find useful tips about how should look
 proper csv-file.
