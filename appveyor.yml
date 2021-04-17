@@ -55,7 +55,7 @@ for:
       # build library and tests
       - ps: cmake --version
       # IGNORE_PATH is a workaround for CMake not wanting sh.exe on PATH for MinGW
-      - ps: cmake -G "MinGW Makefiles" -DCMAKE_IGNORE_PATH="C:/Program Files/Git/usr/bin" -DCMAKE_BUILD_TYPE=Release --build ..
+      - ps: cmake -G "MinGW Makefiles" -DCMAKE_IGNORE_PATH="C:/Program Files/Git/usr/bin" -DCMAKE_BUILD_TYPE=Release ..
       - ps: ls -s
       - ps: mingw32-make
       - ps: cd tests
