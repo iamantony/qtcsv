@@ -14,8 +14,8 @@ environment:
   - QT5: C:\Qt\5.12\mingw73_32
     MINGW: C:\Qt\Tools\mingw730_32
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-  - QT5: C:\Qt\5.15\mingw81_32
-    MINGW: C:\Qt\Tools\mingw81_32
+  - QT5: C:\Qt\5.15.2\mingw81_32
+    MINGW: C:\Qt\5.15.2\mingw81_32
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 
 matrix:
