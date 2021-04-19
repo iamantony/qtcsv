@@ -1,6 +1,6 @@
 language: cpp
 
-jobs:
+matrix:
  include:
   - os: osx
     compiler: clang

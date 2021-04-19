@@ -45,4 +45,4 @@ build_script:
 
 # run tests
 - dir /s
-- qtcsv_tests.exe
+- .\tests\qtcsv_tests.exe
