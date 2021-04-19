@@ -14,9 +14,6 @@ environment:
   - QT5: C:\Qt\5.12\mingw73_32
     MINGW: C:\Qt\Tools\mingw730_32
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-  - QT5: C:\Qt\5.15.2\mingw81_32
-    MINGW: C:\Qt\5.15.2\mingw81_32
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 
 matrix:
   fast_finish: true
@@ -37,11 +34,6 @@ build_script:
 - copy .\*qtcsv.dll .\tests
 - qmake ..\tests\tests.pro CONFIG+=release DESTDIR=%cd%\tests
 - mingw32-make
-
-# download test file
-#- wget -O worldcitiespop.txt.gz https://raw.github.com/apache/commons-csv/master/src/test/resources/perf/worldcitiespop.txt.gz
-#- 7z e worldcitiespop.txt.gz
-#- move worldcitiespop.txt data\
 
 # run tests
 - dir /s
