@@ -1,36 +1,30 @@
 #include "testreader.h"
-
+#include "qtcsv/reader.h"
+#include "qtcsv/stringdata.h"
+#include "qtcsv/variantdata.h"
 #include <QDir>
 #include <QFile>
 #include <QElapsedTimer>
 
-#include "qtcsv/reader.h"
-#include "qtcsv/stringdata.h"
-#include "qtcsv/variantdata.h"
-
-TestReader::TestReader()
-{
-}
+TestReader::TestReader() {}
 
 void TestReader::testReadToListInvalidArgs()
 {
-    QVERIFY2(QList<QStringList>() ==
-                            QtCSV::Reader::readToList(QString(), QString()),
+    QVERIFY2(QtCSV::Reader::readToList(QString(), QString()).empty(),
              "Invalid arguments was accepted");
 
-    QVERIFY2(QList<QStringList>() ==
-             QtCSV::Reader::readToList(getPathToFileTestComma(), QString()),
+    QVERIFY2(QtCSV::Reader::readToList(
+                 getPathToFileTestComma(), QString()).empty(),
              "Invalid arguments was accepted");
 
-    QVERIFY2(QList<QStringList>() == QtCSV::Reader::readToList(QString(), ","),
+    QVERIFY2(QtCSV::Reader::readToList(QString(), ",").empty(),
              "Invalid arguments was accepted");
 
-    QVERIFY2(QList<QStringList>() ==
-             QtCSV::Reader::readToList("./some/path.csv", ","),
+    QVERIFY2(QtCSV::Reader::readToList("./some/path.csv", ",").empty(),
              "Invalid arguments was accepted");
 
-    QVERIFY2(QList<QStringList>() ==
-             QtCSV::Reader::readToList(getPathToFileTestComma() + ".md5", ","),
+    QVERIFY2(QtCSV::Reader::readToList(
+                 getPathToFileTestComma() + ".md5", ",").empty(),
              "Invalid arguments was accepted");
 }
 
@@ -41,8 +35,8 @@ void TestReader::testReadToDataInvalidArgs()
     QVERIFY2(false == QtCSV::Reader::readToData(QString(), data, QString()),
              "Invalid arguments was accepted");
 
-    QVERIFY2(false == QtCSV::Reader::readToData(getPathToFileTestComma(), data,
-                                                QString()),
+    QVERIFY2(false == QtCSV::Reader::readToData(
+                 getPathToFileTestComma(), data, QString()),
              "Invalid arguments was accepted");
 
     QVERIFY2(false == QtCSV::Reader::readToData(QString(), data, ","),

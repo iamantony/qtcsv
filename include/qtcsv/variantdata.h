@@ -1,10 +1,9 @@
 #ifndef QTCSVVARIANTDATA_H
 #define QTCSVVARIANTDATA_H
 
-#include <QList>
-
 #include "qtcsv/abstractdata.h"
 #include "qtcsv/qtcsv_global.h"
+#include <QList>
 
 class QVariant;
 class QStringList;
@@ -20,9 +19,13 @@ namespace QtCSV
     // before you start using this class.
     class QTCSVSHARED_EXPORT VariantData : public AbstractData
     {
+        class VariantDataPrivate;
+        VariantDataPrivate* d_ptr;
+
     public:
         explicit VariantData();
         VariantData(const VariantData& other);
+        VariantData& operator=(const VariantData& other);
         virtual ~VariantData();
 
         // Add new empty row
@@ -36,28 +39,18 @@ namespace QtCSV
         // Clear all data
         virtual void clear();
         // Insert new row at index position 'row'
-        bool insertRow(const int& row,
-                       const QVariant& value);
-
-        bool insertRow(const int& row,
-                       const QStringList& values);
-
-        bool insertRow(const int& row,
-                       const QList<QVariant>& values);
+        bool insertRow(const int& row, const QVariant& value);
+        bool insertRow(const int& row, const QStringList& values);
+        bool insertRow(const int& row, const QList<QVariant>& values);
 
         // Check if there are any data
         virtual bool isEmpty() const;
         // Remove the row at index position 'row'
         void removeRow(const int& row);
         // Replace the row at index position 'row' with new row
-        bool replaceRow(const int& row,
-                        const QVariant& value);
-
-        bool replaceRow(const int& row,
-                        const QStringList& values);
-
-        bool replaceRow(const int& row,
-                        const QList<QVariant>& values);
+        bool replaceRow(const int& row, const QVariant& value);
+        bool replaceRow(const int& row, const QStringList& values);
+        bool replaceRow(const int& row, const QList<QVariant>& values);
 
         // Reserve space for 'size' rows
         void reserve(const int& size);
@@ -66,25 +59,18 @@ namespace QtCSV
         // Get values (as list of strings) of specified row
         virtual QStringList rowValues(const int& row) const;
 
-        bool operator==(const VariantData& other) const;
-
-        friend bool operator!=(const VariantData& left,
-                               const VariantData& right)
-        {
-            return !(left == right);
-        }
-
-        VariantData& operator=(const VariantData& other);
-
         // Add new row that would contain one value
         VariantData& operator<<(const QVariant &value);
         // Add new row with specified values
         VariantData& operator<<(const QList<QVariant> &values);
         VariantData& operator<<(const QStringList &values);
 
-    private:
-        class VariantDataPrivate;
-        VariantDataPrivate* d_ptr;
+        bool operator==(const VariantData& other) const;
+        friend bool operator!=(
+            const VariantData& left, const VariantData& right)
+        {
+            return !(left == right);
+        }
     };
 }
 

@@ -1,36 +1,31 @@
 #include "testwriter.h"
-
-#include <exception>
-
+#include "qtcsv/writer.h"
+#include "qtcsv/reader.h"
+#include "qtcsv/variantdata.h"
 #include <QDir>
 #include <QFile>
 #include <QElapsedTimer>
 #include <QDebug>
+#include <exception>
 
-#include "qtcsv/writer.h"
-#include "qtcsv/reader.h"
-#include "qtcsv/variantdata.h"
-
-TestWriter::TestWriter()
-{
-}
+TestWriter::TestWriter() {}
 
 void TestWriter::cleanup()
 {
-    if ( QFile::exists(getFilePath()) &&
-         false == QFile::remove(getFilePath()) )
+    if (QFile::exists(getFilePath()) &&
+        false == QFile::remove(getFilePath()))
     {
         qDebug() << "Can't remove file:" << getFilePath();
     }
 
-    if ( QFile::exists(getFilePathXLS()) &&
-         false == QFile::remove(getFilePathXLS()) )
+    if (QFile::exists(getFilePathXLS()) &&
+        false == QFile::remove(getFilePathXLS()))
     {
         qDebug() << "Can't remove file:" << getFilePathXLS();
     }
 
-    if ( QFile::exists(getFilePathWithDotsInName()) &&
-         false == QFile::remove(getFilePathWithDotsInName()) )
+    if (QFile::exists(getFilePathWithDotsInName()) &&
+        false == QFile::remove(getFilePathWithDotsInName()))
     {
         qDebug() << "Can't remove file:" << getFilePathWithDotsInName();
     }
@@ -312,12 +307,12 @@ void TestWriter::testWriteDifferentDataAmount()
     int rowsMultiplier  = 2;
     int rowCycles = 2;
     QElapsedTimer time;
-    for ( int rc = 0; rc < rowCycles; ++rc )
+    for (int rc = 0; rc < rowCycles; ++rc)
     {
         int symbolsNumber = 10;
         int symbolsMultiplier  = 5;
         int symbolCycles = 4;
-        for ( int sc = 0; sc < symbolCycles; ++sc )
+        for (int sc = 0; sc < symbolCycles; ++sc)
         {
             QtCSV::StringData data;
             try
@@ -352,13 +347,13 @@ void TestWriter::testWriteDifferentDataAmount()
             QVERIFY2(true == writeResult, "Failed to write to file");
 
             QFile csvFile(getFilePath());
-            if ( false == csvFile.open(QIODevice::ReadOnly | QIODevice::Text) )
+            if (false == csvFile.open(QIODevice::ReadOnly | QIODevice::Text))
             {
                 QFAIL("Failed to open created csv-file");
             }
 
             QTextStream stream(&csvFile);
-            for ( int line = 0; line < data.rowCount(); ++line )
+            for (int line = 0; line < data.rowCount(); ++line)
             {
                 QStringList lineElements = stream.readLine().split(",");
                 QVERIFY2(data.rowValues(line) == lineElements,
@@ -374,10 +369,10 @@ void TestWriter::testWriteDifferentDataAmount()
     }
 }
 
-QtCSV::StringData TestWriter::getTestStringData(const int &symbolsInRow,
-                                                const int &rowsNumber)
+QtCSV::StringData TestWriter::getTestStringData(
+    const int &symbolsInRow, const int &rowsNumber)
 {
-    if ( symbolsInRow <= 0 || rowsNumber <= 0 )
+    if (symbolsInRow <= 0 || rowsNumber <= 0)
     {
         qDebug() << __FUNCTION__ << "Invalid argumnets";
         return QtCSV::StringData();
@@ -392,17 +387,17 @@ QtCSV::StringData TestWriter::getTestStringData(const int &symbolsInRow,
     QStringList rowElements;
     int rowLength = 0;
     int elementIndex = 0;
-    while ( rowLength < symbolsInRow )
+    while (rowLength < symbolsInRow)
     {
-        if ( elements.size() <= elementIndex )
+        if (elements.size() <= elementIndex)
         {
             elementIndex = 0;
         }
 
         QString nextElement = elements.at(elementIndex);
-        if ( symbolsInRow < rowLength + nextElement.size() )
+        if (symbolsInRow < rowLength + nextElement.size())
         {
-            nextElement.resize( symbolsInRow - rowLength );
+            nextElement.resize(symbolsInRow - rowLength);
         }
 
         rowElements << nextElement;
@@ -411,7 +406,7 @@ QtCSV::StringData TestWriter::getTestStringData(const int &symbolsInRow,
     }
 
     QtCSV::StringData data;
-    for ( int i = 0; i < rowsNumber; ++i )
+    for (int i = 0; i < rowsNumber; ++i)
     {
         data.addRow(rowElements);
     }

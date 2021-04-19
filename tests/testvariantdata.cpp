@@ -3,9 +3,7 @@
 
 const double EPSILON = 0.000001;
 
-TestVariantData::TestVariantData()
-{
-}
+TestVariantData::TestVariantData() {}
 
 void TestVariantData::testCreation()
 {
