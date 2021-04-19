@@ -17,7 +17,6 @@ environment:
   - QT5: C:\Qt\5.15\mingw81_32
     MINGW: C:\Qt\Tools\mingw81_32
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    use_cmake: "false"
 
 matrix:
   fast_finish: true
@@ -35,9 +34,8 @@ build_script:
 - mingw32-make
 - dir /s
 - mkdir .\tests
-- cd .\tests
-- copy ..\*qtcsv.dll .\
-- qmake ..\..\tests\tests.pro CONFIG+=release DESTDIR=%cd%\tests
+- copy .\*qtcsv.dll .\tests
+- qmake ..\tests\tests.pro CONFIG+=release DESTDIR=%cd%\tests
 - mingw32-make
 
 # download test file

@@ -1,19 +1,7 @@
 language: cpp
 
-matrix:
+jobs:
  include:
-  - os: linux
-    dist: trusty
-    sudo: required
-    compiler: gcc
-    env:
-     - QT_BASE=48
-  - os: linux
-    dist: trusty
-    sudo: required
-    compiler: gcc
-    env:
-     - QT_BASE=48 USE_CMAKE=true
   - os: osx
     compiler: clang
     env:
@@ -24,7 +12,6 @@ matrix:
      - QT_BASE=48 USE_CMAKE=true
   - os: linux
     dist: xenial
-    sudo: required
     compiler: gcc
     env:
      - QT_BASE=56
@@ -56,7 +43,6 @@ matrix:
      - QT_BASE=515 USE_CMAKE=true
 
 before_install:
-  - if [[ "$QT_BASE" = "48" && "$TRAVIS_OS_NAME" = "linux" ]]; then sudo add-apt-repository ppa:beineri/opt-qt487-trusty -y; fi
   - if [ "$QT_BASE" = "56" ]; then sudo add-apt-repository ppa:beineri/opt-qt563-xenial -y; fi
   - if [ "$QT_BASE" = "59" ]; then sudo add-apt-repository ppa:beineri/opt-qt597-xenial -y; fi
   - if [ "$QT_BASE" = "512" ]; then sudo add-apt-repository ppa:beineri/opt-qt-5.12.10-focal -y; fi
@@ -64,7 +50,7 @@ before_install:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then
       sudo apt-get update -qq;
     else
-      brew update;
+      #brew update;
     fi
 
 install:
@@ -73,7 +59,7 @@ install:
         sudo apt-get install -qq opt-qt4-qmake opt-qt4-dev-tools; source /opt/qt-4.8/bin/qt-4.8-env.sh;
       else
         brew tap cartr/qt4;
-        brew tap-pin cartr/qt4;
+        #brew tap-pin cartr/qt4;
         brew install qt@4;
         brew link --force qt@4;
       fi
