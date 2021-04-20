@@ -1,9 +1,8 @@
 #ifndef QTCSVCONTENTITERATOR_H
 #define QTCSVCONTENTITERATOR_H
 
-#include <QtGlobal>
-
-using QStringList = QList<QString>;
+#include <QList>
+#include <QString>
 
 namespace QtCSV
 {
@@ -20,15 +19,26 @@ namespace QtCSV
     // new line symbol.
     class ContentIterator
     {
-      public:
-        explicit ContentIterator(const AbstractData& data,
-                                 const QString& separator,
-                                 const QString& textDelimiter,
-                                 const QStringList& header,
-                                 const QStringList& footer,
-                                 int chunkSize = 1000);
+        const AbstractData& m_data;
+        const QString& m_separator;
+        const QString& m_textDelimiter;
+        const QList<QString>& m_header;
+        const QList<QString>& m_footer;
+        const int m_chunkSize;
+        int m_dataRow;
+        bool atEnd;
 
-        ~ContentIterator() {}
+        // Compose row string from values
+        QString composeRow(const QList<QString>& values) const;
+
+    public:
+        explicit ContentIterator(
+            const AbstractData& data,
+            const QString& separator,
+            const QString& textDelimiter,
+            const QList<QString>& header,
+            const QList<QString>& footer,
+            int chunkSize = 1000);
 
         // Check if content contains information
         bool isEmpty() const;
@@ -36,21 +46,7 @@ namespace QtCSV
         bool hasNext() const;
         // Get next chunk of information
         QString getNext();
-
-      private:
-        // Compose row string from values
-        QString composeRow(const QStringList& values) const;
-
-      private:
-        const AbstractData& m_data;
-        const QString& m_separator;
-        const QString& m_textDelimiter;
-        const QStringList& m_header;
-        const QStringList& m_footer;
-        const int m_chunkSize;
-        int m_dataRow;
-        bool atEnd;
     };
-} // namespace QtCSV
+}
 
 #endif // QTCSVCONTENTITERATOR_H

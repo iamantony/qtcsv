@@ -12,10 +12,6 @@ environment:
     - QT6: C:\Qt\6.0.1\mingw81_64
       MINGW: C:\Qt\Tools\mingw810_64
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    # 6.0.2 not yet available as of 05 March 2021
-    # - QT6: C:\Qt\6.0.2\mingw81_64
-    #   MINGW: C:\Qt\Tools\mingw810_64
-    #   APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 
 matrix:
   fast_finish: false
@@ -59,5 +55,4 @@ for:
       - ps: ls -s
       - ps: mingw32-make
       - ps: cd tests
-      - ps:
       - ps: bash.exe -c "cp ../libqtcsv.dll .; ./qtcsv_tests.exe"

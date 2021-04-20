@@ -1,8 +1,4 @@
 #include "sources/contentiterator.h"
-
-#include <QString>
-#include <QStringList>
-
 #include "include/qtcsv/abstractdata.h"
 #include "sources/symbols.h"
 
@@ -16,17 +12,17 @@ using namespace QtCSV;
 // - header - strings that will be placed on the first line
 // - footer - strings that will be placed on the last line
 // - chunkSize - size (in rows) of chunk of data
-ContentIterator::ContentIterator(const AbstractData& data,
-                                 const QString& separator,
-                                 const QString& textDelimiter,
-                                 const QStringList& header,
-                                 const QStringList& footer,
-                                 int chunkSize)
-    : m_data(data), m_separator(separator), m_textDelimiter(textDelimiter),
-      m_header(header), m_footer(footer), m_chunkSize(chunkSize), m_dataRow(-1),
-      atEnd(false)
-{
-}
+ContentIterator::ContentIterator(
+    const AbstractData& data,
+    const QString& separator,
+    const QString& textDelimiter,
+    const QList<QString>& header,
+    const QList<QString>& footer,
+    const int chunkSize) :
+    m_data(data), m_separator(separator), m_textDelimiter(textDelimiter),
+    m_header(header), m_footer(footer), m_chunkSize(chunkSize), m_dataRow(-1),
+    atEnd(false)
+{}
 
 // Check if content contains information
 // @output:
@@ -51,10 +47,7 @@ bool ContentIterator::hasNext() const
 QString ContentIterator::getNext()
 {
     // Check if we have already get to the end of the content
-    if (atEnd)
-    {
-        return QString();
-    }
+    if (atEnd) { return {}; }
 
     QString content;
     int rowsNumber = 0;
@@ -109,9 +102,9 @@ QString ContentIterator::getNext()
 // - values - list of values in rows
 // @output:
 // - QString - result row string
-QString ContentIterator::composeRow(const QStringList& values) const
+QString ContentIterator::composeRow(const QList<QString>& values) const
 {
-    QStringList rowValues = values;
+    QList<QString> rowValues = values;
     const QString twoDelimiters = m_textDelimiter + m_textDelimiter;
     for (int i = 0; i < rowValues.size(); ++i)
     {

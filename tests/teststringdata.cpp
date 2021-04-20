@@ -1,9 +1,7 @@
 #include "teststringdata.h"
-
+#include "qtcsv/stringdata.h"
 #include <QDebug>
 #include <QTest>
-
-#include "qtcsv/stringdata.h"
 
 TestStringData::TestStringData() {}
 
@@ -22,12 +20,12 @@ void TestStringData::testAddEmptyRow()
 
     QVERIFY2(false == strData.isEmpty(), "StringData is empty with empty line");
     QVERIFY2(1 == strData.rowCount(), "Wrong number of rows");
-    QVERIFY2(QStringList() == strData.rowValues(0), "Wrong data for empty row");
+    QVERIFY2(QList<QString>() == strData.rowValues(0), "Wrong data for empty row");
 }
 
 void TestStringData::testAddOneRow()
 {
-    QStringList rowValues;
+    QList<QString> rowValues;
     rowValues << "one"
               << "two"
               << "three";
@@ -50,21 +48,21 @@ void TestStringData::testAddOneRowUsingOneString()
     QVERIFY2(false == strData.isEmpty(), "StringData is empty");
     QVERIFY2(1 == strData.rowCount(), "Wrong number of rows");
 
-    QStringList expectedRow;
+    QList<QString> expectedRow;
     expectedRow << value;
     QVERIFY2(expectedRow == strData.rowValues(0), "Wrong data for empty row");
 }
 
 void TestStringData::testAddRows()
 {
-    QStringList valuesFirst;
+    QList<QString> valuesFirst;
     valuesFirst << "1"
                 << "2"
                 << "3";
 
-    QStringList valuesSecond;
+    QList<QString> valuesSecond;
 
-    QStringList valuesThird;
+    QList<QString> valuesThird;
     valuesFirst << "hhh"
                 << "ttyyeeqp["
                 << "n...589129";
@@ -94,7 +92,7 @@ void TestStringData::testClearEmptyData()
 
 void TestStringData::testClearNotEmptyData()
 {
-    QStringList rowValues;
+    QList<QString> rowValues;
     rowValues << "one"
               << "two"
               << "three";
@@ -111,7 +109,7 @@ void TestStringData::testClearNotEmptyData()
 
 void TestStringData::testInsertRows()
 {
-    QStringList valuesFirst, valuesSecond;
+    QList<QString> valuesFirst, valuesSecond;
     valuesFirst << "one"
                 << "two"
                 << "three";
@@ -135,17 +133,17 @@ void TestStringData::testInsertRows()
     QVERIFY2(5 == strData.rowCount(), "Wrong number of rows");
     QVERIFY2(valuesFirst == strData.rowValues(0), "Wrong data for first row");
     QVERIFY2(valuesSecond == strData.rowValues(1), "Wrong data for second row");
-    QVERIFY2(QStringList() == strData.rowValues(2), "Wrong data for third row");
-    QVERIFY2((QStringList() << stringOne) == strData.rowValues(3),
+    QVERIFY2(QList<QString>() == strData.rowValues(2), "Wrong data for third row");
+    QVERIFY2((QList<QString>() << stringOne) == strData.rowValues(3),
              "Wrong data for fourth row");
 
-    QVERIFY2((QStringList() << stringTwo) == strData.rowValues(4),
+    QVERIFY2((QList<QString>() << stringTwo) == strData.rowValues(4),
              "Wrong data for fifth row");
 }
 
 void TestStringData::testCompareForEquality()
 {
-    QStringList firstRow, secondRow;
+    QList<QString> firstRow, secondRow;
     firstRow << "one"
              << "two"
              << "three";
@@ -177,7 +175,7 @@ void TestStringData::testCompareForEquality()
 
 void TestStringData::testCopyConstruction()
 {
-    QStringList firstRow, secondRow;
+    QList<QString> firstRow, secondRow;
     firstRow << "one"
              << "two"
              << "three";
@@ -208,7 +206,7 @@ void TestStringData::testCopyConstruction()
 
 void TestStringData::testCopyAssignment()
 {
-    QStringList firstRow, secondRow;
+    QList<QString> firstRow, secondRow;
     firstRow << "one"
              << "two"
              << "three";
@@ -243,7 +241,7 @@ void TestStringData::testOperatorInput()
     QtCSV::StringData data;
     data << QString("1") << "one";
 
-    QStringList thirdRow;
+    QList<QString> thirdRow;
     thirdRow << "one"
              << "two"
              << "three";
@@ -252,7 +250,7 @@ void TestStringData::testOperatorInput()
 
     QVERIFY2(3 == data.rowCount(), "Wrong number of rows");
 
-    QStringList expectedFirstRow, expectedSecondRow;
+    QList<QString> expectedFirstRow, expectedSecondRow;
     expectedFirstRow << "1";
     expectedSecondRow << "one";
 
@@ -271,7 +269,7 @@ void TestStringData::testRemoveRow()
 
     QVERIFY2(true == strData.isEmpty(), "Container is not empty");
 
-    QStringList valuesFirst, valuesSecond;
+    QList<QString> valuesFirst, valuesSecond;
     valuesFirst << "one"
                 << "two"
                 << "three";
@@ -288,13 +286,13 @@ void TestStringData::testRemoveRow()
     QVERIFY2(3 == strData.rowCount(), "Wrong number of rows");
     QVERIFY2(valuesFirst == strData.rowValues(0), "Wrong data for first row");
     QVERIFY2(valuesSecond == strData.rowValues(1), "Wrong data for second row");
-    QVERIFY2((QStringList() << stringTwo) == strData.rowValues(2),
+    QVERIFY2((QList<QString>() << stringTwo) == strData.rowValues(2),
              "Wrong data for third row");
 }
 
 void TestStringData::testReplaceRow()
 {
-    QStringList valuesFirst, valuesSecond;
+    QList<QString> valuesFirst, valuesSecond;
     valuesFirst << "one"
                 << "two"
                 << "three";
@@ -308,11 +306,11 @@ void TestStringData::testReplaceRow()
     strData << valuesFirst << valuesSecond << stringOne;
 
     strData.replaceRow(0, stringTwo);
-    QVERIFY2((QStringList() << stringTwo) == strData.rowValues(0),
+    QVERIFY2((QList<QString>() << stringTwo) == strData.rowValues(0),
              "Wrong data for first row");
 
-    strData.replaceRow(2, QStringList());
-    QVERIFY2(QStringList() == strData.rowValues(2), "Wrong data for third row");
+    strData.replaceRow(2, QList<QString>());
+    QVERIFY2(QList<QString>() == strData.rowValues(2), "Wrong data for third row");
 
     strData.replaceRow(1, valuesFirst);
     QVERIFY2(valuesFirst == strData.rowValues(1), "Wrong data for second row");

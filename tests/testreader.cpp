@@ -1,36 +1,31 @@
 #include "testreader.h"
-
-#include <QDir>
-#include <QElapsedTimer>
-#include <QFile>
-
 #include "qtcsv/reader.h"
 #include "qtcsv/stringdata.h"
 #include "qtcsv/variantdata.h"
+#include <QDir>
+#include <QFile>
+#include <QElapsedTimer>
 
 TestReader::TestReader() {}
 
 void TestReader::testReadToListInvalidArgs()
 {
-    QVERIFY2(QList<QStringList>() ==
-                 QtCSV::Reader::readToList(QString(), QString()),
+    QVERIFY2(QtCSV::Reader::readToList(QString(), QString()).empty(),
              "Invalid arguments was accepted");
 
-    QVERIFY2(QList<QStringList>() ==
-                 QtCSV::Reader::readToList(getPathToFileTestComma(), QString()),
+    QVERIFY2(QtCSV::Reader::readToList(
+                 getPathToFileTestComma(), QString()).empty(),
              "Invalid arguments was accepted");
 
-    QVERIFY2(QList<QStringList>() == QtCSV::Reader::readToList(QString(), ","),
+    QVERIFY2(QtCSV::Reader::readToList(QString(), ",").empty(),
              "Invalid arguments was accepted");
 
-    QVERIFY2(QList<QStringList>() ==
-                 QtCSV::Reader::readToList("./some/path.csv", ","),
+    QVERIFY2(QtCSV::Reader::readToList("./some/path.csv", ",").empty(),
              "Invalid arguments was accepted");
 
-    QVERIFY2(
-        QList<QStringList>() ==
-            QtCSV::Reader::readToList(getPathToFileTestComma() + ".md5", ","),
-        "Invalid arguments was accepted");
+    QVERIFY2(QtCSV::Reader::readToList(
+                 getPathToFileTestComma() + ".md5", ",").empty(),
+             "Invalid arguments was accepted");
 }
 
 void TestReader::testReadToDataInvalidArgs()
@@ -41,7 +36,7 @@ void TestReader::testReadToDataInvalidArgs()
              "Invalid arguments was accepted");
 
     QVERIFY2(false == QtCSV::Reader::readToData(
-                          getPathToFileTestComma(), data, QString()),
+                 getPathToFileTestComma(), data, QString()),
              "Invalid arguments was accepted");
 
     QVERIFY2(false == QtCSV::Reader::readToData(QString(), data, ","),
@@ -58,20 +53,20 @@ void TestReader::testReadToDataInvalidArgs()
 void TestReader::testReadFileWithCommas()
 {
     const QString path = getPathToFileTestComma();
-    QList<QStringList> data = QtCSV::Reader::readToList(path);
+    QList<QList<QString>> data = QtCSV::Reader::readToList(path);
 
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
-    QList<QStringList> expected;
-    expected << (QStringList() << "one"
+    QList<QList<QString>> expected;
+    expected << (QList<QString>() << "one"
                                << "two"
                                << "three");
-    expected << (QStringList() << "one_element");
-    expected << (QStringList() << "1"
+    expected << (QList<QString>() << "one_element");
+    expected << (QList<QString>() << "1"
                                << "2"
                                << "3");
-    expected << (QStringList());
-    expected << (QStringList() << "3.14");
+    expected << (QList<QString>());
+    expected << (QList<QString>() << "3.14");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
     for (int i = 0; i < data.size(); ++i)
@@ -83,15 +78,15 @@ void TestReader::testReadFileWithCommas()
 void TestReader::testReadFileWithDotsInName()
 {
     const QString path = getPathToFileTestDotsInName();
-    QList<QStringList> data = QtCSV::Reader::readToList(path);
+    QList<QList<QString>> data = QtCSV::Reader::readToList(path);
 
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
-    QList<QStringList> expected;
-    expected << (QStringList() << "one"
+    QList<QList<QString>> expected;
+    expected << (QList<QString>() << "one"
                                << "two"
                                << "three");
-    expected << (QStringList() << "one_element");
+    expected << (QList<QString>() << "one_element");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
     for (int i = 0; i < data.size(); ++i)
@@ -108,16 +103,16 @@ void TestReader::testReadFileWithCommasToStringData()
     QVERIFY2(true == readResult, "Failed to read file content");
     QVERIFY2(false == strData.isEmpty(), "StringData is empty");
 
-    QList<QStringList> expected;
-    expected << (QStringList() << "one"
+    QList<QList<QString>> expected;
+    expected << (QList<QString>() << "one"
                                << "two"
                                << "three");
-    expected << (QStringList() << "one_element");
-    expected << (QStringList() << "1"
+    expected << (QList<QString>() << "one_element");
+    expected << (QList<QString>() << "1"
                                << "2"
                                << "3");
-    expected << (QStringList());
-    expected << (QStringList() << "3.14");
+    expected << (QList<QString>());
+    expected << (QList<QString>() << "3.14");
 
     QVERIFY2(expected.size() == strData.rowCount(), "Wrong number of rows");
     for (int i = 0; i < strData.rowCount(); ++i)
@@ -134,16 +129,16 @@ void TestReader::testReadFileWithCommasToVariantData()
     QVERIFY2(true == readResult, "Failed to read file content");
     QVERIFY2(false == varData.isEmpty(), "StringData is empty");
 
-    QList<QStringList> expected;
-    expected << (QStringList() << "one"
+    QList<QList<QString>> expected;
+    expected << (QList<QString>() << "one"
                                << "two"
                                << "three");
-    expected << (QStringList() << "one_element");
-    expected << (QStringList() << "1"
+    expected << (QList<QString>() << "one_element");
+    expected << (QList<QString>() << "1"
                                << "2"
                                << "3");
-    expected << (QStringList());
-    expected << (QStringList() << "3.14");
+    expected << (QList<QString>());
+    expected << (QList<QString>() << "3.14");
 
     QVERIFY2(expected.size() == varData.rowCount(), "Wrong number of rows");
     for (int i = 0; i < varData.rowCount(); ++i)
@@ -155,17 +150,17 @@ void TestReader::testReadFileWithCommasToVariantData()
 void TestReader::testReadFileWithSemicolons()
 {
     const QString path = getPathToFileTestSemicolon();
-    QList<QStringList> data = QtCSV::Reader::readToList(path, ";");
+    QList<QList<QString>> data = QtCSV::Reader::readToList(path, ";");
 
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
     QVERIFY2(2 == data.size(), "Wrong number of rows");
 
-    QStringList expectedFirstRow;
+    QList<QString> expectedFirstRow;
     expectedFirstRow << "1"
                      << "2"
                      << "3";
 
-    QStringList expectedSecondRow;
+    QList<QString> expectedSecondRow;
     expectedSecondRow << "j"
                       << "io"
                       << "pp";
@@ -184,12 +179,12 @@ void TestReader::testReadFileWithSemicolonsToStringData()
     QVERIFY2(false == strData.isEmpty(), "Failed to read file content");
     QVERIFY2(2 == strData.rowCount(), "Wrong number of rows");
 
-    QStringList expectedFirstRow;
+    QList<QString> expectedFirstRow;
     expectedFirstRow << "1"
                      << "2"
                      << "3";
 
-    QStringList expectedSecondRow;
+    QList<QString> expectedSecondRow;
     expectedSecondRow << "j"
                       << "io"
                       << "pp";
@@ -208,12 +203,12 @@ void TestReader::testReadFileWithSemicolonsToVariantData()
     QVERIFY2(false == varData.isEmpty(), "Failed to read file content");
     QVERIFY2(2 == varData.rowCount(), "Wrong number of rows");
 
-    QStringList expectedFirstRow;
+    QList<QString> expectedFirstRow;
     expectedFirstRow << "1"
                      << "2"
                      << "3";
 
-    QStringList expectedSecondRow;
+    QList<QString> expectedSecondRow;
     expectedSecondRow << "j"
                       << "io"
                       << "pp";
@@ -225,17 +220,17 @@ void TestReader::testReadFileWithSemicolonsToVariantData()
 void TestReader::testReadFileWithTextDelimDQoutes()
 {
     const QString path = getPathToFileTestDataTextDelimDQuotes();
-    QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
+    QList<QList<QString>> data = QtCSV::Reader::readToList(path, ",", "\"");
 
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
-    QList<QStringList> expected;
-    expected << (QStringList() << "one"
+    QList<QList<QString>> expected;
+    expected << (QList<QString>() << "one"
                                << "two"
                                << "three, four"
                                << "five");
-    expected << (QStringList() << "this, is, one, element");
-    expected << (QStringList() << "six"
+    expected << (QList<QString>() << "this, is, one, element");
+    expected << (QList<QString>() << "six"
                                << "seven"
                                << "eight");
 
@@ -249,16 +244,16 @@ void TestReader::testReadFileWithTextDelimDQoutes()
 void TestReader::testReadFileWithTextDelimQoutes()
 {
     const QString path = getPathToFileTestDataTextDelimQuotes();
-    QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "'");
+    QList<QList<QString>> data = QtCSV::Reader::readToList(path, ",", "'");
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
-    QList<QStringList> expected;
-    expected << (QStringList() << "one"
+    QList<QList<QString>> expected;
+    expected << (QList<QString>() << "one"
                                << "two"
                                << "three, four"
                                << "five");
-    expected << (QStringList() << "this, is, one, element");
-    expected << (QStringList() << "six"
+    expected << (QList<QString>() << "this, is, one, element");
+    expected << (QList<QString>() << "six"
                                << "seven"
                                << "eight");
 
@@ -277,13 +272,13 @@ void TestReader::testReadFileWithTextDelimDQToStringData()
     QVERIFY2(true == readResult, "Failed to read file content");
     QVERIFY2(false == strData.isEmpty(), "Failed to read file content");
 
-    QList<QStringList> expected;
-    expected << (QStringList() << "one"
+    QList<QList<QString>> expected;
+    expected << (QList<QString>() << "one"
                                << "two"
                                << "three, four"
                                << "five");
-    expected << (QStringList() << "this, is, one, element");
-    expected << (QStringList() << "six"
+    expected << (QList<QString>() << "this, is, one, element");
+    expected << (QList<QString>() << "six"
                                << "seven"
                                << "eight");
 
@@ -297,17 +292,17 @@ void TestReader::testReadFileWithTextDelimDQToStringData()
 void TestReader::testReadLongWithDQuotes()
 {
     const QString path = getPathToFileTestFieldWithDQuotes();
-    QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
+    QList<QList<QString>> data = QtCSV::Reader::readToList(path, ",", "\"");
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
-    QList<QStringList> expected;
-    expected << (QStringList() << "one"
+    QList<QList<QString>> expected;
+    expected << (QList<QString>() << "one"
                                << "two"
                                << "three");
-    expected << (QStringList() << "four"
+    expected << (QList<QString>() << "four"
                                << "very \"long\" field"
                                << "five");
-    expected << (QStringList() << "six"
+    expected << (QList<QString>() << "six"
                                << "seven");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
@@ -320,13 +315,13 @@ void TestReader::testReadLongWithDQuotes()
 void TestReader::testReadFieldWithCR()
 {
     const QString path = getPathToFileTestFieldWithCR();
-    QList<QStringList> data = QtCSV::Reader::readToList(path, ";", "\"");
+    QList<QList<QString>> data = QtCSV::Reader::readToList(path, ";", "\"");
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
-    QList<QStringList> expected;
-    expected << (QStringList() << "Column1, Column2"
+    QList<QList<QString>> expected;
+    expected << (QList<QString>() << "Column1, Column2"
                                << "Column3");
-    expected << (QStringList() << " Hello with\r Hello again "
+    expected << (QList<QString>() << " Hello with\r Hello again "
                                << "Hello Col 3");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
@@ -340,15 +335,15 @@ void TestReader::testReadFieldWithCR()
 void TestReader::testReadFieldWithCRLF()
 {
     const QString path = getPathToFileTestFieldWithCRLF();
-    QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
+    QList<QList<QString>> data = QtCSV::Reader::readToList(path, ",", "\"");
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
-    QList<QStringList> expected;
-    expected << (QStringList() << "one"
+    QList<QList<QString>> expected;
+    expected << (QList<QString>() << "one"
                                << "two"
                                << "three\nfour"
                                << "five");
-    expected << (QStringList() << "six"
+    expected << (QList<QString>() << "six"
                                << "seven");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
@@ -361,15 +356,15 @@ void TestReader::testReadFieldWithCRLF()
 void TestReader::testReadFieldWithCRLFLong()
 {
     const QString path = getPathToFileTestFieldWithCRLFLong();
-    QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
+    QList<QList<QString>> data = QtCSV::Reader::readToList(path, ",", "\"");
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
-    QList<QStringList> expected;
-    expected << (QStringList() << "one"
+    QList<QList<QString>> expected;
+    expected << (QList<QString>() << "one"
                                << "two"
                                << "three\nfour,\"five\n\"six\",seven\neight"
                                << "nine");
-    expected << (QStringList() << "ten"
+    expected << (QList<QString>() << "ten"
                                << "eleven");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
@@ -382,13 +377,13 @@ void TestReader::testReadFieldWithCRLFLong()
 void TestReader::testReadFieldEndTripleQuotes()
 {
     const QString path = getPathToFileTestFieldEndTripleQuotes();
-    QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
+    QList<QList<QString>> data = QtCSV::Reader::readToList(path, ",", "\"");
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
-    QList<QStringList> expected;
-    expected << (QStringList() << "CCLK=\"yy/MM/dd,hh:mm:ssA+zz\""
+    QList<QList<QString>> expected;
+    expected << (QList<QString>() << "CCLK=\"yy/MM/dd,hh:mm:ssA+zz\""
                                << "test");
-    expected << (QStringList() << "new"
+    expected << (QList<QString>() << "new"
                                << "line \"it is\",\"def");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
@@ -401,36 +396,36 @@ void TestReader::testReadFieldEndTripleQuotes()
 void TestReader::testReadFileDataCorrectness()
 {
     const QString path = getPathToFileTestDataCorrectness();
-    QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
+    QList<QList<QString>> data = QtCSV::Reader::readToList(path, ",", "\"");
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
-    QList<QStringList> expected;
-    expected << (QStringList() << "Year"
+    QList<QList<QString>> expected;
+    expected << (QList<QString>() << "Year"
                                << "Make"
                                << "Model"
                                << "Description"
                                << "Price");
-    expected << (QStringList() << "1997"
+    expected << (QList<QString>() << "1997"
                                << "Ford"
                                << "E350"
                                << "ac, abs, moon"
                                << "3000.00");
-    expected << (QStringList() << "1999"
+    expected << (QList<QString>() << "1999"
                                << "Chevy"
                                << "Venture \"Extended Edition\""
                                << ""
                                << "4900.00");
-    expected << (QStringList() << "1996"
+    expected << (QList<QString>() << "1996"
                                << "Jeep"
                                << "Grand Cherokee"
                                << "MUST SELL!\nair, moon roof, loaded"
                                << "4799.00");
-    expected << (QStringList() << "1999"
+    expected << (QList<QString>() << "1999"
                                << "Chevy"
                                << "Venture \"Extended Edition, Very Large\""
                                << ""
                                << "5000.00");
-    expected << (QStringList() << ""
+    expected << (QList<QString>() << ""
                                << ""
                                << "Venture \"Extended Edition\""
                                << ""
@@ -458,7 +453,7 @@ void TestReader::testReadFileWorldCitiesPop()
 
     QElapsedTimer timer;
     timer.start();
-    QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
+    QList<QList<QString>> data = QtCSV::Reader::readToList(path, ",", "\"");
     qDebug() << "Elapsed time:" << timer.elapsed() << "ms";
 
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
@@ -468,11 +463,11 @@ void TestReader::testReadFileWorldCitiesPop()
 void TestReader::testReadFileWithEmptyFields()
 {
     const QString path = getPathToFileWithEmptyFields();
-    QList<QStringList> data = QtCSV::Reader::readToList(path, ",", "\"");
+    QList<QList<QString>> data = QtCSV::Reader::readToList(path, ",", "\"");
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
-    QList<QStringList> expected;
-    expected << (QStringList() << QString() << "0" << QString() << QString());
+    QList<QList<QString>> expected;
+    expected << (QList<QString>() << QString() << "0" << QString() << QString());
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
     for (int i = 0; i < data.size(); ++i)
@@ -484,13 +479,13 @@ void TestReader::testReadFileWithEmptyFields()
 void TestReader::testReadFileWithEmptyFieldsComplexSeparator()
 {
     const QString path = getPathToFileWithEmptyFieldsComplexSeparator();
-    QList<QStringList> data = QtCSV::Reader::readToList(path, ";-;", "\"");
+    QList<QList<QString>> data = QtCSV::Reader::readToList(path, ";-;", "\"");
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
-    QList<QStringList> expected;
-    expected << (QStringList() << "0"
+    QList<QList<QString>> expected;
+    expected << (QList<QString>() << "0"
                                << "1" << QString() << QString());
-    expected << (QStringList() << QString() << "Question"
+    expected << (QList<QString>() << QString() << "Question"
                                << "158" << QString() << QString());
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
@@ -503,23 +498,23 @@ void TestReader::testReadFileWithEmptyFieldsComplexSeparator()
 void TestReader::testReadFileWithMultirowData()
 {
     const QString path = getPathToFileMultirowData();
-    QList<QStringList> data = QtCSV::Reader::readToList(path);
+    QList<QList<QString>> data = QtCSV::Reader::readToList(path);
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
-    QList<QStringList> expected;
-    expected << (QStringList() << "A"
+    QList<QList<QString>> expected;
+    expected << (QList<QString>() << "A"
                                << "B"
                                << "C"
                                << "D");
-    expected << (QStringList() << "a"
+    expected << (QList<QString>() << "a"
                                << "b"
                                << "c"
                                << "d");
-    expected << (QStringList() << "a"
+    expected << (QList<QString>() << "a"
                                << "b field"
                                << "c field\n"
                                << "d field");
-    expected << (QStringList() << "aa"
+    expected << (QList<QString>() << "aa"
                                << "bb"
                                << "cc"
                                << "dd");
@@ -537,14 +532,14 @@ void TestReader::testReadByProcessorWithBreak()
     {
       public:
         size_t counter;
-        QList<QStringList> data;
+        QList<QList<QString>> data;
 
         ProcessorWithBreak()
         {
             counter = 0;
         }
 
-        virtual bool processRowElements(const QStringList& elements)
+        virtual bool processRowElements(const QList<QString>& elements)
         {
             if (counter < 2)
             {
@@ -561,12 +556,12 @@ void TestReader::testReadByProcessorWithBreak()
     QVERIFY2(true == QtCSV::Reader::readToProcessor(path, processor),
              "Failed to read file content");
 
-    QList<QStringList> expected;
-    expected << (QStringList() << "A"
+    QList<QList<QString>> expected;
+    expected << (QList<QString>() << "A"
                                << "B"
                                << "C"
                                << "D");
-    expected << (QStringList() << "a"
+    expected << (QList<QString>() << "a"
                                << "b"
                                << "c"
                                << "d");

@@ -1,11 +1,11 @@
 #ifndef QTCSVWRITER_H
 #define QTCSVWRITER_H
 
+#include "qtcsv/qtcsv_global.h"
+#include "abstractdata.h"
+#include <QList>
 #include <QString>
 #include <QStringConverter>
-#include <QStringList>
-
-#include "qtcsv/qtcsv_global.h"
 
 class QIODevice;
 
@@ -26,7 +26,7 @@ namespace QtCSV
     // Also you can specify header and footer for your data.
     class QTCSVSHARED_EXPORT Writer
     {
-      public:
+    public:
         enum WriteMode
         {
             REWRITE = 0,
@@ -40,8 +40,8 @@ namespace QtCSV
             const QString& separator = QString(","),
             const QString& textDelimiter = QString("\""),
             const WriteMode& mode = REWRITE,
-            const QStringList& header = QStringList(),
-            const QStringList& footer = QStringList(),
+            const QList<QString>& header = {},
+            const QList<QString>& footer = {},
             QStringConverter::Encoding codec = QStringConverter::Utf8);
 
         // Write data to IO Device
@@ -50,10 +50,10 @@ namespace QtCSV
             const AbstractData& data,
             const QString& separator = QString(","),
             const QString& textDelimiter = QString("\""),
-            const QStringList& header = QStringList(),
-            const QStringList& footer = QStringList(),
+            const QList<QString>& header = {},
+            const QList<QString>& footer = {},
             QStringConverter::Encoding codec = QStringConverter::Utf8);
     };
-} // namespace QtCSV
+}
 
 #endif // QTCSVWRITER_H

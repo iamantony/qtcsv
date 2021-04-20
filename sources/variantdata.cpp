@@ -1,19 +1,16 @@
 #include "include/qtcsv/variantdata.h"
 
-#include <QStringList>
-#include <QVariant>
-
 using namespace QtCSV;
 
 class VariantData::VariantDataPrivate
 {
-  public:
+public:
+    QList< QList<QVariant> > m_values;
+
     // Check if all values are convertable to strings
     bool isConvertableToString(const QList<QVariant>& values) const;
-    // Transform QStringList to QList<QVariant>
-    QList<QVariant> toListOfVariants(const QStringList& values) const;
-
-    QList<QList<QVariant>> m_values;
+    // Transform QList<QString> to QList<QVariant>
+    QList<QVariant> toListOfVariants(const QList<QString>& values) const;
 };
 
 // Check if all values are convertable to strings
@@ -24,31 +21,24 @@ class VariantData::VariantDataPrivate
 bool VariantData::VariantDataPrivate::isConvertableToString(
     const QList<QVariant>& values) const
 {
-    for (QList<QVariant>::const_iterator iter = values.constBegin();
-         iter != values.constEnd();
-         ++iter)
+    for (auto iter = values.constBegin(); iter != values.constEnd(); ++iter)
     {
-        if (false == (*iter).canConvert<QString>())
-        {
-            return false;
-        }
+        if (false == (*iter).canConvert<QString>()) { return false; }
     }
 
     return true;
 }
 
-// Transform QStringList to QList<QVariant>
+// Transform QList<QString> to QList<QVariant>
 // @input:
 // - values - list of strings
 // @output:
 // - QList<QVariant> - list of the same strings, but converted to QVariants
 QList<QVariant> VariantData::VariantDataPrivate::toListOfVariants(
-    const QStringList& values) const
+    const QList<QString>& values) const
 {
     QList<QVariant> list;
-    for (QStringList::const_iterator iter = values.constBegin();
-         iter != values.constEnd();
-         ++iter)
+    for (auto iter = values.constBegin(); iter != values.constEnd(); ++iter)
     {
         list << QVariant(*iter);
     }
@@ -58,8 +48,8 @@ QList<QVariant> VariantData::VariantDataPrivate::toListOfVariants(
 
 VariantData::VariantData() : d_ptr(new VariantDataPrivate) {}
 
-VariantData::VariantData(const VariantData& other)
-    : d_ptr(new VariantDataPrivate)
+VariantData::VariantData(const VariantData& other) :
+    d_ptr(new VariantDataPrivate)
 {
     d_ptr->m_values = other.d_ptr->m_values;
 }
@@ -84,10 +74,7 @@ void VariantData::addEmptyRow()
 // - bool - True if new row was successfully added, else False
 bool VariantData::addRow(const QVariant& value)
 {
-    if (false == value.canConvert<QString>())
-    {
-        return false;
-    }
+    if (false == value.canConvert<QString>()) { return false; }
 
     d_ptr->m_values << (QList<QVariant>() << value);
     return true;
@@ -101,10 +88,7 @@ bool VariantData::addRow(const QVariant& value)
 // - bool - True if new row was successfully added, else False
 bool VariantData::addRow(const QList<QVariant>& values)
 {
-    if (false == d_ptr->isConvertableToString(values))
-    {
-        return false;
-    }
+    if (false == d_ptr->isConvertableToString(values)) { return false; }
 
     d_ptr->m_values << values;
     return true;
@@ -113,7 +97,7 @@ bool VariantData::addRow(const QList<QVariant>& values)
 // Add new row with specified values (as strings)
 // @input:
 // - values - list of strings. If list is empty, empty row will be added.
-void VariantData::addRow(const QStringList& values)
+void VariantData::addRow(const QList<QString>& values)
 {
     d_ptr->m_values << d_ptr->toListOfVariants(values);
 }
@@ -144,7 +128,7 @@ bool VariantData::insertRow(const int& row, const QVariant& value)
 // - values - list of strings that are supposed to be written to the new row
 // @output:
 // - bool - True if row was inserted, False otherwise
-bool VariantData::insertRow(const int& row, const QStringList& values)
+bool VariantData::insertRow(const int& row, const QList<QString>& values)
 {
     return insertRow(row, d_ptr->toListOfVariants(values));
 }
@@ -159,10 +143,7 @@ bool VariantData::insertRow(const int& row, const QStringList& values)
 // - bool - True if row was inserted, False otherwise
 bool VariantData::insertRow(const int& row, const QList<QVariant>& values)
 {
-    if (false == d_ptr->isConvertableToString(values))
-    {
-        return false;
-    }
+    if (false == d_ptr->isConvertableToString(values)) { return false; }
 
     d_ptr->m_values.insert(qBound(0, row, d_ptr->m_values.size()), values);
     return true;
@@ -209,7 +190,7 @@ bool VariantData::replaceRow(const int& row, const QVariant& value)
 // values.
 // @output:
 // - bool - True if row was replaced, else False
-bool VariantData::replaceRow(const int& row, const QStringList& values)
+bool VariantData::replaceRow(const int& row, const QList<QString>& values)
 {
     return replaceRow(row, d_ptr->toListOfVariants(values));
 }
@@ -224,10 +205,7 @@ bool VariantData::replaceRow(const int& row, const QStringList& values)
 // - bool - True if row was replaced, else False
 bool VariantData::replaceRow(const int& row, const QList<QVariant>& values)
 {
-    if (false == d_ptr->isConvertableToString(values))
-    {
-        return false;
-    }
+    if (false == d_ptr->isConvertableToString(values)) { return false; }
 
     d_ptr->m_values.replace(row, values);
     return true;
@@ -254,16 +232,13 @@ int VariantData::rowCount() const
 // @input:
 // - row - valid number of the row
 // @output:
-// - QStringList - values of the row. If row have invalid value, function will
-// return empty QStringList.
-QStringList VariantData::rowValues(const int& row) const
+// - QList<QString> - values of the row. If row have invalid value, function will
+// return empty QList<QString>.
+QList<QString> VariantData::rowValues(const int& row) const
 {
-    if (row < 0 || rowCount() <= row)
-    {
-        return QStringList();
-    }
+    if (row < 0 || rowCount() <= row) { return {}; }
 
-    QStringList values;
+    QList<QString> values;
     for (int i = 0; i < d_ptr->m_values.at(row).size(); ++i)
     {
         values << d_ptr->m_values.at(row).at(i).toString();
@@ -299,7 +274,7 @@ VariantData& VariantData::operator<<(const QList<QVariant>& values)
 }
 
 // Add new row with specified values
-VariantData& VariantData::operator<<(const QStringList& values)
+VariantData& VariantData::operator<<(const QList<QString>& values)
 {
     this->addRow(values);
     return *this;

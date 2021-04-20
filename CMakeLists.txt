@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.0)
 
-project (qtcsv VERSION 1.5.0 LANGUAGES CXX)
+project (qtcsv VERSION 1.6.0 LANGUAGES CXX)
 
 # set options
 option(STATIC_LIB "build as static lib if ON, otherwise build shared lib" OFF)

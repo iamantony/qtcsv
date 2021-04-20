@@ -3,26 +3,11 @@
 
 #include "qtcsv_global.h"
 
-using QStringList = QList<QString>;
-
 namespace QtCSV
 {
     // AbstractData is a pure abstract container class. Its main purpouse is to
-    // provide common interface for concrete container classes, that could be
+    // provide common interface for concrete container classes that could be
     // used in processing of csv-files.
-    //
-    // From Wikipedia:
-    // A comma-separated values (CSV) (also sometimes called character-separated
-    // values) file stores tabular data (numbers and text) in plain-text form.
-    // Plain text means that the file is a sequence of characters, with no data
-    // that has to be interpreted as binary numbers. A CSV file consists of any
-    // number of records, separated by line breaks of some kind; each record
-    // consists of fields, separated by some other character or string, most
-    // commonly a literal comma or tab. Usually, all records have an identical
-    // sequence of fields.
-    // A general standard for the CSV file format does not exist, but RFC 4180
-    // provides a de facto standard for some aspects of it.
-    // (http://en.wikipedia.org/wiki/Comma-separated_values)
     //
     // You can create concrete Data class with AbstractData as public base class
     // and implement functions for:
@@ -31,19 +16,19 @@ namespace QtCSV
     // - clearing all saved information;
     // - and so on.
     //
-    // Note, that AbstractData is just interface for container class, not a
+    // Note, that AbstractData is just an interface for container class, not a
     // container class. So you are free to decide how to store
     // information in derived classes.
     class QTCSVSHARED_EXPORT AbstractData
     {
-      public:
+    public:
         explicit AbstractData() {}
         virtual ~AbstractData() {}
 
         // Add new empty row
         virtual void addEmptyRow() = 0;
-        // Add new row with specified values (as strings)
-        virtual void addRow(const QStringList& values) = 0;
+        // Add new row with specified values
+        virtual void addRow(const QList<QString>& values) = 0;
         // Clear all data
         virtual void clear() = 0;
         // Check if there are any rows
@@ -51,8 +36,8 @@ namespace QtCSV
         // Get number of rows
         virtual int rowCount() const = 0;
         // Get values of specified row as list of strings
-        virtual QStringList rowValues(const int& row) const = 0;
+        virtual QList<QString> rowValues(const int& row) const = 0;
     };
-} // namespace QtCSV
+}
 
 #endif // QTCSVABSTRACTDATA_H

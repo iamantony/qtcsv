@@ -1,52 +1,46 @@
 #ifndef QTCSVREADER_H
 #define QTCSVREADER_H
 
-#include <QList>
-#include <QStringConverter>
-
 #include "qtcsv/qtcsv_global.h"
-
-class QIODevice;
-using QStringList = QList<QString>;
+#include "abstractdata.h"
+#include <QIODevice>
+#include <QList>
+#include <QString>
+#include <QStringConverter>
 
 namespace QtCSV
 {
-    class AbstractData;
-
     // Reader class is a file reader that work with csv-files. It needs an
     // absolute path to the csv-file that you are going to read or
     // some IO Device with csv-formatted data.
     //
-    // Additionally you cant specify:
+    // Additionally you can specify:
     // - a separator character (or string) that is used as separator of row
-    // values in this csv-file. Default separator is comma (",");
-    // - text delimiter character (or string) that enclose each element in a
+    // values. Default separator is comma (",");
+    // - text delimiter character (or string) that encloses each element in a
     // row. Typical delimiter characters: none (""), quote ("'")
     // and double quotes ("\"");
     // - text codec.
     //
     // Reader can save (or transfer) information to:
-    // - QList<QStringList>, where each QStringList contains values of one row;
+    // - QList<QList<QString>>, where each QList<QString> contains values
+    // of one row;
     // - AbstractData-based container class;
     // - AbstractProcessor-based object.
     class QTCSVSHARED_EXPORT Reader
     {
-      public:
-        // AbstractProcessor is a class used to process files one line at a time
+    public:
+        // AbstractProcessor is a class that could be used to process csv-data
+        // line by line
         class QTCSVSHARED_EXPORT AbstractProcessor
         {
-          public:
-            explicit AbstractProcessor() {}
-            virtual ~AbstractProcessor() {}
+        public:
+            virtual ~AbstractProcessor() = default;
 
             // Preprocess one raw line from a file
             // @input:
             // line - raw line from a file
-            virtual void preProcessRawLine(QString& line)
-            {
-                // Here you can edit line
-                Q_UNUSED(line);
-            }
+            virtual void preProcessRawLine(QString& /*editable_line*/) {}
 
             // Process one row worth of elements
             // @input:
@@ -55,19 +49,19 @@ namespace QtCSV
             // bool - True if elements was processed successfully, False in case
             // of error. If process() return False, the csv-file will be stopped
             // reading
-            virtual bool processRowElements(const QStringList& elements) = 0;
+            virtual bool processRowElements(const QList<QString>& elements) = 0;
         };
 
-        // Read csv-file and save it's data as strings to QList<QStringList>
-        static QList<QStringList> readToList(
+        // Read csv-file and save it's data as strings to QList<QList<QString>>
+        static QList<QList<QString>> readToList(
             const QString& filePath,
             const QString& separator = QString(","),
             const QString& textDelimiter = QString("\""),
             QStringConverter::Encoding codec = QStringConverter::Utf8);
 
         // Read csv-formatted data from IO Device and save it
-        // as strings to QList<QStringList>
-        static QList<QStringList> readToList(
+        // as strings to QList<QList<QString>>
+        static QList<QList<QString>> readToList(
             QIODevice& ioDevice,
             const QString& separator = QString(","),
             const QString& textDelimiter = QString("\""),
@@ -106,7 +100,8 @@ namespace QtCSV
             const QString& separator = QString(","),
             const QString& textDelimiter = QString("\""),
             QStringConverter::Encoding codec = QStringConverter::Utf8);
+
     };
-} // namespace QtCSV
+}
 
 #endif // QTCSVREADER_H

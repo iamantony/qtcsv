@@ -13,8 +13,8 @@ namespace QtCSV
     // - mustExist - True if file must exist, False if this is not important
     // @output:
     // - bool - True if file is OK, else False
-    inline bool CheckFile(const QString& filePath,
-                          const bool& mustExist = false)
+    inline bool CheckFile(
+        const QString& filePath, const bool mustExist = false)
     {
         if (filePath.isEmpty())
         {
@@ -25,14 +25,11 @@ namespace QtCSV
         QFileInfo fileInfo(filePath);
         if (fileInfo.isAbsolute() && false == fileInfo.isDir())
         {
-            if (mustExist && false == fileInfo.exists())
-            {
-                return false;
-            }
-
+            if (mustExist && false == fileInfo.exists()) { return false; }
             if ("csv" != fileInfo.suffix())
             {
-                qDebug() << __FUNCTION__ << "Warning - file suffix is not .csv";
+                qDebug() << __FUNCTION__  <<
+                    "Warning - file suffix is not .csv";
             }
 
             return true;
@@ -40,6 +37,6 @@ namespace QtCSV
 
         return false;
     }
-} // namespace QtCSV
+}
 
 #endif // QTCSVFILECHECKER_H
