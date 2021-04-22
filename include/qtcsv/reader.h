@@ -8,8 +8,8 @@
 #include <QString>
 #include <QStringConverter>
 
-namespace QtCSV
-{
+namespace QtCSV {
+
     // Reader class is a file reader that work with csv-files. It needs an
     // absolute path to the csv-file that you are going to read or
     // some IO Device with csv-formatted data.
@@ -27,8 +27,7 @@ namespace QtCSV
     // of one row;
     // - AbstractData-based container class;
     // - AbstractProcessor-based object.
-    class QTCSVSHARED_EXPORT Reader
-    {
+    class QTCSVSHARED_EXPORT Reader {
     public:
         // AbstractProcessor is a class that could be used to process csv-data
         // line by line
@@ -39,7 +38,7 @@ namespace QtCSV
 
             // Preprocess one raw line from a file
             // @input:
-            // line - raw line from a file
+            // editable_line - raw line from a file
             virtual void preProcessRawLine(QString& /*editable_line*/) {}
 
             // Process one row worth of elements
@@ -100,7 +99,6 @@ namespace QtCSV
             const QString& separator = QString(","),
             const QString& textDelimiter = QString("\""),
             QStringConverter::Encoding codec = QStringConverter::Utf8);
-
     };
 }
 

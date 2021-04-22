@@ -7,8 +7,8 @@
 #include <QString>
 #include <QVariant>
 
-namespace QtCSV
-{
+namespace QtCSV {
+
     // VariantData is a simple container class. It implements interface of
     // AbstractData class. It uses QVariant to hold information, so data could
     // be of almost any type - integral, strings and so on. There is only one
@@ -16,61 +16,58 @@ namespace QtCSV
     // obviously, if we want to save information to CSV file, we would need to
     // convert it to plain-text form). So don't forget to see docs of QVariant
     // before you start using this class.
-    class QTCSVSHARED_EXPORT VariantData : public AbstractData
-    {
-        class VariantDataPrivate;
-        VariantDataPrivate* d_ptr;
+    class QTCSVSHARED_EXPORT VariantData : public AbstractData {
+        QList< QList<QVariant> > m_values;
 
     public:
-        explicit VariantData();
+        VariantData() = default;
         VariantData(const VariantData& other);
         VariantData& operator=(const VariantData& other);
-        virtual ~VariantData();
+        ~VariantData() override = default;
+
+        bool operator==(const VariantData& other) const;
 
         // Add new empty row
-        virtual void addEmptyRow();
+        void addEmptyRow() override;
         // Add new row with one value
         bool addRow(const QVariant& value);
         // Add new row with specified values
         bool addRow(const QList<QVariant>& values);
         // Add new row with specified values (as strings)
-        virtual void addRow(const QList<QString>& values);
+        void addRow(const QList<QString>& values) override;
         // Clear all data
-        virtual void clear();
+        void clear() override;
         // Insert new row at index position 'row'
-        bool insertRow(const int& row, const QVariant& value);
-        bool insertRow(const int& row, const QList<QString>& values);
-        bool insertRow(const int& row, const QList<QVariant>& values);
+        bool insertRow(qsizetype row, const QVariant& value);
+        bool insertRow(qsizetype row, const QList<QString>& values);
+        bool insertRow(qsizetype row, const QList<QVariant>& values);
 
         // Check if there are any data
-        virtual bool isEmpty() const;
+        bool isEmpty() const override;
         // Remove the row at index position 'row'
-        void removeRow(const int& row);
+        void removeRow(qsizetype row);
         // Replace the row at index position 'row' with new row
-        bool replaceRow(const int& row, const QVariant& value);
-        bool replaceRow(const int& row, const QList<QString>& values);
-        bool replaceRow(const int& row, const QList<QVariant>& values);
+        bool replaceRow(qsizetype row, const QVariant& value);
+        bool replaceRow(qsizetype row, const QList<QString>& values);
+        bool replaceRow(qsizetype row, const QList<QVariant>& values);
 
         // Reserve space for 'size' rows
-        void reserve(const int& size);
+        void reserve(qsizetype size);
         // Get number of rows
-        virtual int rowCount() const;
+        qsizetype rowCount() const override;
         // Get values (as list of strings) of specified row
-        virtual QList<QString> rowValues(const int& row) const;
+        QList<QString> rowValues(qsizetype row) const override;
 
         // Add new row that would contain one value
         VariantData& operator<<(const QVariant& value);
         // Add new row with specified values
         VariantData& operator<<(const QList<QString>& values);
         VariantData& operator<<(const QList<QVariant>& values);
-
-        bool operator==(const VariantData& other) const;
-        friend bool operator!=(
-            const VariantData& left, const VariantData& right)
-        {
-            return !(left == right);
-        }
     };
+
+    inline bool operator!=(const VariantData& left, const VariantData& right) {
+        return !(left == right);
+    }
 }
 
 #endif // QTCSVVARIANTDATA_H
