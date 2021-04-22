@@ -133,7 +133,7 @@ int StringData::rowCount() const
 // @output:
 // - QList<QString> - values of row. If row is invalid number, function will
 // return empty list.
-QStringList StringData::rowValues(const int& row) const
+QList<QString> StringData::rowValues(const int& row) const
 {
     if (row < 0 || rowCount() <= row) { return {}; }
 

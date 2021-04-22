@@ -46,7 +46,7 @@ void TestReader::testReadToDataInvalidArgs()
              "Invalid arguments was accepted");
 
     QVERIFY2(false == QtCSV::Reader::readToData(
-                          getPathToFileTestComma() + ".md5", data, ","),
+                 getPathToFileTestComma() + ".md5", data, ","),
              "Invalid arguments was accepted");
 }
 
@@ -58,13 +58,9 @@ void TestReader::testReadFileWithCommas()
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
     QList<QList<QString>> expected;
-    expected << (QList<QString>() << "one"
-                               << "two"
-                               << "three");
+    expected << (QList<QString>() << "one" << "two" << "three");
     expected << (QList<QString>() << "one_element");
-    expected << (QList<QString>() << "1"
-                               << "2"
-                               << "3");
+    expected << (QList<QString>() << "1" << "2" << "3");
     expected << (QList<QString>());
     expected << (QList<QString>() << "3.14");
 
@@ -83,9 +79,7 @@ void TestReader::testReadFileWithDotsInName()
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
     QList<QList<QString>> expected;
-    expected << (QList<QString>() << "one"
-                               << "two"
-                               << "three");
+    expected << (QList<QString>() << "one" << "two" << "three");
     expected << (QList<QString>() << "one_element");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
@@ -104,13 +98,9 @@ void TestReader::testReadFileWithCommasToStringData()
     QVERIFY2(false == strData.isEmpty(), "StringData is empty");
 
     QList<QList<QString>> expected;
-    expected << (QList<QString>() << "one"
-                               << "two"
-                               << "three");
+    expected << (QList<QString>() << "one" << "two" << "three");
     expected << (QList<QString>() << "one_element");
-    expected << (QList<QString>() << "1"
-                               << "2"
-                               << "3");
+    expected << (QList<QString>() << "1" << "2" << "3");
     expected << (QList<QString>());
     expected << (QList<QString>() << "3.14");
 
@@ -130,13 +120,9 @@ void TestReader::testReadFileWithCommasToVariantData()
     QVERIFY2(false == varData.isEmpty(), "StringData is empty");
 
     QList<QList<QString>> expected;
-    expected << (QList<QString>() << "one"
-                               << "two"
-                               << "three");
+    expected << (QList<QString>() << "one" << "two" << "three");
     expected << (QList<QString>() << "one_element");
-    expected << (QList<QString>() << "1"
-                               << "2"
-                               << "3");
+    expected << (QList<QString>() << "1" << "2" << "3");
     expected << (QList<QString>());
     expected << (QList<QString>() << "3.14");
 
@@ -156,14 +142,10 @@ void TestReader::testReadFileWithSemicolons()
     QVERIFY2(2 == data.size(), "Wrong number of rows");
 
     QList<QString> expectedFirstRow;
-    expectedFirstRow << "1"
-                     << "2"
-                     << "3";
+    expectedFirstRow << "1" << "2" << "3";
 
     QList<QString> expectedSecondRow;
-    expectedSecondRow << "j"
-                      << "io"
-                      << "pp";
+    expectedSecondRow << "j" << "io" << "pp";
 
     QVERIFY2(expectedFirstRow == data.at(0), "Wrong first row");
     QVERIFY2(expectedSecondRow == data.at(1), "Wrong second row");
@@ -180,14 +162,10 @@ void TestReader::testReadFileWithSemicolonsToStringData()
     QVERIFY2(2 == strData.rowCount(), "Wrong number of rows");
 
     QList<QString> expectedFirstRow;
-    expectedFirstRow << "1"
-                     << "2"
-                     << "3";
+    expectedFirstRow << "1" << "2" << "3";
 
     QList<QString> expectedSecondRow;
-    expectedSecondRow << "j"
-                      << "io"
-                      << "pp";
+    expectedSecondRow << "j" << "io" << "pp";
 
     QVERIFY2(expectedFirstRow == strData.rowValues(0), "Wrong first row");
     QVERIFY2(expectedSecondRow == strData.rowValues(1), "Wrong second row");
@@ -204,14 +182,10 @@ void TestReader::testReadFileWithSemicolonsToVariantData()
     QVERIFY2(2 == varData.rowCount(), "Wrong number of rows");
 
     QList<QString> expectedFirstRow;
-    expectedFirstRow << "1"
-                     << "2"
-                     << "3";
+    expectedFirstRow << "1" << "2" << "3";
 
     QList<QString> expectedSecondRow;
-    expectedSecondRow << "j"
-                      << "io"
-                      << "pp";
+    expectedSecondRow << "j" << "io" << "pp";
 
     QVERIFY2(expectedFirstRow == varData.rowValues(0), "Wrong first row");
     QVERIFY2(expectedSecondRow == varData.rowValues(1), "Wrong second row");
@@ -225,14 +199,9 @@ void TestReader::testReadFileWithTextDelimDQoutes()
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
     QList<QList<QString>> expected;
-    expected << (QList<QString>() << "one"
-                               << "two"
-                               << "three, four"
-                               << "five");
+    expected << (QList<QString>() << "one" << "two" << "three, four" << "five");
     expected << (QList<QString>() << "this, is, one, element");
-    expected << (QList<QString>() << "six"
-                               << "seven"
-                               << "eight");
+    expected << (QList<QString>() << "six" << "seven" << "eight");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
     for (int i = 0; i < data.size(); ++i)
@@ -248,14 +217,9 @@ void TestReader::testReadFileWithTextDelimQoutes()
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
     QList<QList<QString>> expected;
-    expected << (QList<QString>() << "one"
-                               << "two"
-                               << "three, four"
-                               << "five");
+    expected << (QList<QString>() << "one" << "two" << "three, four" << "five");
     expected << (QList<QString>() << "this, is, one, element");
-    expected << (QList<QString>() << "six"
-                               << "seven"
-                               << "eight");
+    expected << (QList<QString>() << "six" << "seven" << "eight");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
     for (int i = 0; i < data.size(); ++i)
@@ -273,14 +237,9 @@ void TestReader::testReadFileWithTextDelimDQToStringData()
     QVERIFY2(false == strData.isEmpty(), "Failed to read file content");
 
     QList<QList<QString>> expected;
-    expected << (QList<QString>() << "one"
-                               << "two"
-                               << "three, four"
-                               << "five");
+    expected << (QList<QString>() << "one" << "two" << "three, four" << "five");
     expected << (QList<QString>() << "this, is, one, element");
-    expected << (QList<QString>() << "six"
-                               << "seven"
-                               << "eight");
+    expected << (QList<QString>() << "six" << "seven" << "eight");
 
     QVERIFY2(expected.size() == strData.rowCount(), "Wrong number of rows");
     for (int i = 0; i < strData.rowCount(); ++i)
@@ -296,14 +255,9 @@ void TestReader::testReadLongWithDQuotes()
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
     QList<QList<QString>> expected;
-    expected << (QList<QString>() << "one"
-                               << "two"
-                               << "three");
-    expected << (QList<QString>() << "four"
-                               << "very \"long\" field"
-                               << "five");
-    expected << (QList<QString>() << "six"
-                               << "seven");
+    expected << (QList<QString>() << "one" << "two" << "three");
+    expected << (QList<QString>() << "four" << "very \"long\" field" << "five");
+    expected << (QList<QString>() << "six" << "seven");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
     for (int i = 0; i < data.size(); ++i)
@@ -319,10 +273,8 @@ void TestReader::testReadFieldWithCR()
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
     QList<QList<QString>> expected;
-    expected << (QList<QString>() << "Column1, Column2"
-                               << "Column3");
-    expected << (QList<QString>() << " Hello with\r Hello again "
-                               << "Hello Col 3");
+    expected << (QList<QString>() << "Column1, Column2" << "Column3");
+    expected << (QList<QString>() << " Hello with\r Hello again " << "Hello Col 3");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
     for (int i = 0; i < data.size(); ++i)
@@ -339,12 +291,8 @@ void TestReader::testReadFieldWithCRLF()
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
     QList<QList<QString>> expected;
-    expected << (QList<QString>() << "one"
-                               << "two"
-                               << "three\nfour"
-                               << "five");
-    expected << (QList<QString>() << "six"
-                               << "seven");
+    expected << (QList<QString>() << "one" << "two" << "three\nfour" << "five");
+    expected << (QList<QString>() << "six" << "seven");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
     for (int i = 0; i < data.size(); ++i)
@@ -360,12 +308,9 @@ void TestReader::testReadFieldWithCRLFLong()
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
     QList<QList<QString>> expected;
-    expected << (QList<QString>() << "one"
-                               << "two"
-                               << "three\nfour,\"five\n\"six\",seven\neight"
-                               << "nine");
-    expected << (QList<QString>() << "ten"
-                               << "eleven");
+    expected << (QList<QString>() << "one" << "two" <<
+                 "three\nfour,\"five\n\"six\",seven\neight" << "nine");
+    expected << (QList<QString>() << "ten" << "eleven");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
     for (int i = 0; i < data.size(); ++i)
@@ -381,10 +326,8 @@ void TestReader::testReadFieldEndTripleQuotes()
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
     QList<QList<QString>> expected;
-    expected << (QList<QString>() << "CCLK=\"yy/MM/dd,hh:mm:ssA+zz\""
-                               << "test");
-    expected << (QList<QString>() << "new"
-                               << "line \"it is\",\"def");
+    expected << (QList<QString>() << "CCLK=\"yy/MM/dd,hh:mm:ssA+zz\"" << "test");
+    expected << (QList<QString>() << "new" << "line \"it is\",\"def");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
     for (int i = 0; i < data.size(); ++i)
@@ -400,36 +343,18 @@ void TestReader::testReadFileDataCorrectness()
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
     QList<QList<QString>> expected;
-    expected << (QList<QString>() << "Year"
-                               << "Make"
-                               << "Model"
-                               << "Description"
-                               << "Price");
-    expected << (QList<QString>() << "1997"
-                               << "Ford"
-                               << "E350"
-                               << "ac, abs, moon"
-                               << "3000.00");
-    expected << (QList<QString>() << "1999"
-                               << "Chevy"
-                               << "Venture \"Extended Edition\""
-                               << ""
-                               << "4900.00");
-    expected << (QList<QString>() << "1996"
-                               << "Jeep"
-                               << "Grand Cherokee"
-                               << "MUST SELL!\nair, moon roof, loaded"
-                               << "4799.00");
-    expected << (QList<QString>() << "1999"
-                               << "Chevy"
-                               << "Venture \"Extended Edition, Very Large\""
-                               << ""
-                               << "5000.00");
-    expected << (QList<QString>() << ""
-                               << ""
-                               << "Venture \"Extended Edition\""
-                               << ""
-                               << "4900.00");
+    expected << (QList<QString>() << "Year" << "Make" << "Model" <<
+                 "Description" << "Price");
+    expected << (QList<QString>() <<  "1997" << "Ford" << "E350" <<
+                 "ac, abs, moon" << "3000.00");
+    expected << (QList<QString>() << "1999" << "Chevy" <<
+                 "Venture \"Extended Edition\"" << "" << "4900.00");
+    expected << (QList<QString>() << "1996" << "Jeep" << "Grand Cherokee" <<
+                 "MUST SELL!\nair, moon roof, loaded" << "4799.00");
+    expected << (QList<QString>() << "1999" << "Chevy" <<
+                 "Venture \"Extended Edition, Very Large\"" << "" << "5000.00");
+    expected << (QList<QString>() << "" << "" <<
+                 "Venture \"Extended Edition\"" << "" << "4900.00");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
     for (int i = 0; i < data.size(); ++i)
@@ -443,11 +368,9 @@ void TestReader::testReadFileWorldCitiesPop()
     const QString path = getPathToFileWorldCitiesPop();
     if (false == QFile::exists(path))
     {
-        qDebug() << "Skip testReadFileWorldCitiesPop() because file" << path
-                 << "do not exist. If you want to run this test, download file "
-                    "from "
-                    "http://www.maxmind.com/download/worldcities/"
-                    "worldcitiespop.txt.gz";
+        qDebug() << "Skip testReadFileWorldCitiesPop() because file" << path <<
+            "do not exist. If you want to run this test, download file "
+            "from http://www.maxmind.com/download/worldcities/worldcitiespop.txt.gz";
         return;
     }
 
@@ -502,22 +425,10 @@ void TestReader::testReadFileWithMultirowData()
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
     QList<QList<QString>> expected;
-    expected << (QList<QString>() << "A"
-                               << "B"
-                               << "C"
-                               << "D");
-    expected << (QList<QString>() << "a"
-                               << "b"
-                               << "c"
-                               << "d");
-    expected << (QList<QString>() << "a"
-                               << "b field"
-                               << "c field\n"
-                               << "d field");
-    expected << (QList<QString>() << "aa"
-                               << "bb"
-                               << "cc"
-                               << "dd");
+    expected << (QList<QString>() << "A" << "B" << "C" << "D");
+    expected << (QList<QString>() << "a" << "b" << "c" << "d");
+    expected << (QList<QString>() << "a" << "b field" << "c field\n" << "d field");
+    expected << (QList<QString>() << "aa" << "bb" << "cc" << "dd");
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
     for (int i = 0; i < data.size(); ++i)
@@ -530,7 +441,7 @@ void TestReader::testReadByProcessorWithBreak()
 {
     class ProcessorWithBreak : public QtCSV::Reader::AbstractProcessor
     {
-      public:
+    public:
         size_t counter;
         QList<QList<QString>> data;
 
@@ -557,14 +468,8 @@ void TestReader::testReadByProcessorWithBreak()
              "Failed to read file content");
 
     QList<QList<QString>> expected;
-    expected << (QList<QString>() << "A"
-                               << "B"
-                               << "C"
-                               << "D");
-    expected << (QList<QString>() << "a"
-                               << "b"
-                               << "c"
-                               << "d");
+    expected << (QList<QString>() << "A" << "B" << "C" << "D");
+    expected << (QList<QString>() << "a" << "b" << "c" << "d");
 
     QVERIFY2(expected.size() == processor.data.size(), "Wrong number of rows");
     for (int i = 0; i < processor.data.size(); ++i)

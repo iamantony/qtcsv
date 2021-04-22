@@ -26,9 +26,7 @@ void TestStringData::testAddEmptyRow()
 void TestStringData::testAddOneRow()
 {
     QList<QString> rowValues;
-    rowValues << "one"
-              << "two"
-              << "three";
+    rowValues << "one" << "two" << "three";
 
     QtCSV::StringData strData;
     strData.addRow(rowValues);
@@ -56,16 +54,12 @@ void TestStringData::testAddOneRowUsingOneString()
 void TestStringData::testAddRows()
 {
     QList<QString> valuesFirst;
-    valuesFirst << "1"
-                << "2"
-                << "3";
+    valuesFirst << "1" << "2" << "3";
 
     QList<QString> valuesSecond;
 
     QList<QString> valuesThird;
-    valuesFirst << "hhh"
-                << "ttyyeeqp["
-                << "n...589129";
+    valuesFirst << "hhh" << "ttyyeeqp[" << "n...589129";
 
     QtCSV::StringData strData;
     strData.addRow(valuesFirst);
@@ -93,9 +87,7 @@ void TestStringData::testClearEmptyData()
 void TestStringData::testClearNotEmptyData()
 {
     QList<QString> rowValues;
-    rowValues << "one"
-              << "two"
-              << "three";
+    rowValues << "one" << "two" << "three";
 
     QtCSV::StringData strData;
     strData.addRow(rowValues);
@@ -110,12 +102,8 @@ void TestStringData::testClearNotEmptyData()
 void TestStringData::testInsertRows()
 {
     QList<QString> valuesFirst, valuesSecond;
-    valuesFirst << "one"
-                << "two"
-                << "three";
-    valuesSecond << "asgreg"
-                 << "ertetw"
-                 << "";
+    valuesFirst << "one" << "two" << "three";
+    valuesSecond << "asgreg" << "ertetw" << "";
 
     QString stringOne("hey test"), stringTwo("sdfwioiouoioi");
 
@@ -144,11 +132,8 @@ void TestStringData::testInsertRows()
 void TestStringData::testCompareForEquality()
 {
     QList<QString> firstRow, secondRow;
-    firstRow << "one"
-             << "two"
-             << "three";
-    secondRow << "four"
-              << "five";
+    firstRow << "one" << "two" << "three";
+    secondRow << "four" << "five";
 
     QtCSV::StringData firstData;
     firstData.addRow(firstRow);
@@ -176,11 +161,8 @@ void TestStringData::testCompareForEquality()
 void TestStringData::testCopyConstruction()
 {
     QList<QString> firstRow, secondRow;
-    firstRow << "one"
-             << "two"
-             << "three";
-    secondRow << "four"
-              << "five";
+    firstRow << "one" << "two" << "three";
+    secondRow << "four" << "five";
 
     QtCSV::StringData firstData;
     firstData.addRow(firstRow);
@@ -207,11 +189,8 @@ void TestStringData::testCopyConstruction()
 void TestStringData::testCopyAssignment()
 {
     QList<QString> firstRow, secondRow;
-    firstRow << "one"
-             << "two"
-             << "three";
-    secondRow << "four"
-              << "five";
+    firstRow << "one" << "two" << "three";
+    secondRow << "four" << "five";
 
     QtCSV::StringData firstData;
     firstData.addRow(firstRow);
@@ -242,9 +221,7 @@ void TestStringData::testOperatorInput()
     data << QString("1") << "one";
 
     QList<QString> thirdRow;
-    thirdRow << "one"
-             << "two"
-             << "three";
+    thirdRow << "one" << "two" << "three";
 
     data << thirdRow;
 
@@ -270,12 +247,8 @@ void TestStringData::testRemoveRow()
     QVERIFY2(true == strData.isEmpty(), "Container is not empty");
 
     QList<QString> valuesFirst, valuesSecond;
-    valuesFirst << "one"
-                << "two"
-                << "three";
-    valuesSecond << "asgreg"
-                 << "ertetw"
-                 << "";
+    valuesFirst << "one" << "two" << "three";
+    valuesSecond << "asgreg" << "ertetw" << "";
 
     QString stringOne("hey test"), stringTwo("sdfwioiouoioi");
 
@@ -293,12 +266,8 @@ void TestStringData::testRemoveRow()
 void TestStringData::testReplaceRow()
 {
     QList<QString> valuesFirst, valuesSecond;
-    valuesFirst << "one"
-                << "two"
-                << "three";
-    valuesSecond << "asgreg"
-                 << "ertetw"
-                 << "";
+    valuesFirst << "one" << "two" << "three";
+    valuesSecond << "asgreg" << "ertetw" << "";
 
     QString stringOne("hey test"), stringTwo("sdfwioiouoioi");
 

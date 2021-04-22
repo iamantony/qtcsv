@@ -7,10 +7,10 @@ class TestStringData : public QObject
 {
     Q_OBJECT
 
-  public:
+public:
     TestStringData();
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void testCreation();
     void testAddEmptyRow();
     void testAddOneRow();
