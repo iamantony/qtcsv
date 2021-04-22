@@ -1,8 +1,8 @@
 #ifndef QTCSVCONTENTITERATOR_H
 #define QTCSVCONTENTITERATOR_H
 
-class QString;
-class QStringList;
+#include <QList>
+#include <QString>
 
 namespace QtCSV
 {
@@ -22,22 +22,22 @@ namespace QtCSV
         const AbstractData& m_data;
         const QString& m_separator;
         const QString& m_textDelimiter;
-        const QStringList& m_header;
-        const QStringList& m_footer;
+        const QList<QString>& m_header;
+        const QList<QString>& m_footer;
         const int m_chunkSize;
         int m_dataRow;
         bool atEnd;
 
         // Compose row string from values
-        QString composeRow(const QStringList& values) const;
+        QString composeRow(const QList<QString>& values) const;
 
     public:
         explicit ContentIterator(
             const AbstractData& data,
             const QString& separator,
             const QString& textDelimiter,
-            const QStringList& header,
-            const QStringList& footer,
+            const QList<QString>& header,
+            const QList<QString>& footer,
             int chunkSize = 1000);
 
         // Check if content contains information

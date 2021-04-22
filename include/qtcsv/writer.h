@@ -2,9 +2,10 @@
 #define QTCSVWRITER_H
 
 #include "qtcsv/qtcsv_global.h"
+#include "abstractdata.h"
+#include <QList>
 #include <QString>
-#include <QStringList>
-#include <QTextCodec>
+#include <QStringConverter>
 
 class QIODevice;
 
@@ -39,18 +40,19 @@ namespace QtCSV
             const QString& separator = QString(","),
             const QString& textDelimiter = QString("\""),
             const WriteMode& mode = REWRITE,
-            const QStringList& header = QStringList(),
-            const QStringList& footer = QStringList(),
-            QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
+            const QList<QString>& header = {},
+            const QList<QString>& footer = {},
+            QStringConverter::Encoding codec = QStringConverter::Utf8);
 
         // Write data to IO Device
-        static bool write(QIODevice& ioDevice,
+        static bool write(
+            QIODevice& ioDevice,
             const AbstractData& data,
             const QString& separator = QString(","),
             const QString& textDelimiter = QString("\""),
-            const QStringList& header = QStringList(),
-            const QStringList& footer = QStringList(),
-            QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
+            const QList<QString>& header = {},
+            const QList<QString>& footer = {},
+            QStringConverter::Encoding codec = QStringConverter::Utf8);
     };
 }
 

@@ -1,13 +1,11 @@
 #include "include/qtcsv/stringdata.h"
-#include <QList>
-#include <QStringList>
 
 using namespace QtCSV;
 
 class StringData::StringDataPrivate
 {
 public:
-    QList<QStringList> m_values;
+    QList<QList<QString>> m_values;
 };
 
 StringData::StringData() : d_ptr(new StringDataPrivate) {}
@@ -25,7 +23,7 @@ StringData::~StringData()
 // Add new empty row
 void StringData::addEmptyRow()
 {
-    d_ptr->m_values << QStringList();
+    d_ptr->m_values << QList<QString>();
 }
 
 // Add new row with one value
@@ -33,14 +31,14 @@ void StringData::addEmptyRow()
 // - value - value that is supposed to be written to the new row
 void StringData::addRow(const QString& value)
 {
-    d_ptr->m_values << (QStringList() << value);
+    d_ptr->m_values << (QList<QString>() << value);
 }
 
 // Add new row with specified values (as strings)
 // @input:
 // - values - list of strings. If list is empty, it will be interpreted
 // as empty line
-void StringData::addRow(const QStringList& values)
+void StringData::addRow(const QList<QString>& values)
 {
     d_ptr->m_values << values;
 }
@@ -58,7 +56,7 @@ void StringData::clear()
 // - value - value that is supposed to be written to the new row
 void StringData::insertRow(const int& row, const QString& value)
 {
-    insertRow(row, (QStringList() << value));
+    insertRow(row, (QList<QString>() << value));
 }
 
 // Insert new row at index position 'row'.
@@ -66,9 +64,9 @@ void StringData::insertRow(const int& row, const QString& value)
 // - row - index of row. If 'row' is 0, the values will be set as first row.
 // If 'row' is >= rowCount(), the values will be added as new last row.
 // - values - list of strings
-void StringData::insertRow(const int& row, const QStringList& values)
+void StringData::insertRow(const int& row, const QList<QString>& values)
 {
-    d_ptr->m_values.insert(row, values);
+    d_ptr->m_values.insert(qBound(0, row, d_ptr->m_values.size()), values);
 }
 
 // Check if there are any rows
@@ -85,7 +83,10 @@ bool StringData::isEmpty() const
 // (i.e., 0 <= row < rowCount()). Otherwise function will do nothing.
 void StringData::removeRow(const int& row)
 {
-    d_ptr->m_values.removeAt(row);
+    if (row >= 0 && row < d_ptr->m_values.size())
+    {
+        d_ptr->m_values.removeAt(row);
+    }
 }
 
 // Replace the row at index position 'row' with new row.
@@ -95,7 +96,7 @@ void StringData::removeRow(const int& row)
 // - value - value that is supposed to be written instead of the 'old' values
 void StringData::replaceRow(const int& row, const QString& value)
 {
-    replaceRow(row, (QStringList() << value));
+    replaceRow(row, (QList<QString>() << value));
 }
 
 // Replace the row at index position 'row' with new row.
@@ -104,7 +105,7 @@ void StringData::replaceRow(const int& row, const QString& value)
 // a valid index position (i.e., 0 <= row < rowCount()).
 // - values - list of strings that is supposed to be written instead of the
 // 'old' values
-void StringData::replaceRow(const int& row, const QStringList& values)
+void StringData::replaceRow(const int& row, const QList<QString>& values)
 {
     d_ptr->m_values.replace(row, values);
 }
@@ -130,14 +131,11 @@ int StringData::rowCount() const
 // @input:
 // - row - valid number of row
 // @output:
-// - QStringList - values of row. If row is invalid number, function will
-// return empty QStringList.
-QStringList StringData::rowValues(const int& row) const
+// - QList<QString> - values of row. If row is invalid number, function will
+// return empty list.
+QList<QString> StringData::rowValues(const int& row) const
 {
-    if (row < 0 || rowCount() <= row)
-    {
-        return QStringList();
-    }
+    if (row < 0 || rowCount() <= row) { return {}; }
 
     return d_ptr->m_values.at(row);
 }
@@ -162,7 +160,7 @@ StringData& StringData::operator<<(const QString& value)
 }
 
 // Add new row with specified values
-StringData& StringData::operator<<(const QStringList& values)
+StringData& StringData::operator<<(const QList<QString>& values)
 {
     this->addRow(values);
     return *this;

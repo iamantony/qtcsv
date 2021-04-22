@@ -2,16 +2,14 @@
 #define QTCSVREADER_H
 
 #include "qtcsv/qtcsv_global.h"
+#include "abstractdata.h"
+#include <QIODevice>
 #include <QList>
-#include <QTextCodec>
-
-class QIODevice;
-class QStringList;
+#include <QString>
+#include <QStringConverter>
 
 namespace QtCSV
 {
-    class AbstractData;
-
     // Reader class is a file reader that work with csv-files. It needs an
     // absolute path to the csv-file that you are going to read or
     // some IO Device with csv-formatted data.
@@ -25,7 +23,8 @@ namespace QtCSV
     // - text codec.
     //
     // Reader can save (or transfer) information to:
-    // - QList<QStringList>, where each QStringList contains values of one row;
+    // - QList<QList<QString>>, where each QList<QString> contains values
+    // of one row;
     // - AbstractData-based container class;
     // - AbstractProcessor-based object.
     class QTCSVSHARED_EXPORT Reader
@@ -36,17 +35,12 @@ namespace QtCSV
         class QTCSVSHARED_EXPORT AbstractProcessor
         {
         public:
-            explicit AbstractProcessor() {}
-            virtual ~AbstractProcessor() {}
+            virtual ~AbstractProcessor() = default;
 
             // Preprocess one raw line from a file
             // @input:
             // line - raw line from a file
-            virtual void preProcessRawLine(QString& line)
-            {
-                // Here you can edit line
-                Q_UNUSED(line);
-            }
+            virtual void preProcessRawLine(QString& /*editable_line*/) {}
 
             // Process one row worth of elements
             // @input:
@@ -55,23 +49,23 @@ namespace QtCSV
             // bool - True if elements was processed successfully, False in case
             // of error. If process() return False, the csv-file will be stopped
             // reading
-            virtual bool processRowElements(const QStringList& elements) = 0;
+            virtual bool processRowElements(const QList<QString>& elements) = 0;
         };
 
-        // Read csv-file and save it's data as strings to QList<QStringList>
-        static QList<QStringList> readToList(
+        // Read csv-file and save it's data as strings to QList<QList<QString>>
+        static QList<QList<QString>> readToList(
             const QString& filePath,
             const QString& separator = QString(","),
             const QString& textDelimiter = QString("\""),
-            QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
+            QStringConverter::Encoding codec = QStringConverter::Utf8);
 
         // Read csv-formatted data from IO Device and save it
-        // as strings to QList<QStringList>
-        static QList<QStringList> readToList(
+        // as strings to QList<QList<QString>>
+        static QList<QList<QString>> readToList(
             QIODevice& ioDevice,
             const QString& separator = QString(","),
             const QString& textDelimiter = QString("\""),
-            QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
+            QStringConverter::Encoding codec = QStringConverter::Utf8);
 
         // Read csv-file and save it's data to AbstractData-based container
         // class
@@ -80,7 +74,7 @@ namespace QtCSV
             AbstractData& data,
             const QString& separator = QString(","),
             const QString& textDelimiter = QString("\""),
-            QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
+            QStringConverter::Encoding codec = QStringConverter::Utf8);
 
         // Read csv-formatted data from IO Device and save it
         // to AbstractData-based container class
@@ -89,7 +83,7 @@ namespace QtCSV
             AbstractData& data,
             const QString& separator = QString(","),
             const QString& textDelimiter = QString("\""),
-            QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
+            QStringConverter::Encoding codec = QStringConverter::Utf8);
 
         // Read csv-file and process it line-by-line
         static bool readToProcessor(
@@ -97,7 +91,7 @@ namespace QtCSV
             AbstractProcessor& processor,
             const QString& separator = QString(","),
             const QString& textDelimiter = QString("\""),
-            QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
+            QStringConverter::Encoding codec = QStringConverter::Utf8);
 
         // Read csv-formatted data from IO Device and process it line-by-line
         static bool readToProcessor(
@@ -105,7 +99,8 @@ namespace QtCSV
             AbstractProcessor& processor,
             const QString& separator = QString(","),
             const QString& textDelimiter = QString("\""),
-            QTextCodec* codec = QTextCodec::codecForName("UTF-8"));
+            QStringConverter::Encoding codec = QStringConverter::Utf8);
+
     };
 }
 

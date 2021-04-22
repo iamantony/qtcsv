@@ -1,11 +1,11 @@
 #include "testwriter.h"
-#include "qtcsv/writer.h"
 #include "qtcsv/reader.h"
 #include "qtcsv/variantdata.h"
-#include <QDir>
-#include <QFile>
-#include <QElapsedTimer>
+#include "qtcsv/writer.h"
 #include <QDebug>
+#include <QDir>
+#include <QElapsedTimer>
+#include <QFile>
 #include <exception>
 
 TestWriter::TestWriter() {}
@@ -69,7 +69,7 @@ void TestWriter::testWriteInvalidArgs()
 
 void TestWriter::testWriteFromStringData()
 {
-    QStringList strList;
+    QList<QString> strList;
     strList << "one" << "two" << "three";
 
     QtCSV::StringData strData;
@@ -78,7 +78,7 @@ void TestWriter::testWriteFromStringData()
     bool writeResult = QtCSV::Writer::write(getFilePath(), strData);
     QVERIFY2(true == writeResult, "Failed to write to file");
 
-    QList<QStringList> data = QtCSV::Reader::readToList(getFilePath());
+    QList<QList<QString>> data = QtCSV::Reader::readToList(getFilePath());
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
     QVERIFY2(1 == data.size(), "Wrong number of rows");
     QVERIFY2(strList == data.at(0), "Wrong data");
@@ -92,7 +92,7 @@ void TestWriter::testWriteFromVariantData()
     QList<QVariant> secondRow;
     secondRow << QVariant("kkoo") << QVariant(771) << QVariant(3.14);
 
-    QStringList thirdRow;
+    QList<QString> thirdRow;
     thirdRow << "one" << "two" << "three";
 
     QtCSV::VariantData varData;
@@ -103,33 +103,30 @@ void TestWriter::testWriteFromVariantData()
     bool writeResult = QtCSV::Writer::write(getFilePath(), varData);
     QVERIFY2(true == writeResult, "Failed to write to file");
 
-    QList<QStringList> data = QtCSV::Reader::readToList(getFilePath());
+    QList<QList<QString>> data = QtCSV::Reader::readToList(getFilePath());
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
     QVERIFY2(3 == data.size(), "Wrong number of rows");
-    QVERIFY2(varData.rowValues(0) == data.at(0),
-             "Wrong values in first row");
+    QVERIFY2(varData.rowValues(0) == data.at(0), "Wrong values in first row");
 
-    QVERIFY2(varData.rowValues(1) == data.at(1),
-             "Wrong values in second row");
+    QVERIFY2(varData.rowValues(1) == data.at(1), "Wrong values in second row");
 
-    QVERIFY2(varData.rowValues(2) == data.at(2),
-             "Wrong values in third row");
+    QVERIFY2(varData.rowValues(2) == data.at(2), "Wrong values in third row");
 }
 
 void TestWriter::testWriteToFileWithDotsInName()
 {
-    QStringList strList;
+    QList<QString> strList;
     strList << "one" << "two" << "three";
 
     QtCSV::StringData strData;
     strData.addRow(strList);
 
     bool writeResult =
-            QtCSV::Writer::write(getFilePathWithDotsInName(), strData);
+        QtCSV::Writer::write(getFilePathWithDotsInName(), strData);
     QVERIFY2(true == writeResult, "Failed to write to file");
 
-    QList<QStringList> data =
-            QtCSV::Reader::readToList(getFilePathWithDotsInName());
+    QList<QList<QString>> data =
+        QtCSV::Reader::readToList(getFilePathWithDotsInName());
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
     QVERIFY2(1 == data.size(), "Wrong number of rows");
     QVERIFY2(strList == data.at(0), "Wrong data");
@@ -137,7 +134,7 @@ void TestWriter::testWriteToFileWithDotsInName()
 
 void TestWriter::testWriteAppendMode()
 {
-    QStringList strFirstList;
+    QList<QString> strFirstList;
     strFirstList << "one" << "two" << "three";
 
     QtCSV::StringData strData;
@@ -146,21 +143,18 @@ void TestWriter::testWriteAppendMode()
     bool writeResult = QtCSV::Writer::write(getFilePath(), strData);
     QVERIFY2(true == writeResult, "Failed to write to file");
 
-    QStringList strSecondList;
+    QList<QString> strSecondList;
     strSecondList << "3" << "2" << "1.1";
 
     QtCSV::StringData newStrData;
     newStrData.addRow(strSecondList);
 
-    bool newWriteResult = QtCSV::Writer::write(getFilePath(),
-                                              newStrData,
-                                              ",",
-                                              QString(),
-                                              QtCSV::Writer::APPEND);
+    bool newWriteResult = QtCSV::Writer::write(
+        getFilePath(), newStrData, ",", QString(), QtCSV::Writer::APPEND);
 
     QVERIFY2(true == newWriteResult, "Failed to write to file");
 
-    QList<QStringList> data = QtCSV::Reader::readToList(getFilePath());
+    QList<QList<QString>> data = QtCSV::Reader::readToList(getFilePath());
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
     QVERIFY2(2 == data.size(), "Wrong number of rows");
     QVERIFY2(strFirstList == data.at(0), "Wrong first row data");
@@ -169,7 +163,7 @@ void TestWriter::testWriteAppendMode()
 
 void TestWriter::testWriteWithNotDefaultSeparator()
 {
-    QStringList strList;
+    QList<QString> strList;
     strList << "one" << "two" << "three";
 
     QtCSV::StringData strData;
@@ -179,8 +173,8 @@ void TestWriter::testWriteWithNotDefaultSeparator()
     bool writeResult = QtCSV::Writer::write(getFilePath(), strData, separator);
     QVERIFY2(true == writeResult, "Failed to write to file");
 
-    QList<QStringList> data =
-            QtCSV::Reader::readToList(getFilePath(), separator);
+    QList<QList<QString>> data =
+        QtCSV::Reader::readToList(getFilePath(), separator);
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
     QVERIFY2(1 == data.size(), "Wrong number of rows");
     QVERIFY2(strList == data.at(0), "Wrong data");
@@ -188,25 +182,21 @@ void TestWriter::testWriteWithNotDefaultSeparator()
 
 void TestWriter::testWriteWithHeader()
 {
-    QStringList header;
+    QList<QString> header;
     header << "1" << "2";
 
-    QStringList strList;
+    QList<QString> strList;
     strList << "one" << "two" << "three";
 
     QtCSV::StringData strData;
     strData.addRow(strList);
 
-    bool writeResult = QtCSV::Writer::write(getFilePath(),
-                                            strData,
-                                            ",",
-                                            QString(),
-                                            QtCSV::Writer::REWRITE,
-                                            header);
+    bool writeResult = QtCSV::Writer::write(
+        getFilePath(), strData, ",", QString(), QtCSV::Writer::REWRITE, header);
 
     QVERIFY2(true == writeResult, "Failed to write to file");
 
-    QList<QStringList> data = QtCSV::Reader::readToList(getFilePath());
+    QList<QList<QString>> data = QtCSV::Reader::readToList(getFilePath());
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
     QVERIFY2(2 == data.size(), "Wrong number of rows");
     QVERIFY2(header == data.at(0), "Wrong header");
@@ -215,26 +205,22 @@ void TestWriter::testWriteWithHeader()
 
 void TestWriter::testWriteWithFooter()
 {
-    QStringList footer;
+    QList<QString> footer;
     footer << "Here is a footer";
 
-    QStringList strList;
+    QList<QString> strList;
     strList << "one" << "two" << "three";
 
     QtCSV::StringData strData;
     strData.addRow(strList);
 
-    bool writeResult = QtCSV::Writer::write(getFilePath(),
-                                            strData,
-                                            ",",
-                                            QString(),
-                                            QtCSV::Writer::REWRITE,
-                                            QStringList(),
-                                            footer);
+    bool writeResult = QtCSV::Writer::write(
+        getFilePath(), strData, ",", QString(), QtCSV::Writer::REWRITE,
+        QList<QString>(), footer);
 
     QVERIFY2(true == writeResult, "Failed to write to file");
 
-    QList<QStringList> data = QtCSV::Reader::readToList(getFilePath());
+    QList<QList<QString>> data = QtCSV::Reader::readToList(getFilePath());
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
     QVERIFY2(2 == data.size(), "Wrong number of rows");
     QVERIFY2(strList == data.at(0), "Wrong data");
@@ -243,29 +229,25 @@ void TestWriter::testWriteWithFooter()
 
 void TestWriter::testWriteWithHeaderAndFooter()
 {
-    QStringList header;
+    QList<QString> header;
     header << "1" << "2";
 
-    QStringList footer;
+    QList<QString> footer;
     footer << "Here is a footer";
 
-    QStringList strList;
+    QList<QString> strList;
     strList << "one" << "two" << "three";
 
     QtCSV::StringData strData;
     strData.addRow(strList);
 
-    bool writeResult = QtCSV::Writer::write(getFilePath(),
-                                            strData,
-                                            ",",
-                                            QString(),
-                                            QtCSV::Writer::REWRITE,
-                                            header,
-                                            footer);
+    bool writeResult = QtCSV::Writer::write(
+        getFilePath(), strData, ",", QString(), QtCSV::Writer::REWRITE, header,
+        footer);
 
     QVERIFY2(true == writeResult, "Failed to write to file");
 
-    QList<QStringList> data = QtCSV::Reader::readToList(getFilePath());
+    QList<QList<QString>> data = QtCSV::Reader::readToList(getFilePath());
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
     QVERIFY2(3 == data.size(), "Wrong number of rows");
     QVERIFY2(header == data.at(0), "Wrong header");
@@ -275,7 +257,7 @@ void TestWriter::testWriteWithHeaderAndFooter()
 
 void TestWriter::testWriterDataContainSeparators()
 {
-    QStringList strList;
+    QList<QString> strList;
     strList << "one" << "two" << "three, four";
 
     QString strLine("this, is, one, element");
@@ -284,33 +266,29 @@ void TestWriter::testWriterDataContainSeparators()
     strData.addRow(strList);
     strData.addRow(strLine);
 
-    bool writeResult = QtCSV::Writer::write(getFilePath(),
-                                            strData,
-                                            ",",
-                                            "\"");
+    bool writeResult = QtCSV::Writer::write(getFilePath(), strData, ",", "\"");
     QVERIFY2(true == writeResult, "Failed to write to file");
 
-    QList<QStringList> data = QtCSV::Reader::readToList(getFilePath(),
-                                                        ",",
-                                                        "\"");
+    QList<QList<QString>> data =
+        QtCSV::Reader::readToList(getFilePath(), ",", "\"");
 
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
     QVERIFY2(2 == data.size(), "Wrong number of rows");
     QVERIFY2(strList == data.at(0), "Wrong data at first row");
-    QVERIFY2((QStringList() << strLine) == data.at(1),
+    QVERIFY2((QList<QString>() << strLine) == data.at(1),
              "Wrong data at second row");
 }
 
 void TestWriter::testWriteDifferentDataAmount()
 {
     int rowsNumber = 10;
-    int rowsMultiplier  = 2;
+    int rowsMultiplier = 2;
     int rowCycles = 2;
     QElapsedTimer time;
     for (int rc = 0; rc < rowCycles; ++rc)
     {
         int symbolsNumber = 10;
-        int symbolsMultiplier  = 5;
+        int symbolsMultiplier = 5;
         int symbolCycles = 4;
         for (int sc = 0; sc < symbolCycles; ++sc)
         {
@@ -319,7 +297,7 @@ void TestWriter::testWriteDifferentDataAmount()
             {
                 data = getTestStringData(symbolsNumber, rowsNumber);
             }
-            catch (std::exception &e)
+            catch (std::exception& e)
             {
                 Q_UNUSED(e);
                 QFAIL("No enough memory to create data object");
@@ -331,18 +309,17 @@ void TestWriter::testWriteDifferentDataAmount()
             time.restart();
             try
             {
-                writeResult = QtCSV::Writer::write(
-                                  getFilePath(), data, ",", QString());
+                writeResult =
+                    QtCSV::Writer::write(getFilePath(), data, ",", QString());
             }
-            catch (std::exception &e)
+            catch (std::exception& e)
             {
                 Q_UNUSED(e);
                 QFAIL("No enough memory to write data to the file");
             }
 
-            qDebug() << "symbols:" << symbolsNumber <<
-                        ", rows:" << rowsNumber <<
-                        ", time:" << time.elapsed() << "ms";
+            qDebug() << "symbols:" << symbolsNumber << ", rows:" << rowsNumber
+                     << ", time:" << time.elapsed() << "ms";
 
             QVERIFY2(true == writeResult, "Failed to write to file");
 
@@ -355,7 +332,7 @@ void TestWriter::testWriteDifferentDataAmount()
             QTextStream stream(&csvFile);
             for (int line = 0; line < data.rowCount(); ++line)
             {
-                QStringList lineElements = stream.readLine().split(",");
+                QList<QString> lineElements = stream.readLine().split(",");
                 QVERIFY2(data.rowValues(line) == lineElements,
                          "Original and result data are not the same");
             }
@@ -378,13 +355,19 @@ QtCSV::StringData TestWriter::getTestStringData(
         return QtCSV::StringData();
     }
 
-    QStringList elements;
-    elements << "1234567890" << "3.14159265359" << "abcdefgh" <<
-                "ijklmnopqrs" << "tuvwxyz" << "ABCDEFGH" << "IJKLMNOPQRS" <<
-                "TUVWXYZ" << "some_STRANGE-string=" <<
-                "?!\\|/*+.<>@#$%^&(){}[]'`~";
+    QList<QString> elements;
+    elements << "1234567890"
+             << "3.14159265359"
+             << "abcdefgh"
+             << "ijklmnopqrs"
+             << "tuvwxyz"
+             << "ABCDEFGH"
+             << "IJKLMNOPQRS"
+             << "TUVWXYZ"
+             << "some_STRANGE-string="
+             << "?!\\|/*+.<>@#$%^&(){}[]'`~";
 
-    QStringList rowElements;
+    QList<QString> rowElements;
     int rowLength = 0;
     int elementIndex = 0;
     while (rowLength < symbolsInRow)
@@ -416,25 +399,22 @@ QtCSV::StringData TestWriter::getTestStringData(
 
 void TestWriter::testWriteDataContainCRLF()
 {
-    QStringList firstLine = QStringList() << "one" << "two" <<
-                                             "three\nfour,five";
+    QList<QString> firstLine = QList<QString>() <<
+        "one" << "two" << "three\nfour,five";
 
-    QStringList secondLine = QStringList() << "six" << "seven,eight" <<
-                                              "nine,\rten";
+    QList<QString> secondLine = QList<QString>() <<
+        "six" << "seven,eight" << "nine,\rten";
 
     QtCSV::StringData strData;
     strData.addRow(firstLine);
     strData.addRow(secondLine);
 
-    bool writeResult = QtCSV::Writer::write(getFilePath(),
-                                            strData,
-                                            ",",
-                                            QString());
+    bool writeResult =
+        QtCSV::Writer::write(getFilePath(), strData, ",", QString());
     QVERIFY2(true == writeResult, "Failed to write to file");
 
-    QList<QStringList> data = QtCSV::Reader::readToList(getFilePath(),
-                                                        ",",
-                                                        "\"");
+    QList<QList<QString>> data =
+        QtCSV::Reader::readToList(getFilePath(), ",", "\"");
 
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
     QVERIFY2(2 == data.size(), "Wrong number of rows");

@@ -1,8 +1,6 @@
 #include "sources/contentiterator.h"
 #include "include/qtcsv/abstractdata.h"
 #include "sources/symbols.h"
-#include <QString>
-#include <QStringList>
 
 using namespace QtCSV;
 
@@ -18,8 +16,8 @@ ContentIterator::ContentIterator(
     const AbstractData& data,
     const QString& separator,
     const QString& textDelimiter,
-    const QStringList& header,
-    const QStringList& footer,
+    const QList<QString>& header,
+    const QList<QString>& footer,
     const int chunkSize) :
     m_data(data), m_separator(separator), m_textDelimiter(textDelimiter),
     m_header(header), m_footer(footer), m_chunkSize(chunkSize), m_dataRow(-1),
@@ -49,7 +47,7 @@ bool ContentIterator::hasNext() const
 QString ContentIterator::getNext()
 {
     // Check if we have already get to the end of the content
-    if (atEnd) { return QString(); }
+    if (atEnd) { return {}; }
 
     QString content;
     int rowsNumber = 0;
@@ -104,9 +102,9 @@ QString ContentIterator::getNext()
 // - values - list of values in rows
 // @output:
 // - QString - result row string
-QString ContentIterator::composeRow(const QStringList& values) const
+QString ContentIterator::composeRow(const QList<QString>& values) const
 {
-    QStringList rowValues = values;
+    QList<QString> rowValues = values;
     const QString twoDelimiters = m_textDelimiter + m_textDelimiter;
     for (int i = 0; i < rowValues.size(); ++i)
     {
@@ -114,9 +112,8 @@ QString ContentIterator::composeRow(const QStringList& values) const
 
         QString delimiter = m_textDelimiter;
         if (delimiter.isEmpty() &&
-                (rowValues.at(i).contains(m_separator) ||
-                 rowValues.at(i).contains(CR) ||
-                 rowValues.at(i).contains(LF)))
+            (rowValues.at(i).contains(m_separator) ||
+             rowValues.at(i).contains(CR) || rowValues.at(i).contains(LF)))
         {
             delimiter = DOUBLE_QUOTE;
         }

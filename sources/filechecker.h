@@ -1,9 +1,9 @@
 #ifndef QTCSVFILECHECKER_H
 #define QTCSVFILECHECKER_H
 
-#include <QString>
-#include <QFileInfo>
 #include <QDebug>
+#include <QFileInfo>
+#include <QString>
 
 namespace QtCSV
 {

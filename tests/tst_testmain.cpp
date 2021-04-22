@@ -1,8 +1,8 @@
 #include <QtTest>
 
+#include "testreader.h"
 #include "teststringdata.h"
 #include "testvariantdata.h"
-#include "testreader.h"
 #include "testwriter.h"
 
 int AssertTest(QObject* obj)

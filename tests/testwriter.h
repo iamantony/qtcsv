@@ -33,7 +33,7 @@ private:
     QString getFilePathXLS() const;
     QString getFilePathWithDotsInName() const;
     QtCSV::StringData getTestStringData(
-        const int &symbolsInRow, const int &rowsNumber);
+        const int& symbolsInRow, const int& rowsNumber);
 };
 
 #endif // TESTWRITER_H

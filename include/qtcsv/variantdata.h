@@ -4,9 +4,8 @@
 #include "qtcsv/abstractdata.h"
 #include "qtcsv/qtcsv_global.h"
 #include <QList>
-
-class QVariant;
-class QStringList;
+#include <QString>
+#include <QVariant>
 
 namespace QtCSV
 {
@@ -35,12 +34,12 @@ namespace QtCSV
         // Add new row with specified values
         bool addRow(const QList<QVariant>& values);
         // Add new row with specified values (as strings)
-        virtual void addRow(const QStringList& values);
+        virtual void addRow(const QList<QString>& values);
         // Clear all data
         virtual void clear();
         // Insert new row at index position 'row'
         bool insertRow(const int& row, const QVariant& value);
-        bool insertRow(const int& row, const QStringList& values);
+        bool insertRow(const int& row, const QList<QString>& values);
         bool insertRow(const int& row, const QList<QVariant>& values);
 
         // Check if there are any data
@@ -49,7 +48,7 @@ namespace QtCSV
         void removeRow(const int& row);
         // Replace the row at index position 'row' with new row
         bool replaceRow(const int& row, const QVariant& value);
-        bool replaceRow(const int& row, const QStringList& values);
+        bool replaceRow(const int& row, const QList<QString>& values);
         bool replaceRow(const int& row, const QList<QVariant>& values);
 
         // Reserve space for 'size' rows
@@ -57,13 +56,13 @@ namespace QtCSV
         // Get number of rows
         virtual int rowCount() const;
         // Get values (as list of strings) of specified row
-        virtual QStringList rowValues(const int& row) const;
+        virtual QList<QString> rowValues(const int& row) const;
 
         // Add new row that would contain one value
-        VariantData& operator<<(const QVariant &value);
+        VariantData& operator<<(const QVariant& value);
         // Add new row with specified values
-        VariantData& operator<<(const QList<QVariant> &values);
-        VariantData& operator<<(const QStringList &values);
+        VariantData& operator<<(const QList<QString>& values);
+        VariantData& operator<<(const QList<QVariant>& values);
 
         bool operator==(const VariantData& other) const;
         friend bool operator!=(

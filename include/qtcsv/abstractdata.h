@@ -3,8 +3,6 @@
 
 #include "qtcsv_global.h"
 
-class QStringList;
-
 namespace QtCSV
 {
     // AbstractData is a pure abstract container class. Its main purpouse is to
@@ -30,7 +28,7 @@ namespace QtCSV
         // Add new empty row
         virtual void addEmptyRow() = 0;
         // Add new row with specified values
-        virtual void addRow(const QStringList& values) = 0;
+        virtual void addRow(const QList<QString>& values) = 0;
         // Clear all data
         virtual void clear() = 0;
         // Check if there are any rows
@@ -38,7 +36,7 @@ namespace QtCSV
         // Get number of rows
         virtual int rowCount() const = 0;
         // Get values of specified row as list of strings
-        virtual QStringList rowValues(const int& row) const = 0;
+        virtual QList<QString> rowValues(const int& row) const = 0;
     };
 }
 

@@ -10,8 +10,7 @@ void TestVariantData::testCreation()
     QtCSV::VariantData varData;
 
     QVERIFY2(varData.isEmpty(), "Empty VariantData is not empty");
-    QVERIFY2(varData.rowCount() == 0,
-             "Empty VariantData have too many rows");
+    QVERIFY2(varData.rowCount() == 0, "Empty VariantData have too many rows");
 }
 
 void TestVariantData::testAddEmptyRow()
@@ -19,10 +18,10 @@ void TestVariantData::testAddEmptyRow()
     QtCSV::VariantData varData;
     varData.addEmptyRow();
 
-    QVERIFY2(false == varData.isEmpty(), "VariantData is empty with empty line");
+    QVERIFY2(false == varData.isEmpty(),
+             "VariantData is empty with empty line");
     QVERIFY2(1 == varData.rowCount(), "Wrong number of rows");
-    QVERIFY2(QStringList() == varData.rowValues(0),
-             "Wrong data for empty row");
+    QVERIFY2(QStringList() == varData.rowValues(0), "Wrong data for empty row");
 }
 
 void TestVariantData::testAddOneRow()
@@ -182,8 +181,7 @@ void TestVariantData::testInsertRows()
              secondRow.at(2).toString() == resultSecondRow.at(2),
              "Wrong data for second row");
 
-    QVERIFY2(QStringList() == varData.rowValues(2),
-             "Wrong data for third row");
+    QVERIFY2(QStringList() == varData.rowValues(2), "Wrong data for third row");
 
     QVERIFY2((QStringList() << stringOne) == varData.rowValues(3),
              "Wrong data for fourth row");
