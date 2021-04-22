@@ -406,10 +406,9 @@ void TestReader::testReadFileWithEmptyFieldsComplexSeparator()
     QVERIFY2(false == data.isEmpty(), "Failed to read file content");
 
     QList<QList<QString>> expected;
-    expected << (QList<QString>() << "0"
-                               << "1" << QString() << QString());
-    expected << (QList<QString>() << QString() << "Question"
-                               << "158" << QString() << QString());
+    expected << (QList<QString>() << "0" << "1" << QString() << QString());
+    expected << (QList<QString>() << QString() << "Question" << "158" <<
+        QString() << QString());
 
     QVERIFY2(expected.size() == data.size(), "Wrong number of rows");
     for (int i = 0; i < data.size(); ++i)

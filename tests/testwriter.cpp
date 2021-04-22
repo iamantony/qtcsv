@@ -55,9 +55,7 @@ void TestWriter::testWriteInvalidArgs()
              "Empty data was accepted");
 
     QtCSV::StringData strData;
-    strData << "one"
-            << "two"
-            << "three";
+    strData << "one" << "two" << "three";
 
     QVERIFY2(false == QtCSV::Writer::write(QString(), strData),
              "Empty path was accepted");
